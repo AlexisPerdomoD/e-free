@@ -13,20 +13,19 @@ const checkDb = async(path) => {
     } catch (error) {
         console.error(error)
     }
-    
 }
 
  export default class ProductManager{
     
     constructor(){
-        this.path = "./db.json",
+        this.path = "./src/db.json",
         this.products = [],
         this.id =  0
     }
    async getProducts (){
         if(fs.existsSync(this.path)){
             const res = await checkDb(this.path)
-            res.products.lenght !== 0  ? console.log(res.products) : console.log("there's nothing in this directory")
+            return res.products.lenght !== 0  ? res.products : "there's nothing in this directory"
         }else{
             return "not such directory"
         }
@@ -66,13 +65,13 @@ const checkDb = async(path) => {
    async getProductById(id){
         const pManager =  await checkDb(this.path)
     // BUSCAR POR ID
-        let res = pManager.products.find(p => p.id === id)
+        let res = pManager.products.find(p => p.id === +id)
     // RESPUESTA
         res && console.log("-------------------------get product by id----------------------------")
         res ? console.log(res) : console.log("Not such id in any product")
         res && console.log("--------------------------------------------------------")
 
-        return res ? res : `NOT FOUND BY THIS ID:${id}`
+        return res ? res : undefined
     }
 
     async updateProduct(id, field, newValue){
