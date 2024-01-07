@@ -10,8 +10,13 @@ server.get("/",(req, res)=>{
 })
 // SEND CATALOGO 
 server.get("/products", async(req,res)=>{
+    let limit = req.query.limit
     let response = await pm.getProducts()
-    res.send(response)
+    if(limit){
+        res.send(response.filter((e,index) => index < limit && e ))
+    }else{
+        res.send(response)
+    }
 })
 // SEND PRODUCT BY ID
 server.get("/products/:pid",async(req, res)=>{
