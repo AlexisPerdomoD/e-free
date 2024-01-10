@@ -67,10 +67,6 @@ const checkDb = async(path) => {
     // BUSCAR POR ID
         let res = pManager.products.find(p => p.id === +id)
     // RESPUESTA
-        res && console.log("-------------------------get product by id----------------------------")
-        res ? console.log(res) : console.log("Not such id in any product")
-        res && console.log("--------------------------------------------------------")
-
         return res ? res : undefined
     }
 
@@ -108,14 +104,16 @@ const checkDb = async(path) => {
             let index = pManager.products.findIndex(p => p.id === id);
             pManager.products.splice(index, 1)
 
-           
-           fs.promises.writeFile(this.path, JSON.stringify({products:pManager.products, id:pManager.id -1})).then(res => {
-            console.log(` product: ${pManager.products[index].code} deleted  at id : ${id}`)
-                }
-            ).catch(err => {console.error(err)})
-
+           fs.promises.writeFile(this.path,JSON.stringify({
+                products:pManager.products,
+                id:pManager.id -1
+                }))
+                .then(res => {
+                    return ` product: ${pManager.products[index].code} deleted  at id : ${id}`
+                })
+                .catch(err => {console.error(err)})
         }else{
-            console.log(`----------------------------there's not product with the id: ${id} to be deleted----------------------------`)
+            return undefined
         }
 
 
