@@ -54,8 +54,10 @@ server.get("/products/:pid",async(req, res)=>{
 
 // Delete product by id 
 server.delete("/products/delete/:pid", async(req, res) =>{
-    let id = req.params.pid
+    //params return an string
+    let id = +req.params.pid
     let response = await pm.deleteProduct(id)
+    console.dir(response)
     response ? 
     res.send({
         message: `deleted`,

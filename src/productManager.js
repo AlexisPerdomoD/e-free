@@ -100,20 +100,18 @@ const checkDb = async(path) => {
     }
     async deleteProduct(id){
         const pManager =  await checkDb(this.path)
-        if(pManager.products.find(p => p.id === id)){
+        let product = pManager.products.find(p => p.id === id)
+        
+        if(product){
             let index = pManager.products.findIndex(p => p.id === id);
             pManager.products.splice(index, 1)
-
-           fs.promises.writeFile(this.path,JSON.stringify({
+            let res = await fs.promises.writeFile(this.path,JSON.stringify({
                 products:pManager.products,
-                id:pManager.id -1
+                id:pManager.id
                 }))
-                .then(res => {
-                    return ` product: ${pManager.products[index].code} deleted  at id : ${id}`
-                })
-                .catch(err => {console.error(err)})
+        return product
         }else{
-            return undefined
+            return null
         }
 
 
