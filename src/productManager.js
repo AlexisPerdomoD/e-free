@@ -35,8 +35,8 @@ const checkDb = async(path) => {
         const pManager = await checkDb(this.path)
         // VALIDACIONES
         if(this.products.find(p => p.code === code) || pManager.products.find(p => p.code === code)){
-            
-            throw new error(`this code:${code} is already in class ProductManager`)
+
+            throw new error(`this code:${code} is already in products`)
             
         }else{
 
@@ -59,7 +59,7 @@ const checkDb = async(path) => {
    async getProductById(id){
         const pManager =  await checkDb(this.path)
     // BUSCAR POR ID
-        let res = pManager.products.find(p => p.id === +id)
+        let res = pManager.products.find(p => p.id.toString() === id)
     // RESPUESTA
         return res ? res : undefined
     }

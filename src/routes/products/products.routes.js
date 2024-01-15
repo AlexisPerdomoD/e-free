@@ -39,7 +39,7 @@ productsRouter.get("/:pid",async(req, res)=>{
 // Delete product by id 
 productsRouter.delete("/delete/:pid", async(req, res) =>{
     //params return an string
-    let id = +req.params.pid
+    let id = req.params.pid
     let response = await pm.deleteProduct(id)
     console.dir(response)
     response ? 
