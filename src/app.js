@@ -68,6 +68,10 @@ server.delete("/products/delete/:pid", async(req, res) =>{
     })
     
 })
-
+server.post("/add_product", (req, res) =>{
+    if(!req.body){
+        
+    }
+})
 
 
