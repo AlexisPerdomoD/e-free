@@ -1,4 +1,6 @@
+
 import fs from "fs"
+import crypto from "crypto"
 
 
 const checkDb = async(path) => {
@@ -19,8 +21,7 @@ const checkDb = async(path) => {
     
     constructor(path){
         this.path = path,
-        this.products = [],
-        this.id =  0
+        this.products = []
     }
    async getProducts (){
         if(fs.existsSync(this.path)){
@@ -30,22 +31,17 @@ const checkDb = async(path) => {
             return "not such directory"
         }
     }
-    async addProduct(title, description, price, thumbnail, code, stock ){
+    async addProduct(title, description, price, category, thumbnail, code, stock ,status = true ){
         const pManager = await checkDb(this.path)
         // VALIDACIONES
-         if(!title || !description || !price || !thumbnail || !code || !stock){
-            console.error("---------------------in order to add a new file every field must be filled properly---------------------")
-
-        }else if(this.products.find(p => p.code === code) || pManager.products.find(p => p.code === code)){
-            console.error(`---------------------this code:${code} is already in class ProductManager---------------------`)
+        if(this.products.find(p => p.code === code) || pManager.products.find(p => p.code === code)){
+            
+            throw new error(`this code:${code} is already in class ProductManager`)
             
         }else{
-        // VERIFICACIÓN DE ESTADO DE DB
-            pManager.id > this.id  ? this.id = pManager.id : this.id 
 
-            let id = this.id
-            const newProduct = {id, title, description, price, thumbnail, code, stock }
-
+            let id = crypto.randomBytes(16).toString("hex")
+            const newProduct = {id, title, description, price,category, thumbnail, code, stock, status}
 
             if(this.products.length < pManager.products.length){
                 this.products = [];
@@ -55,11 +51,9 @@ const checkDb = async(path) => {
             }else{
                 this.products.push(newProduct)
             }
-            this.id++
         // AGREGAR EL PRODUCTO
-            fs.promises.writeFile(this.path, JSON.stringify({products:this.products, id:this.id})).then(res => {
-            console.log(` ---------------------product ${newProduct.code} correctly added---------------------`)
-            }).catch(err => console.error(err))
+             await fs.promises.writeFile(this.path, JSON.stringify({products:this.products}))
+             return {status :`product ${newProduct.code} correctly added`, id: newProduct.id}
         }
     }
    async getProductById(id){

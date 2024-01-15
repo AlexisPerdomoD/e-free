@@ -52,8 +52,12 @@ productsRouter.delete("/delete/:pid", async(req, res) =>{
     })
     
 })
-productsRouter.post("/add_product", (req, res) =>{
-    if(!req.body){
+ productsRouter.post("/add_product", async(req, res) =>{
+    let {tittle, description, price, category, thumbnail, code , stock} = req.body
+    if(!tittle || !description || !price || !category || !thumbnail || !code || !stock){
+        res.status(406).send({message:"in order to add a new file every field must be filled properly"})
+    }else{
+        res.send(await pm.addProduct(tittle, description, price, category, thumbnail, code, stock)) 
         
     }
 })
