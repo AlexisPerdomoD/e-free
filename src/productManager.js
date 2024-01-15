@@ -17,8 +17,8 @@ const checkDb = async(path) => {
 
  export default class ProductManager{
     
-    constructor(){
-        this.path = "./src/db.json",
+    constructor(path){
+        this.path = path,
         this.products = [],
         this.id =  0
     }
