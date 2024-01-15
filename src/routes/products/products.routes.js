@@ -52,6 +52,7 @@ productsRouter.delete("/delete/:pid", async(req, res) =>{
     })
     
 })
+// add new product 
  productsRouter.post("/add_product", async(req, res) =>{
     let {tittle, description, price, category, thumbnail, code , stock} = req.body
     if(!tittle || !description || !price || !category || !thumbnail || !code || !stock){
@@ -59,6 +60,18 @@ productsRouter.delete("/delete/:pid", async(req, res) =>{
     }else{
         res.send(await pm.addProduct(tittle, description, price, category, thumbnail, code, stock)) 
         
+    }
+})
+// update product by id 
+productsRouter.put("/update_product/:pid", async(req , res) =>{
+    let id = req.params.pid
+    if(!id && !req.body){
+        res.status(406).send({message:"every field must be filled properly"})
+    }else{
+        let response = await pm.updateProduct(id, req.body)
+        response.status === "error" 
+        ? res.status(406).send(response) 
+        : res.send(response)
     }
 })
 

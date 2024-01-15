@@ -64,32 +64,30 @@ const checkDb = async(path) => {
         return res ? res : undefined
     }
 
-    async updateProduct(id, field, newValue){
+    async updateProduct(id, updates){
         const pManager =  await checkDb(this.path)
-    // VALIDACIONES
-        if(!id && !field && !newValue){
-            console.error("every field must be filled properly")
-            return "missing fields error"
+        // VALIDACIONES
+        if(updates.code && pManager.products.find(product => product.code === updates.code))return {
+            message:"this code can't be update, need to add an new code",
+            status:"error"
         }
-        if(pManager.products.find(p => p.code === newValue)){
-            console.error("this product is using an existing code, need a new one")
-            return "product already added"
-        }
-
-
         if(pManager.products.find(p => p.id === id)){
-    // RESPUESTA
-            let index = pManager.products.findIndex(p => p.id === id);
-            pManager.products[index][field] = newValue
+        // RESPUESTA
+            let index = pManager.products.findIndex(p => p.id === id)
+            for (const key in updates) {
+                pManager.products[index][key] = updates[key]
+            }
 
            
-           fs.promises.writeFile(this.path, JSON.stringify({products:pManager.products, id:pManager.id})).then(res => {
-            console.log(`field ${field} with value ${newValue}  updated properly at id : ${id}`)
-        }).catch(err => {console.error(err)})
+        await fs.promises.writeFile(this.path, JSON.stringify({products:pManager.products, id:pManager.id}))
+        
+        return {
+            message:`  update at id : ${id} properly made`,
+            pUpdated: pManager.products[index]
+        }
 
         }else{
-        
-            console.log(`----------------------------there's not product with the id: ${id}----------------------------`)
+            return {message:`there's not product with the id: ${id}`,status:"error"}
         }
     }
     async deleteProduct(id){
