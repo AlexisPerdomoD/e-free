@@ -1,5 +1,6 @@
 import  express  from "express"
 import productsRouter from "./routes/products/products.routes.js"
+import cartRouter from "./routes/carts/carts..routes.js"
 
 //App alias server
 const server = express()
@@ -17,8 +18,8 @@ server.get("/",(req, res)=>{
     })
 })
 server.use("/products", productsRouter)
+server.use("/cart", cartRouter)
 const PORT = 8080
 server.listen(PORT, ()=> {
     console.log(`App listening on port ${PORT}`)
 })
-

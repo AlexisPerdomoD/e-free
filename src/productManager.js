@@ -5,11 +5,11 @@ import crypto from "crypto"
 
 const checkDb = async(path) => {
     try {
-        !fs.existsSync(path) && await fs.promises.writeFile(path, JSON.stringify({products:[], id:0}))
+        !fs.existsSync(path) && await fs.promises.writeFile(path, JSON.stringify({products:[]}))
 
         const res = await fs.promises.readFile(path, "utf-8")
         // CHECKEAR ESTE TERNARIO APARENTEMENTE REDUNDANTE
-        const jsonRes =  res ? JSON.parse(res) : {products:[], id:0}
+        const jsonRes =  res ? JSON.parse(res) : {products:[]}
         return jsonRes
         
     } catch (error) {
