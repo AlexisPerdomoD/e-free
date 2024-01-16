@@ -43,14 +43,17 @@ cartRouter.get("/:cid", async(req, res) =>{
 })
 
 cartRouter.post("/:cid/product/:pid", async(req, res) => {
-    const pm = new ProductManager()
+    const pm = new ProductManager("src/routes/products/products.json")
     if(fs.existsSync(path)){
+
         const carts = JSON.parse(await fs.promises.readFile(path, "utf-8"))
         const cIndex = carts.findIndex(c => c.id === req.params.cid)
         const product = await pm.getProductById(req.params.pid)
         if(cIndex !== -1 && product){
-            if(carts[cIndex].find(p => p.id === product.id)){
-                carts[cIndex].forEach(p => {
+
+            if(carts[cIndex].products.find(p => p.id === product.id)){
+
+                carts[cIndex].products.forEach(p => {
                     p.id === product.id && p.quantity++
                 })
                 await fs.promises.writeFile(path, JSON.stringify(carts))
@@ -60,7 +63,7 @@ cartRouter.post("/:cid/product/:pid", async(req, res) => {
                 })
 
             }else{
-                carts[cIndex].push({
+                carts[cIndex].products.push({
                     id:product.id,
                     quantity: 1
                 })
