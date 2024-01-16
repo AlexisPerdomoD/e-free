@@ -11,10 +11,10 @@ cartRouter.post("/", async(req, res) =>{
         id: crypto.randomBytes(16).toString("hex"),
         products:[]
     }
+
     if(req.body.products_add){
         req.body.products_add.forEach(product => cart.products.push(product))
     }
-
 
     !fs.existsSync(path) && await fs.promises.writeFile(path, JSON.stringify([]))
 
@@ -30,11 +30,15 @@ cartRouter.post("/", async(req, res) =>{
 })
 
 cartRouter.get("/:cid", async(req, res) =>{
-    const carts = fs.existsSync("./carts.json") 
-    ? await fs.promises.readFile("./carts.json", "utf-8")
-    : res.status(404).send({message:"there's not cart created"})
+    if(fs.existsSync(path)){
+        const carts = JSON.parse(await fs.promises.readFile(path, "utf-8"))
 
-    console.dir(carts)
+        carts.find(cart => cart.id === req.params.cid)
+        ? res.send(carts.find(cart => cart.id === req.params.cid))
+        : res.status(404).send({message:"no cart with the given id"})
+    }else{
+        res.status(404).send({message:"there's not cart created"})
+    }
 })
 
 
