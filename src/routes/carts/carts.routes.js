@@ -44,7 +44,6 @@ cartRouter.post("/:cid/product/:pid", async(req, res) => {
 cartRouter.delete("/delete/:cid", async(req, res) =>{
     const deleteCart = await cm.deleteCart(req.params.cid)
     deleteCart
-
     ? res.send({
         message:"product deleted",
         content: deleteCart

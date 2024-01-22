@@ -52,7 +52,7 @@ export default class CartManager{
             return carts[index]
         }
     }
-    async deleteCart(cid){
+    async deleteCart(cid){ 
         const cart = await this.getCart(cid)
         if(cart){
             let carts = await this.getCarts()
