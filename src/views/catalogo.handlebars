@@ -1,0 +1,27 @@
+<section class="section">
+    <div class="container catalogo__container">
+        <div class="hero__header">
+            <h2>wellcome to our list of products 🍔</h2>
+            <p>{{usser}}</p>
+        </div>
+        <div class="catalogo">
+            <ul class="catalogo__list">
+            {{#each products}}
+                <li>
+                    <div class="card">
+                        <img src={{this.thumbnail}} alt="image reference for {{this.title}}" height="200" width="150">
+                        <h4>{{this.title}}</h4>
+                        <p>{{this.description}}</p>
+                        <p>price: ${{this.price}}</p>
+                        <div class="card__button">
+                            <button>something else</button>
+                            <button class="add-card">add to card</button>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+            </ul>
+
+        </div>
+    </div>
+</section>

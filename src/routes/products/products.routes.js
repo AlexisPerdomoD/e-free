@@ -12,14 +12,13 @@ productsRouter.get("/", async(req,res)=>{
     let limit = req.query.limit
     let response = await pm.getProducts()
     if(limit){
-        res.send({
-            message:`products recived with limit ${limit}`,
-            content:response.filter((product, index) => index < limit && product )
+        res.render("catalogo", {
+            products: response.filter((product, index) => index < limit && product )
         })
     }else{
-        res.send({
-            message:`products recived all`,
-            content:response
+        res.render("catalogo", {
+            usser:"luis miguel",
+            products: response
         })
     }
 })
@@ -31,7 +30,7 @@ productsRouter.get("/:pid",async(req, res)=>{
     res.send({
         message: "product found",
         content: response
-    }) 
+    })
     : res.status(404).send({
         message:`not such product with the id:${id}`
     })
