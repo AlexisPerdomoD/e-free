@@ -4,8 +4,7 @@ import crypto from "crypto"
 export default class CartManager{
 
     constructor(path){
-        this.path = path,
-        this.carts = []
+        this.path = path
     }
 
     async getCarts(){
@@ -25,6 +24,7 @@ export default class CartManager{
         const carts = await this.getCarts()
         carts.push(cart)
         await fs.promises.writeFile(this.path, JSON.stringify(carts))
+        return cart
     }
 
     async getCart(cid){
@@ -55,12 +55,12 @@ export default class CartManager{
     async deleteCart(cid){
         const cart = await this.getCart(cid)
         if(cart){
-            const carts = await this.getCarts()
-            carts = carts.filter(crt => crt.id !== cid)
+            let carts = await this.getCarts()
+            carts = carts.filter(crt => crt.id !== cart.id)
             await fs.promises.writeFile(this.path, JSON.stringify(carts))
             return cart
         }else{
-            return "not such cart with the id: " + cid
+            return null
         }
     }
 }

@@ -1,87 +1,57 @@
 import { Router } from "express"
 import ProductManager from "../../productManager.js"
+import CartManager from "../../cartManager.js"
 import fs from "fs"
-import crypto from "crypto"
 
 const cartRouter = Router()
+
 const path = "src/routes/carts/carts.json"
+const cm = new CartManager(path)
 
-
-cartRouter.post("/", async(req, res) =>{
-    const cart = {
-        id: crypto.randomBytes(16).toString("hex"),
-        products:[]
-    }
-
-    if(req.body.products_add){
-        req.body.products_add.forEach(product => cart.products.push(product))
-    }
-
-    !fs.existsSync(path) && await fs.promises.writeFile(path, JSON.stringify([]))
-
-    const carts = JSON.parse(await fs.promises.readFile(path, "utf-8"))
-    carts.push(cart)
-    await fs.promises.writeFile(path, JSON.stringify(carts))
+cartRouter.post("/", async(req, res) =>{    await cm.getCarts()
+    const cart = await cm.addCart(req.body.products_add)
 
     res.send({
         message:`cart created properly`,
-        id: cart.id,
-        "status cart":cart.products
+        content: cart
     })
 })
 
 cartRouter.get("/:cid", async(req, res) =>{
-    if(fs.existsSync(path)){
-        const carts = JSON.parse(await fs.promises.readFile(path, "utf-8"))
-
-        carts.find(cart => cart.id === req.params.cid)
-        ? res.send(carts.find(cart => cart.id === req.params.cid))
-        : res.status(404).send({message:"no cart with the given id"})
-    }else{
-        res.status(404).send({message:"there's not cart created"})
-    }
+        const cart = await cm.getCart(req.params.cid)
+        cart
+        ? res.send(cart)
+        : res.status(404).send({message:"no cart with the given id "+ req.params.cid})
 })
 
 cartRouter.post("/:cid/product/:pid", async(req, res) => {
     const pm = new ProductManager("src/routes/products/products.json")
-    if(fs.existsSync(path)){
-
-        const carts = JSON.parse(await fs.promises.readFile(path, "utf-8"))
-        const cIndex = carts.findIndex(c => c.id === req.params.cid)
-        const product = await pm.getProductById(req.params.pid)
-        if(cIndex !== -1 && product){
-
-            if(carts[cIndex].products.find(p => p.id === product.id)){
-
-                carts[cIndex].products.forEach(p => {
-                    p.id === product.id && p.quantity++
-                })
-                await fs.promises.writeFile(path, JSON.stringify(carts))
-                res.send({
-                    message:"product updated in cart properly",
-                    content:carts[cIndex]
-                })
-
-            }else{
-                carts[cIndex].products.push({
-                    id:product.id,
-                    quantity: 1
-                })
-
-                await fs.promises.writeFile(path, JSON.stringify(carts))
-                res.send({
-                    message:"product added in cart properly",
-                    content:carts[cIndex]
-                })
-
-            }
+    const product = await pm.getProductById(req.params.pid)
+    const cart = await cm.getCart(req.params.cid)
+        
+        if(cart && product){
+            let newCart = await cm.updateCart(cart.id, product)
+            res.send({
+                message:"product added in cart properly",
+                content: newCart
+            })
         }else{
             res.status(406).send({message:"not cart or product found, check ids in your request"})
         }
-    }else{
-        res.status(404).send({message:"there's not cart created"})
-    }
     
+})
+
+cartRouter.delete("/delete/:cid", async(req, res) =>{
+    const deleteCart = await cm.deleteCart(req.params.cid)
+    deleteCart
+
+    ? res.send({
+        message:"product deleted",
+        content: deleteCart
+    })
+    : res.status(404).send({
+        message:"not found by the id: " + req.params.cid
+    })
 })
 
 
