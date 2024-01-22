@@ -2,6 +2,7 @@ import  express  from "express"
 import { engine } from "express-handlebars"
 import productsRouter from "./routes/products/products.routes.js"
 import cartRouter from "./routes/carts/carts.routes.js"
+import __dirname from "./utilitys/getPath.js"
 
 //App alias server
 const app = express()
@@ -17,15 +18,19 @@ app.engine("handlebars", engine())
 app.set("view engine", "handlebars")
 //corregir rutas relativas luego
 // setear ruta a las vistas 
-app.set("views", "src/views")
+app.set("views", __dirname + "/views")
 
 //Go
+// static files
+app.use(express.static(__dirname + "/public")) 
+
 app.get("/",(req, res)=>{
     res.render('home', {usser:"alexisss"})
 })
 
 app.use("/products", productsRouter)
 app.use("/cart", cartRouter)
+
 
 
 const PORT = 8080

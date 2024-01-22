@@ -50,7 +50,6 @@ productsRouter.delete("/delete/:pid", async(req, res) =>{
     : res.status(404).send({
         message:`not such product with the id:${id}`
     })
-    
 })
 // add new product 
  productsRouter.post("/add_product", async(req, res) =>{
