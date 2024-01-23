@@ -13,7 +13,7 @@ console.log(data)
 })
 
 // hear public events from server 
-socket.on("products", products =>{
+socket.on("productList", products =>{
     const productList = document.querySelector(".catalogo__list")
     productList.innerHTML = ""
     products.forEach(product =>{
@@ -51,12 +51,12 @@ addForm.addEventListener("submit", (event)=>{
     const data = new FormData(addForm)
     const product = {
         title: data.get("title"),
-        description: data.get("description"),
+        "description": data.get("description"),
         price: data.get("price"),
         category: data.get("category"),
-        thumbnail: data.get("thumbnail"),
+        thumbnail: data.get("thumbnail").split(" "),
         code: data.get("code"),
         stock: data.get("stock")
     }
-    console.dir(product)
+    socket.emit("addProduct", product)
 })

@@ -36,7 +36,7 @@ const checkDb = async(path) => {
         // VALIDACIONES
         if(this.products.find(p => p.code === code) || pManager.products.find(p => p.code === code)){
 
-            throw new error(`this code:${code} is already in products`)
+            throw new Error("code already used in the catalogo, please change it")
             
         }else{
 
@@ -53,7 +53,7 @@ const checkDb = async(path) => {
             }
         // AGREGAR EL PRODUCTO
              await fs.promises.writeFile(this.path, JSON.stringify({products:this.products}))
-             return {status :`product ${newProduct.code} correctly added`, id: newProduct.id}
+             return {message :`product ${newProduct.code} correctly added`, id: newProduct.id}
         }
     }
    async getProductById(id){

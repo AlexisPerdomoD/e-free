@@ -48,25 +48,39 @@ const httpServer = app.listen(PORT, ()=> {
 const socketServer = new Server(httpServer)
 socketServer.on("connection", socket =>{
     console.log(`new usser connected by io`)
-    
+//socket for hear delete requests
     socket.on("delete", async data =>{
 
         const deletedProduct = await pm.deleteProduct(data.id)
-        console.dir(data.id)
         if(deletedProduct){
             socket.emit("private", {
                 message: "product deleted id: " + data.id 
             })
             const products = await pm.getProducts()
-            socket.emit("products", products)
+            socketServer.emit("productList", products)
             
         }else{
             socket.emit("private", {
                 message: "there's not product with the id: " + data.id 
             })
         }
-
-        
-        
     })
+//socket to hear add products requests
+    socket.on("addProduct", async (product)=>{
+        const {title, description, price, category, thumbnail, code, stock} = product
+        try {
+            const res = await pm.addProduct(title, description, price, category, thumbnail, code, stock)
+            console.log(res.message)
+            socket.emit("private", res)
+            const products = await pm.getProducts()
+            socketServer.emit("productList", products)
+
+        } catch (error) {
+            console.log(error)
+            socket.emit("private", {
+                message : "code already used in an existing product, please change it in order to add your product"
+            })
+        }
+    })
+
 })
