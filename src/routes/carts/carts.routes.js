@@ -1,14 +1,14 @@
 import { Router } from "express"
 import ProductManager from "../../productManager.js"
 import CartManager from "../../cartManager.js"
-import fs from "fs"
+import __dirname from "../../getPath.js"
 
+const path = __dirname + "/routes/carts/carts.json"
 const cartRouter = Router()
-
-const path = "src/routes/carts/carts.json"
 const cm = new CartManager(path)
 
-cartRouter.post("/", async(req, res) =>{    await cm.getCarts()
+cartRouter.post("/", async(req, res) =>{    
+    await cm.getCarts()
     const cart = await cm.addCart(req.body.products_add)
 
     res.send({
@@ -43,6 +43,7 @@ cartRouter.post("/:cid/product/:pid", async(req, res) => {
 
 cartRouter.delete("/delete/:cid", async(req, res) =>{
     const deleteCart = await cm.deleteCart(req.params.cid)
+
     deleteCart
     ? res.send({
         message:"product deleted",

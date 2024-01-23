@@ -1,7 +1,8 @@
 import { Router } from "express"
 import ProductManager from "../../productManager.js"
-const path = "src/routes/products/products.json"
+import __dirname from "../../getPath.js"
 
+const path = __dirname + "/routes/products/products.json"
 const pm = new ProductManager(path)
 const productsRouter = Router()
 
@@ -21,6 +22,12 @@ productsRouter.get("/", async(req,res)=>{
             products: response
         })
     }
+})
+productsRouter.get("/realTimeProducts", async(req, res) =>{
+    res.render("realTimeProducts",{
+        products : await  pm.getProducts(),
+        usser: "alexis🔥"
+    })
 })
 // SEND PRODUCT BY ID
 productsRouter.get("/:pid",async(req, res)=>{

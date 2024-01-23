@@ -1,0 +1,74 @@
+<section class="section">
+    <div class="container catalogo__container">
+        <div class="hero__header">
+            <h2>wellcome to our list of products 🍔</h2>
+            <p>{{usser}}</p>
+        </div>
+        <div class="section">
+            <div class="container testing-area">
+                <form action="" onsubmit="" id="delete__product">
+                    <label for="id">
+                        <p>ingrese el id para eliminar</p>
+                        <input type="text" id="id-to-delete" name="id" placeholder="id" required>
+                    </label>
+                        <button type="submit">delete</button>
+                </form>
+
+                <form action="" id="add__product">
+                    <p>add a product</p>
+                    <label for="title">
+                        <p>title</p>
+                        <input type="text" name="title" required>
+                    </label>
+                    <label for="description">
+                        <p>description</p>
+                        <input type="text" name="description" required>
+                    </label>
+                    <label for="price">
+                        <p>price</p>
+                        <input type="text" name="price" required>
+                    </label>
+                    <label for="category">
+                        <p>category</p>
+                        <input type="text" name="category" required>
+                    </label>
+
+                    <label for="thumbnail">
+                        <p>thumbnails</p>
+                        <input type="text" name="thumbnail" required>
+                    </label>
+                    <label for="code">
+                        <p>code</p>
+                        <input type="text" name="code" required>
+                    </label>
+                    <label for="stock">
+                        <p>stock</p>
+                        <input type="number" name="stock" required>
+                    </label>
+                    <button type="submit">add product</button>
+                </form>          
+            </div>
+        </div>
+        <div class="catalogo" >
+            <ul class="catalogo__list" style="display: flex; flex-wrap: wrap;">
+            {{#each products}}
+                <li>
+                    <div class="card" style="width: 200px;">
+                        <img src={{this.thumbnail}} alt="image reference for {{this.title}}" height="200" width="150">
+                        <h4>{{this.title}}</h4>
+                        <p>{{this.description}}</p>
+                        <p>price: ${{this.price}}</p>
+                        <p>id for test: {{this.id}}</p>
+                        <div class="card__button">
+                            <button>something else</button>
+                            <button class="add-card">add to card</button>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+            </ul>
+        </div>
+    </div>
+</section>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>
