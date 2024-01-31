@@ -1,9 +1,9 @@
-<section class="section">
+l<section class="section">
     <div class="container catalogo__container">
-        <div class="hero__header">
-            <h2>wellcome to our list of products 🍔</h2>
+        <div class="hero">
+            <h2 class="hero__title">wellcome to our list of products 🍔</h2>
             <p>{{usser}}</p>
-            <P>PRODUCTOS OBTENIDOS MEDIANTE WEBSOCKETS SOCKET IO </P>
+            <P class="hero__content">PRODUCTOS OBTENIDOS MEDIANTE WEBSOCKETS SOCKET IO </P>
         </div>
         <div class="section">
             <div class="container testing-area">
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="catalogo" >
-            <ul class="catalogo__list" style="display: flex; flex-wrap: wrap;">
+            <ul class="catalogo__list">
             {{#each products}}
                 <li>
                     <div class="card" style="width: 200px;">
@@ -61,8 +61,8 @@
                         <p>price: ${{this.price}}</p>
                         <p>id for test: {{this.id}}</p>
                         <div class="card__button">
-                            <button>something else</button>
-                            <button class="add-card">add to card</button>
+                            <button class="button">something else</button>
+                            <button class="button">add to card</button>
                         </div>
                     </div>
                 </li>

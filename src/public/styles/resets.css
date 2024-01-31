@@ -1,0 +1,505 @@
+:root {
+  /* settings */
+  /* paleta de colores*/
+  --background: #ffffff;
+  --foreground: hsl(0 0% 9%);
+  --primary: hsl(142 72% 29%);
+  --primary-foreground: white;
+  --secondary:hsl(0 0% 96%);
+  --muted: hsl(0, 7%, 83%);
+  --muted-foreground: hsl(0 0% 32%);
+  --muted-foreground-subtle: hsl(0 0% 46%);
+  --ring: hsl(0 91% 71%);
+  --primary-hover: hsl(142 71% 45%);
+  --primary-active: hsl(145 80% 10%);
+  --secondary-hover: hsl(0, 0%, 80%);
+  --secondary-active: hsl(0 0% 32%);
+  --border:hsl(0, 0%, 83%) ;
+  --background-hover: hsl(0, 0%, 90%);
+  --background-active: hsl(0, 0%, 83%);
+  --success: hsl(204 94% 94%);
+  --success-foreground:hsl(204 80% 16%);
+  --success-border:hsl(200 98% 39%);
+  --warning: hsl(55 92% 95%);
+  --warning-foreground: hsl(26 83% 14%);
+  --warning-border: hsl(41 96% 40%);
+  --danger:  hsl(0 93% 94%);
+  --danger-foreground: hsl(0 75% 16%);
+  --danger-border: hsl(0 72% 51%);
+  /* spacing */
+  --space-unit: 0.25rem; /* 4px */
+
+  --spacing-0_5: calc(var(--space-unit) * 0.5);
+  --spacing-1: calc(var(--space-unit) * 1);
+  --spacing-1_5: calc(var(--space-unit) * 1.5);
+  --spacing-2: calc(var(--space-unit) * 2);
+  --spacing-2_5: calc(var(--space-unit) * 2.5);
+  --spacing-3: calc(var(--space-unit) * 3);
+  --spacing-3_5: calc(var(--space-unit) * 3.5);
+  --spacing-4: calc(var(--space-unit) * 4);
+  --spacing-5: calc(var(--space-unit) * 5);
+  --spacing-6: calc(var(--space-unit) * 6);
+  --spacing-7: calc(var(--space-unit) * 7);
+  --spacing-8: calc(var(--space-unit) * 8);
+  --spacing-9: calc(var(--space-unit) * 9);
+  --spacing-10: calc(var(--space-unit) * 10);
+  --spacing-11: calc(var(--space-unit) * 11);
+  --spacing-12: calc(var(--space-unit) * 12);
+  --spacing-14: calc(var(--space-unit) * 14);
+  --spacing-16: calc(var(--space-unit) * 16);
+  --spacing-20: calc(var(--space-unit) * 20);
+  --spacing-24: calc(var(--space-unit) * 24);
+  --spacing-28: calc(var(--space-unit) * 28);
+  --spacing-32: calc(var(--space-unit) * 32);
+  --spacing-36: calc(var(--space-unit) * 36);
+  /* radios */
+  --radius-unit: 0.25rem; /* 4px */
+
+  --rounded-none: 0;
+  --rounded-sm: calc(var(--radius-unit) * 0.5);
+  --rounded: calc(var(--radius-unit) * 1);
+  --rounded-md: calc(var(--radius-unit) * 1.5);
+  --rounded-lg: calc(var(--radius-unit) * 2);
+  --rounded-xl: calc(var(--radius-unit) * 3);
+  --rounded-2xl: calc(var(--radius-unit) * 4);
+  --rounded-3xl: calc(var(--radius-unit) * 6);
+  --rounded-full: 9999px;
+  /* fonts */
+  --text: 'Poppins', sans-serif;
+  --heading: Inter, Arial, sans-serif;
+  --display: 'DM Serif Display', serif;
+  --monospace: "Source Code Pro", monospace;
+
+  /* Sizes */
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-base: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
+  --font-3xl: 1.875rem;
+  --font-4xl: 2.25rem;
+  --font-5xl: 3rem;
+  --font-6xl: 3.75rem;
+  --font-7xl: 4.5rem;
+  --font-8xl: 6rem;
+  --font-9xl: 8rem;
+
+  /* Line heights */
+  --leading-none: 1;
+  --leading-4: 1rem;
+  --leading-5: 1.25rem;
+  --leading-6: 1.5rem;
+  --leading-7: 1.75rem;
+  --leading-8: 2rem;
+  --leading-9: 2.25rem;
+  --leading-10: 2.5rem;
+
+  /* Letter spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+/* widths */
+--width-xs: 20rem; /* 320px */
+  --width-sm: 24rem; /* 384px */
+  --width-md: 28rem; /* 448px */
+  --width-lg: 32rem; /* 512px */
+  --width-xl: 36rem; /* 576px */
+  --width-2xl: 42rem; /* 672px */
+  --width-3xl: 48rem; /* 768px */
+  --width-4xl: 56rem; /* 896px */
+  --width-5xl: 64rem; /* 1024px */
+  --width-6xl: 72rem; /* 1152px */
+  --width-7xl: 80rem; /* 1280px */
+  --width-8xl: 100rem; /* 1280px */
+}
+/* resets */
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+main{
+  position: relative;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+* {
+  padding: 0;
+  font: inherit;
+}
+
+html,
+body {
+  height: 100%;
+}
+/* elements */
+body {
+  font-family: var(--text);
+  color: var(--foreground);
+  background-color: var(--background);
+  font-size: var(--font-base);
+  line-height: var(--leading-6);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading);
+}
+
+code {
+  font-family: var(--monospace);
+}
+
+hr {
+  margin-block: 48px;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+:focus {
+  outline-offset: 3px;
+  outline-color: var(--ring);
+  outline-width: 2px;
+}
+/* objets */
+/* Sections */
+
+.section-sm {
+  padding-block: var(--spacing-6);
+}
+
+.section {
+  padding-block: var(--spacing-12);
+}
+
+.section-lg {
+  padding-block: var(--spacing-24);
+}
+
+.section-xl {
+  padding-block: var(--spacing-36);
+}
+.container {
+  --padding: 16px;
+  padding-inline: var(--padding);
+  max-width: var(--width-8xl);
+  margin-inline: auto;
+}
+
+.container__flex{
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 40rem) {
+  .container {
+    --padding: 24px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .container {
+    --padding: 32px;
+  }
+}
+.pancake-stack {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+/* components */
+/*
+<section class="hero section-lg">
+  <div class="container">
+    <div class="hero__content hero--center">
+      <h2 class="hero__title">Titulo</h2>
+      <p class="hero__lead">
+        Texto
+      </p>
+      <div class="hero__actions">
+        <button class="button">Button</button>
+        <a href="" class="link link--branded"
+          >Link Text
+          <svg>...</svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+*/
+
+ .hero {
+  background-color: var(--muted);
+  padding: var(--spacing-12);
+} 
+
+.hero__content {
+  max-width: var(--width-3xl);
+  font-size: var(--font-lg);
+}
+
+.hero__title {
+  margin-top: 0;
+  margin-bottom: 24px;
+
+  color: var(--primary);
+  font-family: var(--display);
+  font-size: var(--font-6xl);
+  font-weight: 600;
+  line-height: 1; /* 100% */
+}
+
+.hero__lead {
+  margin-block: 24px;
+  font-family: var(--display);
+  font-size: var(--font-4xl);
+  line-height: var(--leading-none);
+  color: var(--muted-foreground);
+}
+
+.hero__actions {
+  margin-top: 40px;
+  display: inline-flex;
+  gap: 32px;
+}
+
+.hero--center {
+  text-align: center;
+  margin-inline: auto;
+}
+/* label e inputs */
+.label{
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-2);
+  flex: 1 0 0;
+  flex-basis: fill;
+}
+.label p{
+  color: var(--muted-foreground, #525252);
+  font-size: var(--font-sm);
+  line-height: var(--leading-5); /* 142.857% */
+}
+.input{
+  color: var(--foreground);
+  background: var(--background);
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--font-sm);
+  
+  border: 1px solid var(--border, #D4D4D4);
+  border-radius: var(--rounded-md, 0.375rem);
+  /* text-sm/leading-6/regular */
+  line-height: var(--leading-6); /* 171.429% */
+
+}
+
+.input:disabled{
+  opacity: .5;
+}
+.input::placeholder{
+  color:var(--muted-foreground-subtle);
+}
+.input[type="textarea"]{
+  align-self: stretch;
+  line-height: var(--leading-5);
+}
+.input::file-selector-button {   
+  padding: 0 var(--space-unit);
+  background-color: var(--background);
+  border: none;
+  cursor:pointer;
+  font-size: var(--font-sm);
+  line-height: inherit;
+  color: var(--foreground);
+  font-weight: 500;
+}
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--foreground);
+  font-size: var(--font-base);
+  font-weight: 500;
+  line-height: var(--leading-6);
+  text-decoration: none;
+}
+
+/* .link:hover {
+  text-decoration: underline;
+} */
+
+.link--branded {
+  color: var(--primary);
+  position: relative;
+  text-decoration: none;
+}
+.link--branded::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary);
+  transition: width 0.3s;
+}
+
+.link--branded:hover::after {
+  width: 100%;
+}
+.footer {
+  width: 100%;
+  padding-block: var(--spacing-12);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+
+  color: var(--muted-foreground);
+}
+
+.footer__text {
+  font-size: var(--font-xs);
+  line-height: var(--leading-5);
+}
+.social-links {
+  list-style: none;
+  padding: 0;
+  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em 40px;
+}
+
+.social-links a {
+  color: var(--muted-foreground-subtle);
+}
+
+.social-links a:hover {
+  color: var(--muted-foreground);
+}
+
+
+
+
+
+@media (prefers-color-scheme:dark) {
+  :root{
+    --background: hsl(0 0% 15%);
+    --foreground:hsl(0 0% 96%);
+    --background-hover: hsl(0 0% 32%);
+    --background-active:hsl(0 0% 25%);
+    --primary: hsl(142 69% 58%);
+    --primary-foreground: hsl(0 0% 25%);
+    --primary-hover: hsl(142 72% 29%);
+    --muted:hsl(0 0% 25%);
+    --muted-foreground:hsl(0, 0%, 83%);
+    --mute-foreground-subtle:hsl(0 0% 60%);
+    --secondary:hsl(0 0% 32%);
+    --secondary-hover: hsl(0 0% 45%);
+    --secondary-active:hsl(0 0% 64%);
+    --border:var( hsl(0 0% 32%));
+  }
+}
+  /* animaciones */
+  @keyframes entryFromBottom {
+    0% {
+      bottom: -50px; /* Empieza fuera de la vista */
+      opacity: 0; /* Inicialmente invisible */
+    }
+    100% {
+      bottom: var(--spacing-4); /* Posición final del botón */
+      opacity: 1; /* Completamente visible */
+    }
+  }
+  @keyframes entryFromBottom2 {
+    0% {
+      bottom: 0px; 
+      opacity: 0; /* Inicialmente invisible */
+    }
+    100% {
+      bottom: var(--spacing-4); /* Posición final del botón */
+      opacity: 1; /* Completamente visible */
+    }
+  }
+
+  @keyframes entryFromRight {
+    from {
+      transform: translateX(
+        100%
+      ); /* Comienza fuera de la pantalla, a la derecha */
+      opacity: 0; /* Inicia invisible */
+    }
+    to {
+      transform: translateX(0); /* Termina en su posición final */
+      opacity: 1; /* Totalmente visible */
+    }
+  }
+  @keyframes fadeInAndScale {
+    0% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    100%{
+        transform: scale(1);
+        opacity: 1;
+    }
+  }
+
+*::-webkit-scrollbar {
+  width: 0.5vw;
+}
+*::-webkit-scrollbar-thumb {
+  background-color:var(--colorSecundario3);
+  border-radius: 2rem;
+}

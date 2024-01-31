@@ -1,22 +1,24 @@
 <section class="section">
-    <div class="container catalogo__container">
-        <div class="hero__header">
-            <h2>wellcome to our list of products 🍔</h2>
-            <p>{{usser}}</p>
-            <p>ESTA ES LA LISTA DE PRODUCTOS TRAIDAS VIA EXPRESS A TRAVES DE UN METODO GET Y MEDIANTE EL CUAL SE MANEJA CON EL CRUD CON PETICIONES HTTP REGULARES</p>
+    <div class=" catalogo__container">
+        <div class="hero ">
+            <h2 class="hero__lead">{{usser}}, Wellcome to our list of products 🍔 </h2>
+            <p class="">this is the list of products comming throught regular CRUD HTTP requests</p>
         </div>
-        <div class="catalogo">
+        <div class="catalogo container">
+            <div class="hero__content">
+                <p class="hero__lead">this is our complete catalogo</p>
+            </div>
             <ul class="catalogo__list">
             {{#each products}}
                 <li>
                     <div class="card">
-                        <img src={{this.thumbnail}} alt="image reference for {{this.title}}" height="200" width="150">
+                        <img src={{this.thumbnail}} alt="image reference for {{this.title}}" height="200" >
                         <h4>{{this.title}}</h4>
-                        <p>{{this.description}}</p>
-                        <p>price: ${{this.price}}</p>
+                        <p class="description">{{this.description}}</p>
+                        <p class="price">Price: ${{this.price}}</p>
                         <div class="card__button">
-                            <button>something else</button>
-                            <button class="add-card">add to card</button>
+                            <button class="button button--sm button--secondary">something else</button>
+                            <button class="add-card button--sm button">add to card</button>
                         </div>
                     </div>
                 </li>
