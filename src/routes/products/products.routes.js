@@ -18,7 +18,7 @@ productsRouter.get("/", async(req,res)=>{
         })
     }else{
         res.render("catalogo", {
-            usser:"luis miguel",
+            usser:"Alexis🔥",
             products: response
         })
     }
@@ -26,7 +26,7 @@ productsRouter.get("/", async(req,res)=>{
 productsRouter.get("/realTimeProducts", async(req, res) =>{
     res.render("realTimeProducts",{
         products : await  pm.getProducts(),
-        usser: "alexis🔥"
+        usser: "Alexis🔥"
     })
 })
 // SEND PRODUCT BY ID

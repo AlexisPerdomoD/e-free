@@ -4,9 +4,7 @@
 .catalogo__list{
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-2);
-    max-width: var(--width-8xl);
-    
+    gap: var(--spacing-4);
     
 }
 .catalogo__list> li {
@@ -14,7 +12,7 @@
 }
 
 .card{
-    width: 250px;
+    width: 200px;
     padding-bottom:  var(--spacing-2);
     background-color: var(--muted);
     border-radius: var(--rounded-md);
@@ -25,19 +23,28 @@
     width: 100%;
     border-radius: var(--rounded-md) var(--rounded-md) 0 0;
 }
+    .card__content{
+        height: var(--spacing-20);
+        overflow-y:scroll;
+        position: relative;
 
-.card > h4{
+    }
+    .card__content >  h4{
     font-family: var(--display);
     padding-inline: var(--spacing-1);
     color: var(--primary);
     font-size: var(--font-lg);
+    line-height: var(--leading-5);
+    position: sticky;
+    top: 0;
+    background-color: var(--muted);
+    z-index: 1;
 }
-.card > .description{
+.card__content >   .description{
     font-size: var(--font-sm);
     padding-inline: var(--spacing-2);
     line-height: var(--leading-4);
     height: var(--font-5xl);
-    overflow-y:scroll;
 }
 
 .card > .price {

@@ -226,7 +226,6 @@ hr {
 .container {
   --padding: 16px;
   padding-inline: var(--padding);
-  max-width: var(--width-8xl);
   margin-inline: auto;
 }
 
