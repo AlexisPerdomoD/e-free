@@ -54,3 +54,33 @@
     display: flex;
     justify-content: space-evenly;
 }
+.form__demo{
+    width: 22rem;
+    margin: var(--spacing-8);
+    justify-content: center;
+    text-align: center;
+    background-color: var(--background-active);
+    display: inline-flex;
+    flex-direction: column;
+    row-gap: var(--spacing-4);
+    padding: var(--spacing-4);
+    border-radius: var(--rounded-lg);
+    margin-inline: auto;
+}
+.testing-area{
+    margin-inline: auto;
+    width: fit-content;
+}
+.danger{
+    color: var(--danger-foreground) ;
+    background-color: var(--danger);
+    border: solid 1px var(--danger-border);
+}
+.danger:hover{
+    background-color: var(--danger-foreground);
+    color: var(--danger);
+}
+.danger:active{
+    background-color: var(--danger-border);
+    color: var(--danger);
+}

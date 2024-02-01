@@ -7,69 +7,77 @@
         </div>
         <div class="section">
             <div class="container testing-area">
-                <form action="" onsubmit="" id="delete__product">
-                    <label for="id">
+                <form class="form__demo" id="delete__product">
+                    <label for="id" class="label">
                         <p>ingrese el id para eliminar</p>
-                        <input type="text" id="id-to-delete" name="id" placeholder="id" required>
+                        <input type="text" id="id-to-delete" name="id" placeholder="id" class="input">
                     </label>
-                        <button type="submit">delete</button>
+                        <button type="submit" class="button danger">delete</button>
                 </form>
 
-                <form action="" id="add__product">
+                <form class="form__demo" id="add__product">
                     <p>add a product</p>
-                    <label for="title">
+                    <label for="title" class="label">
                         <p>title</p>
-                        <input type="text" name="title" required>
+                        <input type="text" name="title" class="input" required>
                     </label>
-                    <label for="description">
+                    <label for="description" class="label">
                         <p>description</p>
-                        <input type="text" name="description" required>
+                        <input type="text" name="description" class="input">
                     </label>
-                    <label for="price">
+                    <label for="price" class="label">
                         <p>price $</p>
-                        <input type="number" name="price" required>
+                        <input type="number" name="price" class="input" required>
                     </label>
-                    <label for="category">
+                    <label for="category" class="label">
                         <p>category</p>
-                        <input type="text" name="category" required>
+                        <input type="text" name="category" class="input" required>
                     </label>
 
-                    <label for="thumbnail">
+                    <label for="thumbnail" class="label">
                         <p>thumbnails</p>
-                        <input type="text" name="thumbnail" required>
+                        <input type="text" name="thumbnail"  class="input">
                     </label>
-                    <label for="code">
+                    <label for="code" class="label">
                         <p>code</p>
-                        <input type="text" name="code" required>
+                        <input type="text" name="code" class="input" required>
                     </label>
-                    <label for="stock">
+                    <label for="stock" class="label">
                         <p>stock</p>
-                        <input type="number" name="stock" required>
+                        <input type="number" name="stock" class="input" required>
                     </label>
-                    <button type="submit">add product</button>
+                    <button type="submit" class="button ">add product</button>
                 </form>          
             </div>
         </div>
-        <div class="catalogo" >
+        <section class="section">
+    <div class=" catalogo__container">
+        <div class="catalogo container">
+            <div class="hero__content">
+                <p class="hero__lead">this is our complete catalogo</p>
+            </div>
             <ul class="catalogo__list">
             {{#each products}}
                 <li>
-                    <div class="card" style="width: 200px;">
-                        <img src={{this.thumbnail}} alt="image reference for {{this.title}}" height="200" width="150">
+                    <div class="card">
+                        <img src={{this.thumbnail}} alt="image reference for {{this.title}}" height="200" >
+                        <div class="card__content">
                         <h4>{{this.title}}</h4>
-                        <p>{{this.description}}</p>
-                        <p>price: ${{this.price}}</p>
-                        <p>id for test: {{this.id}}</p>
+                        <p class="description">{{this.description}}</p>
+                        </div>
+                        <p class="price">Price: ${{this.price}}</p>
                         <div class="card__button">
-                            <button class="button">something else</button>
-                            <button class="button">add to card</button>
+                            <button class="button button--sm button--secondary">something else</button>
+                            <button class="add-card button--sm button">add to card</button>
                         </div>
                     </div>
                 </li>
             {{/each}}
             </ul>
+
         </div>
     </div>
+</section>
 </section>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>

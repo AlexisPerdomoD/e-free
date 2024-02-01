@@ -24,7 +24,7 @@ productsRouter.get("/", async(req,res)=>{
     }
 })
 productsRouter.get("/realTimeProducts", async(req, res) =>{
-    res.render("realTimeProducts",{
+    res.render('realTimeProducts',{
         products : await  pm.getProducts(),
         usser: "Alexis🔥"
     })
