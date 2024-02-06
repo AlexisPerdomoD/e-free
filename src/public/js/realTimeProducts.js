@@ -6,6 +6,8 @@ const socket = io()
 // hear event just for this socket from server 
 socket.on("private", data => {
     console.log(data.message)
+    data.content && console.log(data.content)
+    data.error && console.log(data.error)
 })
 // hear broadcast type events from server
 socket.on("broadcast", data =>{
@@ -24,7 +26,7 @@ socket.on("productList", products =>{
                 <h4>${product.title}</h4> 
                 <p>${product.description}</p>
                 <p>price: $${product.price}</p>
-                <p>id for test: ${product.id}</p>
+                <p>id for test: ${product["_id"]}</p>
                 <div class="card__button">
                     <button>something else</button>
                     <button class="add-card">add to card</button>
@@ -54,9 +56,12 @@ addForm.addEventListener("submit", (event)=>{
         "description": data.get("description"),
         price: data.get("price"),
         category: data.get("category"),
-        thumbnail: data.get("thumbnail").split(" "),
+        thumbnail: data.get("thumbnail"),
         code: data.get("code"),
         stock: data.get("stock")
+    }
+    for (const key in product) {
+        product[key] === "" && delete product[key]
     }
     socket.emit("addProduct", product)
 })

@@ -7,6 +7,7 @@ import { Server } from "socket.io"
 
 // temporal para asignacion
 import ProductManager from "./productManager.js"
+import productModel from "./models/product.model.js"
 const pm = new ProductManager(__dirname + "/routes/products/products.json")
 
 //App alias server
@@ -51,12 +52,12 @@ socketServer.on("connection", socket =>{
 //socket for hear delete requests
     socket.on("delete", async data =>{
 
-        const deletedProduct = await pm.deleteProduct(data.id)
+        const deletedProduct = await productModel.findByIdAndDelete(data.id)
         if(deletedProduct){
             socket.emit("private", {
                 message: "product deleted id: " + data.id 
             })
-            const products = await pm.getProducts()
+            const products = await productModel.find()
             socketServer.emit("productList", products)
             
         }else{
@@ -67,18 +68,22 @@ socketServer.on("connection", socket =>{
     })
 //socket to hear add products requests
     socket.on("addProduct", async (product)=>{
-        const {title, description, price, category, thumbnail, code, stock} = product
         try {
-            const res = await pm.addProduct(title, description, price, category, thumbnail, code, stock)
-            console.log(res.message)
+            let newPerson = new productModel(product)
+            const res = {
+                message: "product added properly",
+                response: await newPerson.save()
+            }
+            console.log(res.message, res.response)
             socket.emit("private", res)
-            const products = await pm.getProducts()
+            const products = await productModel.find()
             socketServer.emit("productList", products)
 
         } catch (error) {
             console.log(error)
             socket.emit("private", {
-                message : "code already used in an existing product, please change it in order to add your product"
+                message :"the input does not fullfill the requirements" , content: error.keyValue,
+                error: error
             })
         }
     })
