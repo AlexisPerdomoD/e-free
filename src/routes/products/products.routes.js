@@ -1,15 +1,16 @@
 import { Router } from "express"
 import connectDB from "../../connectDB.js"
-import ProductManagerMongo from "../../dao/ProductManagerMongo/ProductManagerMongo.js"
+import MongoMannager from "../../dao/db/MongoMannager.js"
+import productModel from "../../dao/models/product.model.js"
 const productsRouter = Router()
 //CONECT TO PRODUCTS COLLECTION
 connectDB("products")
-const pm = new ProductManagerMongo("products")
+const pm = new MongoMannager(productModel, "products")
 
 // SEND CATALOGO 
 productsRouter.get("/", async(req,res)=>{
     let limit = req.query.limit
-    let response = await pm.getProducts()
+    let response = await pm.getColletion()
     if(response.error){
         res.status(500).send(response)
     }else{
@@ -26,7 +27,7 @@ productsRouter.get("/", async(req,res)=>{
     }
 })
 productsRouter.get("/realTimeProducts", async(req, res) =>{
-    let response = await pm.getProducts()
+    let response = await pm.getColletion()
     response.error
     ? res.status(500).send(response)
     : res.render('realTimeProducts',{
@@ -37,7 +38,7 @@ productsRouter.get("/realTimeProducts", async(req, res) =>{
 // SEND PRODUCT BY ID
 productsRouter.get("/:pid",async(req, res)=>{
     let id = req.params.pid
-    let response = await pm.getProductById(id)
+    let response = await pm.getDocumentById(id)
     !response.error 
     ? res.send(response)
     : res.status(404).send(response)
@@ -47,14 +48,14 @@ productsRouter.get("/:pid",async(req, res)=>{
 productsRouter.delete("/delete/:pid", async(req, res) =>{
     //params return an string
     let id = req.params.pid
-    let response = await pm.deleteProductById(id)
+    let response = await pm.deleteDocumentById(id)
     !response.error 
     ? res.send(response) 
     : res.status(404).send(response)
 })
 // add new product 
  productsRouter.post("/add_product", async(req, res) =>{
-    let response = await pm.addProduct(req.body)
+    let response = await pm.addDocument(req.body)
     !response.error 
     ? res.send(response) 
     : res.status(400).send(response)
@@ -63,7 +64,7 @@ productsRouter.delete("/delete/:pid", async(req, res) =>{
 productsRouter.put("/update_product/:pid", async(req , res) =>{
     let id = req.params.pid
     let updates = req.body
-    let response = await pm.updateProduct(id, updates)
+    let response = await pm.updateDocument(id, updates)
     !response.error 
     ? res.send(response) 
     : res.status(404).send(response)

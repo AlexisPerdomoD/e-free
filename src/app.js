@@ -5,7 +5,7 @@ import cartRouter from "./routes/carts/carts.routes.js"
 import __dirname from "./getPath.js"
 import { Server } from "socket.io"
 // temporal para asignacion
-import ProductManagerMongo from "./dao/ProductManagerMongo/ProductManagerMongo.js"
+import rTPSocketHandler from "./routes/realTimeProducts/RTPSocketHandler.js"
 //App alias server
 const app = express()
 //these are middlewires 
@@ -37,30 +37,6 @@ const httpServer = app.listen(PORT, ()=> {
 })
 // server from HTTP server by socket.io for dual way comunication 
 //this time used to realTimeProducts end point 
-const socketServer = new Server(httpServer)
-socketServer.on("connection", socket =>{
-    const pm = new ProductManagerMongo("products")
-    console.log(`new usser connected by io`)
-//socket for hear delete requests
-    socket.on("delete", async data =>{
+const io = new Server(httpServer)
 
-        const response = await pm.deleteProductById(data.id)
-        if(!response.error){
-            socket.emit("private", response)
-            socketServer.emit("productList", await pm.getProducts())
-        }else{
-            socket.emit("private", response)
-        }
-    })
-//socket to hear add products requests
-    socket.on("addProduct", async (product)=>{
-        const response = await pm.addProduct(product)
-        if(!response.error){
-            socket.emit("private", response)
-            socketServer.emit("productList", await pm.getProducts())
-        }else{
-            socket.emit("private", response)
-        }
-    })
-
-})  
+rTPSocketHandler(io)

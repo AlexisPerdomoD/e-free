@@ -1,5 +1,5 @@
 // view socket intance for client with socket io 
-const socket = io()
+const socket = io("/realTimeProducts")
 
 
 
