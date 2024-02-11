@@ -1,5 +1,5 @@
 import { Router } from "express"
-import connectDB from "../../connectDB.js"
+import connectDB from "../../utils/connectDB.js"
 import MongoMannager from "../../dao/db/MongoMannager.js"
 import productModel from "../../dao/models/product.model.js"
 const productsRouter = Router()

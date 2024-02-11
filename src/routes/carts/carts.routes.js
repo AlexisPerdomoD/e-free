@@ -26,6 +26,7 @@ cartRouter.get("/:cid", async(req, res) =>{
     : res.send(response)
 })
 cartRouter.patch("/:cid/product/:pid", async(req, res) => {
+    // REQ.BODY ONLY RECIVES {quantity: Number} to update or add the product in te products property from cart 
     const pM = new MongoMannager(productModel, "product")
     const pMResponse = await pM.getDocumentById(req.params.pid)
     const cMResponse = await cM.getDocumentById(req.params.cid)
