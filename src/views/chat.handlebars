@@ -1,0 +1,32 @@
+<section class="section">
+    <div class="container chat__container">
+        <div class="hero ">
+            <h2 class="hero__lead">{{usser}}, Wellcome to our comments section 🍔 </h2>
+            <p class="">here you can see the lastest comments form our consumers, plis don't forget to let yours!🔥</p>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container chat__container">
+        <ul class="chat__list">
+            {{#each chats}}
+            <li>
+                <div class="message">
+                    <span>{{this.usser}}</span>
+                    <p>{{this.message}}</p>
+                    <p>{{this.date}}</p>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+        <div class="testing-area">
+            <form class="form__demo">
+                <label class="label">
+                    <p>add your comment</p>
+                    <textarea  name="message" placeholder="message" class="input"></textarea>
+                </label>
+                <button type="submit" class="button ">Send</button>
+            </form>
+        </div>
+    </div>
+</section>
