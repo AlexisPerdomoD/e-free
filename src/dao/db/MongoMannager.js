@@ -7,11 +7,11 @@ export default class MongoMannager{
         try {
             let response =  await this.model.find()
             return  response.map(item => {
-                let response = {}
+                let res = {}
                 for (const key in item) {
-                    response[key] = item[key]
+                    res[key] = item[key]
                 }
-                return response
+                return res
             })
         } catch (error) {
             return {
@@ -33,10 +33,11 @@ export default class MongoMannager{
         }
     }
     async deleteDocumentById(id){
+        const response = await this.model.findByIdAndDelete(id)
         try {
             return {
-                message:this.type + " eliminated properly",
-                content :await this.model.findByIdAndDelete(id)
+                message:this.type + (response ? " eliminated properly" : " not found"),
+                content : response
             }
         } catch (error) {
             return {

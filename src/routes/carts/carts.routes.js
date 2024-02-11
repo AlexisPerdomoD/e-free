@@ -1,57 +1,65 @@
 import { Router } from "express"
-import ProductManager from "../../dao/ProductManager/productManager.js"
-import CartManager from "../../cartManager.js"
-import __dirname from "../../getPath.js"
+import MongoMannager from "../../dao/db/MongoMannager.js"
+import cartModel from "../../dao/models/cart.model.js"
+import productModel from "../../dao/models/product.model.js"
 
-const path = __dirname + "/routes/carts/carts.json"
 const cartRouter = Router()
-const cm = new CartManager(path)
+const cM = new MongoMannager(cartModel, "cart")
 
-cartRouter.post("/", async(req, res) =>{    
-    await cm.getCarts()
-    const cart = await cm.addCart(req.body.products_add)
-
-    res.send({
-        message:`cart created properly`,
-        content: cart
-    })
+cartRouter.get("/", async(req, res) =>{
+    let response = await cM.getColletion()
+    response.error 
+    ? res.status(500).send(response)
+    : res.send(response)
 })
-
+cartRouter.post("/", async(req, res) =>{
+    const products = req.body ? req.body : {"products":[]}
+    const response = await cM.addDocument(products)
+    response.error
+    ? res.status(400).send(response)
+    : res.send(response)
+})
 cartRouter.get("/:cid", async(req, res) =>{
-        const cart = await cm.getCart(req.params.cid)
-        cart
-        ? res.send(cart)
-        : res.status(404).send({message:"no cart with the given id "+ req.params.cid})
+    const response = await cM.getDocumentById(req.params.cid)
+    response.error
+    ? res.status(404).send(response)
+    : res.send(response)
 })
+cartRouter.patch("/:cid/product/:pid", async(req, res) => {
+    const pM = new MongoMannager(productModel, "product")
+    const pMResponse = await pM.getDocumentById(req.params.pid)
+    const cMResponse = await cM.getDocumentById(req.params.cid)
 
-cartRouter.post("/:cid/product/:pid", async(req, res) => {
-    const pm = new ProductManager("src/routes/products/products.json")
-    const product = await pm.getProductById(req.params.pid)
-    const cart = await cm.getCart(req.params.cid)
-        
-        if(cart && product){
-            let newCart = await cm.updateCart(cart.id, product)
-            res.send({
-                message:"product added in cart properly",
-                content: newCart
-            })
-        }else{
-            res.status(406).send({message:"not cart or product found, check ids in your request"})
-        }
-    
+    if(pMResponse.error || cMResponse.error){
+        res.status(400).send({
+            mesage: "there was a problem looking for the product or cart id ",
+            product_status: pMResponse,
+            cart_status: cMResponse
+        })
+    }else{
+        let products = cMResponse.content.products
+
+        products.find(product => product._id === req.params.pid)
+        ? products = products.map(product => {
+            if(product._id === req.params.pid){
+             product.quantity = req.body.quantity
+            }
+            return product
+        })    
+        : products.push({"_id":req.params.pid, "quantity": req.body.quantity})
+
+        let response = await cM.updateDocument(req.params.cid, {products: products})
+        response.error
+        ? res.status(404).send(response)
+        : res.send(response)
+    }
 })
 
 cartRouter.delete("/delete/:cid", async(req, res) =>{
-    const deleteCart = await cm.deleteCart(req.params.cid)
-
-    deleteCart
-    ? res.send({
-        message:"product deleted",
-        content: deleteCart
-    })
-    : res.status(404).send({
-        message:"not found by the id: " + req.params.cid
-    })
+    const response = await cM.deleteDocumentById(req.params.cid)
+    response.error
+    ? res.status(404).send(response)
+    : res.send(response)
 })
 
 
