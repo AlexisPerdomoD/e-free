@@ -1,8 +1,16 @@
 import { Schema, model } from "mongoose";
 
 const chatSheme = new Schema({
-    message:String,
-    usser: String,
+    message:{
+        trim:true,
+        require: true,
+        type:String
+    },
+    usser: {
+        trim:true,
+        require: true,
+        type:String
+    },
     date:{
         type: Date,
         default: Date.now
