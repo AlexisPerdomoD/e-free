@@ -6,6 +6,8 @@ import __dirname from "./getPath.js"
 import { Server } from "socket.io"
 // temporal para asignacion
 import rTPSocketHandler from "./routes/realTimeProducts/RTPSocketHandler.js"
+import chatRouter from "./routes/chats/chat.route.js"
+import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
 //App alias server
 const app = express()
 //these are middlewires 
@@ -29,6 +31,7 @@ app.get("/",(req, res)=>{
 
 app.use("/products", productsRouter)
 app.use("/cart", cartRouter)
+app.use("/chat", chatRouter)
 
 const PORT = 8080
 // regular http server by express 
@@ -40,3 +43,4 @@ const httpServer = app.listen(PORT, ()=> {
 const io = new Server(httpServer)
 
 rTPSocketHandler(io)
+chatSocketHandler(io)

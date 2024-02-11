@@ -1,5 +1,5 @@
-import MongoMannager from "../../dao/db/MongoMannager"
-import chatModel from "../../dao/models/chat.model"
+import MongoMannager from "../../dao/db/MongoMannager.js"
+import chatModel from "../../dao/models/chat.model.js"
 
 export default function chatSocketHandler(io){
     const chatSH = io.of("/chat")
