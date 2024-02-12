@@ -5,9 +5,11 @@ const renderMensages = (messages, node) =>{
         node.innerHTML += `
         <li>
             <div class="message">
-                <span>${message.usser}</span>
+                <div>
+                    <span>${message.usser}</span>
+                    <p>${(new Date(message.date)).toISOString().split('T')[0]}</p>
+                </div>    
                 <p>${message.message}</p>
-                <p>${(new Date(message.date)).toISOString().split('T')[0]}</p>
             </div>
         </li>`
     })

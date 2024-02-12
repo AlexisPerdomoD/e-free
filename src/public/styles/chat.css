@@ -1,0 +1,51 @@
+.chat__list{
+    background-color:var(--secondary);
+    list-style: none;
+    padding: var(--spacing-3);
+    border-radius: var(--rounded-sm);
+    margin-inline: auto;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-2);
+    
+
+}
+.message{
+    display: flex;
+    flex-direction: column;
+}
+.message > div{
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-2);
+    background-color: var(--secondary);
+}
+.message > div > * {
+    font-family: var(--display);
+    font-size: var(--font-lg);
+    font-weight: 500;
+}
+.message > p {
+    background-color: var(--primary);
+    padding: var(--spacing-2);
+    box-shadow: 0px 4px 4px 0px var(--background);
+    font-family: var(--text);
+    
+    
+}
+.testing-area{
+}
+.chat__form{
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-3);
+    margin-top: var(--spacing-4);
+}
+.chat__form > button{
+    max-width: 4rem;
+}
+.chat__form  input[name = "usser"]{
+    max-width: 10rem;
+}
