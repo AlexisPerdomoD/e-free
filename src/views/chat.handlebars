@@ -9,24 +9,21 @@
 <section class="section">
     <div class="container chat__container">
         <ul class="chat__list">
-            {{#each chats}}
-            <li>
-                <div class="message">
-                    <span>{{this.usser}}</span>
-                    <p>{{this.message}}</p>
-                    <p>{{this.date}}</p>
-                </div>
-            </li>
-            {{/each}}
         </ul>
         <div class="testing-area">
-            <form class="form__demo">
+            <form class="chat__form" id="chat__form">
                 <label class="label">
-                    <p>add your comment</p>
-                    <textarea  name="message" placeholder="message" class="input"></textarea>
+                    <p>Name</p>
+                    <input type="text" class="input" placeholder="username" name="usser" required>
+                </label>
+                <label class="label">
+                    <p>Add your comment</p>
+                    <textarea  name="message" placeholder="message" class="input" required></textarea>
                 </label>
                 <button type="submit" class="button ">Send</button>
             </form>
         </div>
     </div>
 </section>
+<script src="/socket.io/socket.io.js"></script> 
+<script src="/js/chat.js"></script> 
