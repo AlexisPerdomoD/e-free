@@ -392,7 +392,6 @@ hr {
   width: 100%;
 }
 .footer {
-  width: 100%;
   padding-block: var(--spacing-12);
   text-align: center;
   display: flex;

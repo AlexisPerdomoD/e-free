@@ -37,7 +37,7 @@
 .testing-area{
 }
 .chat__form{
-    width: 800px;
+    
     display: flex;
     flex-direction: column;
     row-gap: var(--spacing-3);

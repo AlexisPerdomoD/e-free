@@ -29,10 +29,10 @@ app.get("/",(req, res)=>{
     res.render('home', {usser:"alexisss"})
 })
 
-app.use("/products", productsRouter)
-app.use("/cart", cartRouter)
+app.use("/api/products", productsRouter)
+app.use("/api/cart", cartRouter)
 app.use("/chat", chatRouter)
-
+    
 const PORT = 8080
 // regular http server by express 
 const httpServer = app.listen(PORT, ()=> {

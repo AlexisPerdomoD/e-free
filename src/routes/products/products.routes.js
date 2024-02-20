@@ -2,43 +2,38 @@ import { Router } from "express"
 import connectDB from "../../utils/connectDB.js"
 import MongoMannager from "../../dao/db/MongoMannager.js"
 import productModel from "../../dao/models/product.model.js"
+import ProductMannagerM from "../../dao/db/ProductMannagerM.js"
 const productsRouter = Router()
 //CONECT TO PRODUCTS COLLECTION
 connectDB("products")
-const pm = new MongoMannager(productModel, "products")
+const pm = new ProductMannagerM()
 
 // SEND CATALOGO 
 productsRouter.get("/", async(req,res)=>{
     let limit = req.query.limit
-    let response = await pm.getColletion()
-    if(response.error){
-        res.status(500).send(response)
-    }else{
-        if(limit){
-            res.render("catalogo", {
-                products: response.filter((product, index) => index < limit && product )
-            })
-        }else{
-            res.render("catalogo", {
-                usser:"Alexis🔥",
-                products: response
-            })
-        }
+    let response = await pm.getProducts()
+
+    if(response.error) res.status(500).send(response)
+
+    else{
+        res.send({
+            products: limit 
+            ? response.filter((product, index) => index < limit && product ) 
+            : response
+        })
     }
 })
+
 productsRouter.get("/realTimeProducts", async(req, res) =>{
-    let response = await pm.getColletion()
+    let response = await pm.getProducts()
     response.error
     ? res.status(500).send(response)
-    : res.render('realTimeProducts',{
-        products : response,
-        usser: "Alexis🔥"
-    })
+    : res.send({products: response})
 })
 // SEND PRODUCT BY ID
 productsRouter.get("/:pid",async(req, res)=>{
     let id = req.params.pid
-    let response = await pm.getDocumentById(id)
+    let response = await pm.getProductById(id)
     !response.error 
     ? res.send(response)
     : res.status(404).send(response)
@@ -48,23 +43,23 @@ productsRouter.get("/:pid",async(req, res)=>{
 productsRouter.delete("/delete/:pid", async(req, res) =>{
     //params return an string
     let id = req.params.pid
-    let response = await pm.deleteDocumentById(id)
+    let response = await pm.deleteProductById(id)
     !response.error 
     ? res.send(response) 
     : res.status(404).send(response)
 })
 // add new product 
  productsRouter.post("/add_product", async(req, res) =>{
-    let response = await pm.addDocument(req.body)
+    let response = await pm.addProduct(req.body)
     !response.error 
     ? res.send(response) 
     : res.status(400).send(response)
 })
 // update product by id 
-productsRouter.put("/update_product/:pid", async(req , res) =>{
+productsRouter.patch("/update_product/:pid", async(req , res) =>{
     let id = req.params.pid
     let updates = req.body
-    let response = await pm.updateDocument(id, updates)
+    let response = await pm.updateProduct(id, updates)
     !response.error 
     ? res.send(response) 
     : res.status(404).send(response)
