@@ -8,6 +8,7 @@ import { Server } from "socket.io"
 import rTPSocketHandler from "./routes/realTimeProducts/RTPSocketHandler.js"
 import chatRouter from "./routes/chats/chat.route.js"
 import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
+import connectDB from "./utils/connectDB.js"
 //App alias server
 const app = express()
 //these are middlewires 
@@ -28,7 +29,8 @@ app.use(express.static(__dirname + "/public"))
 app.get("/",(req, res)=>{
     res.render('home', {usser:"alexisss"})
 })
-
+// connect db 
+connectDB("e-comerse")
 app.use("/api/products", productsRouter)
 app.use("/api/cart", cartRouter)
 app.use("/chat", chatRouter)

@@ -1,18 +1,14 @@
 import { Router } from "express"
-import connectDB from "../../utils/connectDB.js"
-import MongoMannager from "../../dao/db/MongoMannager.js"
-import productModel from "../../dao/models/product.model.js"
 import ProductMannagerM from "../../dao/db/ProductMannagerM.js"
 const productsRouter = Router()
 //CONECT TO PRODUCTS COLLECTION
-connectDB("products")
 const pm = new ProductMannagerM()
 
 // SEND CATALOGO 
 productsRouter.get("/", async(req,res)=>{
     let limit = req.query.limit
     let response = await pm.getProducts()
-
+    //implementar paginación 
     if(response.error) res.status(500).send(response)
 
     else{
@@ -34,7 +30,7 @@ productsRouter.get("/realTimeProducts", async(req, res) =>{
 productsRouter.get("/:pid",async(req, res)=>{
     let id = req.params.pid
     let response = await pm.getProductById(id)
-    !response.error 
+    ! response.error 
     ? res.send(response)
     : res.status(404).send(response)
 })

@@ -1,5 +1,5 @@
 // view socket intance for client with socket io 
-const renderMensages = (messages, node) =>{
+const renderMessages = (messages, node) =>{
     node.innerHTML = ""
     messages.forEach(message =>{
         node.innerHTML += `
@@ -12,12 +12,13 @@ const renderMensages = (messages, node) =>{
                 <p>${message.message}</p>
             </div>
         </li>`
+        if(node.innerHTML === "") node.innerHTML = "<h2>no Message to show</h2>" 
     })
 }
 const chatList = document.querySelector(".chat__list")
 const socket = io("/chat")
-socket.on("connection", messages => renderMensages(messages, chatList))
-socket.on("messages", messages => renderMensages(messages, chatList))
+socket.on("messages", async update => renderMessages(update, chatList))
+
 socket.on("private", data => {
     console.log(data.message)
     // testing propurses 
@@ -25,16 +26,12 @@ socket.on("private", data => {
     data.error && console.log(data.error)
 })
 
-
 const chatForm = document.querySelector("#chat__form")
-chatForm.addEventListener("submit", (event)=>{
+chatForm.addEventListener("submit", async event =>{
     event.preventDefault()
     try {
-        const message = new FormData(chatForm)
-        socket.emit("send message", {
-            usser: message.get("usser"),
-            message: message.get("message")
-        })
+        const message = Object.fromEntries(new FormData(chatForm))
+        socket.emit("send message", message)
         chatForm.message.value = ""
     } catch (error) {
         console.log(error)
