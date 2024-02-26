@@ -1,30 +1,29 @@
 import  express  from "express"
-import { engine } from "express-handlebars"
 import productsRouter from "./routes/products/products.routes.js"
 import cartRouter from "./routes/carts/carts.routes.js"
-import __dirname from "./getPath.js"
-import { Server } from "socket.io"
-// temporal para asignacion
-import rTPSocketHandler from "./routes/realTimeProducts/RTPSocketHandler.js"
 import chatRouter from "./routes/chats/chat.route.js"
+import { Server } from "socket.io"
+import rTPSocketHandler from "./routes/realTimeProducts/RTPSocketHandler.js"
 import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
+import __dirname from "./getPath.js"
 import connectDB from "./utils/connectDB.js"
+import eH from "./utils/handlebarsConfig.js"
 //App alias server
 const app = express()
 //these are middlewires 
 // to be able to recibe, send and work with json objects in the req.body and res.send 
-app.use(express.json())
 // necessary configuration needed for reciving req.body properly by url encode 
 // to let the app knows it'll recive any kind of value (objects included)
+app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-// set config to use express-handlerbars as render ingine 
-app.engine("handlebars", engine())
+//eH confg con helpers importada de otro archivo
+app.engine("handlebars", eH.engine)
 //setear engine 
 app.set("view engine", "handlebars")
 // setear ruta a las vistas 
 app.set("views", __dirname + "/views")
 //Go
-// static files
+// set public route
 app.use(express.static(__dirname + "/public"))
 app.get("/",(req, res)=>{
     res.render('home', {usser:"alexisss"})

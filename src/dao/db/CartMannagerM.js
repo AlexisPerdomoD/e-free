@@ -23,7 +23,7 @@ export default class CartMannagerM{
         try {
             return {
                 message: "cart found",
-                content : await cartModel.findById(id)
+                content : await cartModel.findOne({_id:id})
             }
         } catch (error) {
             return {

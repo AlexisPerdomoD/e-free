@@ -10,17 +10,9 @@
 <section class="section">
     <div class="container chat__container">
         <ul class="chat__list">
-            {{#each messages}}
-                <li>
-                    <div class="message">
-                            <div>
-                            <span>{{this.usser}}</span>
-                            <p>{{this.date}}</p>
-                        </div>  
-                        <p>{{this.message}}</p>
-                    </div>
-                </li>
-            {{/each}}
+            {{#checkList messages}}
+                {{printMessage this}}
+            {{/checkList }}
         </ul>
         <div class="testing-area">
             <form class="chat__form" id="chat__form">

@@ -1,0 +1,15 @@
+<script>
+    
+</script>
+<section class="section">
+    <div class="cart__container">
+        <div class="hero__content">
+            <p class="hero__lead">this is the lis of products added to the cart with the id: {{_id}}</p>
+        </div>
+        <ul class="product">
+        {{#checkList products}}
+            {{printCartItem this}}
+        {{/checkList}}
+        </ul>
+    </div>  
+</section>

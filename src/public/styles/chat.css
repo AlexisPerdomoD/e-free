@@ -4,12 +4,12 @@
     padding: var(--spacing-3);
     border-radius: var(--rounded-sm);
     margin-inline: auto;
-    max-width: 1200px;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     row-gap: var(--spacing-2);
-    
-
+    max-height: 400px;
+    overflow-y: auto;
 }
 .message{
     display: flex;
