@@ -6,30 +6,21 @@ const pm = new ProductMannagerM()
 
 // SEND CATALOGO 
 productsRouter.get("/show", async(req,res)=>{
-    let limit = req.query.limit
-    let response = await pm.getProducts()
-    //implementar paginación 
+    let response = await pm.getProductsPaginate(req.query)
     if(response.error) res.status(500).send(response)
     else{
         res.render("catalogo", {
-            products: limit 
-            ? response.filter((product, index) => index < limit && product) 
-            : response
+            products: response.products
         })
     }
 })
-productsRouter.get("/", async(req,res)=>{
-    let limit = req.query.limit
-    let response = await pm.getProducts()
-    //implementar paginación 
-    if(response.error) res.status(500).send(response)
+productsRouter.get("/", async (req,res)=>{
 
+    //sort limit page to (para seleccionar otro campo para implementar sort, por defecto price) y querys adicionales
+    let response = await pm.getProductsPaginate(req.query)
+    if(response.error) res.status(500).send(response)
     else{
-        res.send({
-            products: limit 
-            ? response.filter((product, index) => index < limit && product ) 
-            : response
-        })
+        res.send(response)
     }
 })
 
