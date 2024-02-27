@@ -1,3 +1,4 @@
+import { Schema } from "mongoose"
 import cartModel from "../models/cart.model.js"
 import ProductMannagerM from "./ProductMannagerM.js"
 
@@ -5,13 +6,7 @@ export default class CartMannagerM{
     async getCarts(){
         try {
             let response =  await cartModel.find()
-            return  response.map(cart => {
-                let res = {}
-                for (const key in cart) {
-                    res[key] = cart[key]
-                }
-                return res
-            })
+            return  response
         } catch (error) {
             return {
                 message:"there was a problem getting carts collection from e-comerse-server",
@@ -28,7 +23,7 @@ export default class CartMannagerM{
         } catch (error) {
             return {
                 message:"there was a problem looking for the cart with the id: "+ id,
-                error: error}
+                status: error}
         }
     }
     async deleteCartById(id){
@@ -44,12 +39,13 @@ export default class CartMannagerM{
                 error: error}
         }
     }
-    async addCart(productList){
+    async addCart(){
         try {
-            let newCart =  new cartModel({products: productList || []})
+            let newCart =  new cartModel({products:[]})
             newCart = await newCart.save()
+            console.log(newCart)
             return {
-                message:"cart properly added, id: "+ newCart.id,
+                message:"cart properly added, id: "+ newCart._id,
                 content: newCart}
         } catch (error) {
             return {
@@ -60,11 +56,13 @@ export default class CartMannagerM{
     }
     async deleteProductfromCart(cId, pId){
         try {
-            const cart = await this.getCartById(cId)
-            if(cart.error) throw new error("there was no cart with the given id")
-
-            cart.content.products = cart.content.products.filter(product => product._id !== pId)
-            let response = await cartModel.updateOne({_id:cId}, {$set: {products: cart.content.products}})
+            const cart = (await cartModel.find({_id:cId}))[0]
+            if(cart.error) throw new Error(cart.error.message)
+            if(!cart.products.find(product => product.product.toString() === pId)) throw new Error("there was no product with the given id")
+            console.log("aquui?")
+            
+            cart.products = cart.products.filter(product => product.product.toString() !== pId)
+            let response = await cartModel.updateOne({_id:cId}, {$set: {products: cart.products}})
             return {
                 message:"product properly deleted with the id "+ pId,
                 content: response
@@ -72,27 +70,35 @@ export default class CartMannagerM{
         } catch (error) {
             return {
                 message:`there was a problem deleting the product in the cart with id: ${cId}`,
-                error: error 
+                error: error
             }
         }
     }
     async updateCartProduct(cId, pId, quantity = 1){
+        + quantity
         const pm = new ProductMannagerM()
-        const product0 = await pm.getProductById(pId)
-        if(product0.error)return {message:"there was a problem to find the product", error: product0.error}
+        const product = await pm.getProductById(pId)
+
+        if(product.error)return {message:"there was a problem to find the product", error: product.error}
         try {
-            const cart = await this.getCartById(cId)
-            const product = cart.content.products.find(product => product._id.toString() === pId)
-            if(product){
-                product.quantity += quantity
-                if(product.quantity < 1){   
-                    cart.content.products = cart.content.products.filter(product => product._id.toString() !== pId)
-                }
+            const cart = (await cartModel.find({_id:cId}))[0]
+            console.log(cart)
+            const oldProduct = cart.products.find(product => product.product.toString() === pId)
+
+            if(oldProduct){
+                
+                cart.products = quantity < 1 
+                ? cart.products.filter(product => product.product.toString() !== pId)
+                : cart.products.map(product => {
+                    if(product.product.toString() === pId) product.quantity = quantity
+                    return product
+                })
             }else{
-                cart.content.products.push({_id:pId, quantity: quantity > 0 ? quantity : 1})
+                let p =  await pm.getProductById(pId)
+                cart.products.push({"product": p.content._id, "quantity": quantity})
             } 
             
-            let response = await cartModel.updateOne({_id: cId}, {$set: {products: cart.content.products}})
+            let response = await cartModel.updateOne({_id: cId}, {$set: {products: cart.products}})
             return {
                 message:"cart properly updated",
                 content: response
