@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-256/free-shopping-bag-519-910296.png" type="image/x-icon">
     <title>Online Restaurant Simulator</title>
     <link rel="stylesheet"  href= "/styles/index.css">
 </head>
@@ -13,13 +14,14 @@
             <nav class="nav">
                 <ul>
                     <li>
-                        <a href="#">home</a>
+                        <a href="/">Home</a>
                     </li>
                     <li>
-                        <a href="#">catalogo</a>
+                        <a href="/api/products/show">Products</a>
                     </li>
-                    <li>
-                        <a href="#">about us</a>
+                    <li id="cart__link">
+                        <a href="/api/products/show">Cart</a>
+                        <span>no products</span>
                     </li>
                 </ul>
             </nav>
@@ -27,7 +29,6 @@
         <main>
             {{{body}}}
         </main>
-
         <footer class="container footer">
         <ul class="social-links">
           <li>
@@ -105,4 +106,5 @@
         </footer>
     </div>
 </body>
+<script src="/js/cartLogic.js"></script>
 </html>

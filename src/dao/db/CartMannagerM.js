@@ -1,4 +1,3 @@
-import { Schema } from "mongoose"
 import cartModel from "../models/cart.model.js"
 import ProductMannagerM from "./ProductMannagerM.js"
 
@@ -16,9 +15,10 @@ export default class CartMannagerM{
     }
     async getCartById(id){
         try {
+            let response = await cartModel.findOne({_id: id})
             return {
                 message: "cart found",
-                content : await cartModel.findOne({_id:id})
+                content : response
             }
         } catch (error) {
             return {
@@ -30,20 +30,17 @@ export default class CartMannagerM{
         const response = await cartModel.findByIdAndDelete(id)
         try {
             return {
-                message:response ? "cart eliminated properly" : "cart not found",
-                content : response
+                message:response ? "cart eliminated properly" : "cart not found"
             }
         } catch (error) {
             return {
-                message:"there was a problem looking for the cart with the id: "+ id,
-                error: error}
+                message:"there was a problem looking for the cart with the id: "+ id}
         }
     }
-    async addCart(){
+    async addCart(cartToAdd){
         try {
-            let newCart =  new cartModel({products:[]})
+            let newCart =  new cartModel(cartToAdd)
             newCart = await newCart.save()
-            console.log(newCart)
             return {
                 message:"cart properly added, id: "+ newCart._id,
                 content: newCart}
@@ -82,7 +79,6 @@ export default class CartMannagerM{
         if(product.error)return {message:"there was a problem to find the product", error: product.error}
         try {
             const cart = (await cartModel.find({_id:cId}))[0]
-            console.log(cart)
             const oldProduct = cart.products.find(product => product.product.toString() === pId)
 
             if(oldProduct){

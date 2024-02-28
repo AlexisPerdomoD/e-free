@@ -98,3 +98,21 @@
     background-color: var(--danger-border);
     color: var(--danger);
 }
+#cart__link{
+    position: relative;
+    
+}
+#cart__link > span{
+    display: none;
+    position: absolute;
+    left: -100%;
+    bottom: -100%;
+    text-wrap: nowrap;
+
+}
+#cart__link:hover{
+    cursor: pointer;
+}
+#cart__link:hover > span{
+    display: inline;
+}

@@ -1,19 +1,49 @@
-import { Schema, model } from "mongoose"
+import mongoose from "mongoose"
 
-const cartProductSchema = new Schema({
-    product:{
-        type: Schema.Types.ObjectId, 
-        ref: "products",
-        require: true
+
+const cartScheme = new mongoose.Schema({
+    date:{
+        type:String
     },
-    quantity: Number
-})
-const cartScheme = new Schema({
-    products: [cartProductSchema]
+    products: {
+        type:[
+            {
+                product: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "products"
+                },
+                quantity:{
+                    type: Number,
+                    required: true
+                }
+            }
+        ]
+    }
 })
 cartScheme.pre("findOne", function(){ 
     this.populate("products.product")
 })
 // recordar usar populate para validar esa referencia y relacion con la colleccion products
-const cartModel = model("carts", cartScheme)
+const cartModel = mongoose.model("carts", cartScheme)
 export default cartModel
+
+
+
+// ref
+// const CartSchema = new mongoose.Schema({
+//     date: {
+//       type: String,
+//       required: true
+//     },
+//     products: {
+//       type: [
+//         {
+//           product: {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: "Product"
+//           }
+//         }
+//       ]
+//     }
+//   });
+  
