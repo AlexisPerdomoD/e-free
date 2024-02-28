@@ -10,6 +10,7 @@ const eH = expressHandlerBars.create({
                     ${options.fn(li)}
                 </li>` 
             })
+ 
             return out
         },
         printCartItem: item =>{
@@ -30,13 +31,13 @@ const eH = expressHandlerBars.create({
                 <p class="prices">price: $${product.price}</p>
                 <p id="test">id for test: ${product["_id"]}</p>
                 <div class="card__button">
-                    <button class="button" onclick={addProduct("${product["_id"]}", "0")}>delete</button>
-                    <button class="add-card button" onclick={addProduct("${product["_id"]}")}>add to card</button>
+                    <button class="button" onclick={deleteProduct("${product._id}")}>delete</button>
+                    <button class="add-card button" onclick={addProduct("${product._id}")}>add to card</button>
                 </div>  
             </div>`
             return new eH.handlebars.SafeString(result)
         },
-        printMessage: message =>{
+        printMessage: message =>{   
             let result = `
                 <div class="message">
                     <div>

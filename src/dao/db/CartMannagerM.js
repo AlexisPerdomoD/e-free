@@ -90,6 +90,7 @@ export default class CartMannagerM{
                     return product
                 })
             }else{
+                if(quantity < 1)return {message:"you are not adding any product, bad request", status:404}
                 let p =  await pm.getProductById(pId)
                 cart.products.push({"product": p.content._id, "quantity": quantity})
             } 

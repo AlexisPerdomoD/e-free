@@ -1,5 +1,17 @@
 const URL = "http://localhost:8080/api/cart/"
 
+async function checkCartDom(){
+    const cart = await getCart()
+    let cartId = localStorage.getItem("card_id")
+    if(cartId){
+        const cartLink = document.querySelector("#cart__link")
+        cartLink.children[0].href = URL + cart._id + "/show"
+        cartLink.children[1].innerHTML = `<span>${cart.products.map(e => e.quantity).reduce((acum, current) => acum + current, 0)}</span>`
+        cartLink.children[1].style.display = "inline"
+        cartLink.children[1].style.marginLeft = "10px"
+        cartLink.children[1].style.position = "initial"
+    }
+}
 async function getCart(){
     let cartId = localStorage.getItem("card_id")
     if(!cartId){
@@ -26,12 +38,10 @@ async function addProduct(pId, quantity = 1){
         method:"PUT",
         body: JSON.stringify({quantity: +quantity})
      }
+     console.log(options)
      let response = await fetch(URL + cart._id + "/product/" + pId, options)
      if(!response.ok) throw new Error(response.statusText)
-     response = await response.json()
-
-     //luego incluir en otra funcion
-     const cartLink = document.querySelector("#cart__link")
-     cartLink.children[0].href = URL + cart._id + "/show"
-     cartLink.children[1].innerHTML = `<span>${cart.products.length} products added</span>`
+     checkCartDom()
 }
+const deleteProduct = (pId) => addProduct(pId, 0)
+checkCartDom()
