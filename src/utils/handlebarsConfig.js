@@ -47,8 +47,30 @@ const eH = expressHandlerBars.create({
                     <p>${message.message}</p>
                 </div>`
             return new eH.handlebars.SafeString(result)
-        }
+        },
+        printNavigate: info =>{
+            let next = info.hasNextPage ? info.nextPage : info.page
+            let previus = info.hasPrevPage ? info.prevPage : info.page
 
+            const setUrl = (querys, page) =>{
+                querys.page = querys.page ? querys.page : 1
+                let path = "?"
+                for(const query in  querys){
+                    if(query === "page") querys[query] = page 
+                    path += `&&${query}=${querys[query]}`
+                }
+                return path
+            }
+
+            let nav = `
+            <nav>
+                <a href =${info.url + setUrl(info.querys, previus)} >back</a> 
+                <span> current page:${info.page} of ${info.totalPages}</span> 
+                <a href = ${info.url + setUrl(info.querys, next)} >next</a> 
+            </nav>`
+
+            return new eH.handlebars.SafeString(nav)
+        }
     }
 })
 export default eH

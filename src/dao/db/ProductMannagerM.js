@@ -20,7 +20,7 @@ export default class ProductMannagerM{
                 delete querys.to
                 delete querys.sort 
                 options.sort = {}
-                options.sort[toOrder] = sort
+                options.sort[toOrder] = +sort || sort
             }
             
             let data = await productModel.paginate(querys, options)

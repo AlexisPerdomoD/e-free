@@ -6,11 +6,14 @@ const pm = new ProductMannagerM()
 
 // SEND CATALOGO 
 productsRouter.get("/show", async(req,res)=>{
-    let response = await pm.getProductsPaginate(req.query)
+    let response = await pm.getProductsPaginate({...req.query})
     if(response.error) res.status(500).send(response)
     else{
+        response.querys = req.query
+        response.url = "http://localhost:8080/api/products/show"
         res.render("catalogo", {
-            products: response.products
+            products: response.products,
+            response: response
         })
     }
 })

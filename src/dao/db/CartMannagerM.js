@@ -56,8 +56,6 @@ export default class CartMannagerM{
             const cart = (await cartModel.find({_id:cId}))[0]
             if(cart.error) throw new Error(cart.error.message)
             if(!cart.products.find(product => product.product.toString() === pId)) throw new Error("there was no product with the given id")
-            console.log("aquui?")
-            
             cart.products = cart.products.filter(product => product.product.toString() !== pId)
             let response = await cartModel.updateOne({_id:cId}, {$set: {products: cart.products}})
             return {

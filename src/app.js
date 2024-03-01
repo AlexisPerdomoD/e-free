@@ -20,7 +20,7 @@ app.use(express.urlencoded({extended:true}))
 app.engine("handlebars", eH.engine)
 //setear engine 
 app.set("view engine", "handlebars")
-// setear ruta a las vistas 
+// setear ruta a las vistas
 app.set("views", __dirname + "/views")
 //Go
 // set public route
