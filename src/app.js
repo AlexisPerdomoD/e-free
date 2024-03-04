@@ -1,7 +1,6 @@
 import  express  from "express"
 import productsRouter from "./routes/products/products.routes.js"
 import cartRouter from "./routes/carts/carts.routes.js"
-import chatRouter from "./routes/chats/chat.route.js"
 import { Server } from "socket.io"
 import rTPSocketHandler from "./routes/realTimeProducts/RTPSocketHandler.js"
 import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
@@ -9,6 +8,7 @@ import __dirname from "./getPath.js"
 import connectDB from "./utils/connectDB.js"
 import eH from "./utils/handlebarsConfig.js"
 import viewsRouter from "./routes/views.routes.js"
+import usserRouter from "./routes/ussers/usser.routes.js"
 //App alias server
 const app = express()
 //these are middlewires 
@@ -32,9 +32,9 @@ app.get("/",(req, res)=>{
 // connect db 
 connectDB("e-comerse")
 app.use("/api/products", productsRouter)
+app.use("/api/usser", usserRouter)
 app.use("/api/cart", cartRouter)
 app.use("/", viewsRouter)
-app.use("/chat", chatRouter)
     
 const PORT = 8080
 // regular http server by express 

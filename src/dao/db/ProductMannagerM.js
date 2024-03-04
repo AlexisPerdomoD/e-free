@@ -37,7 +37,7 @@ export default class ProductMannagerM{
             
         } catch (error) {
             console.log(error)
-            return {error:"imposible get products", status:"error"}
+            return {error, status:400}
         }
     }
     async getProducts(){
@@ -51,10 +51,7 @@ export default class ProductMannagerM{
                 return res
             })
         } catch (error) {
-            return {
-                message:"there was a problem getting products from e-comerse-server",
-                error: error 
-            }
+            return {error, status:500}
         }
     }
 
@@ -65,10 +62,7 @@ export default class ProductMannagerM{
                 content : await productModel.findById(id)
             }
         } catch (error) {
-            return {
-                message:"there was a problem looking for the product with the id: "+ id,
-                error: error
-            }
+            return {error, status:400}
         }
     }
     async deleteProductById(id){
@@ -90,7 +84,7 @@ export default class ProductMannagerM{
             let newProduct =  new productModel(product)
             newProduct = await newProduct.save()
             return {
-                message: "product properly added, id: " + newProduct.id,
+                message: "product properly added, id: " + newProduct._id,
                 content: newProduct
             }
         } catch (error) {
