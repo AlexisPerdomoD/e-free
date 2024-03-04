@@ -1,11 +1,12 @@
 const URL = "http://localhost:8080/api/cart/"
+const lINK__URL = "http://localhost:8080/cart/"
 
 async function checkCartDom(){
     const cart = await getCart()
     let cartId = localStorage.getItem("card_id")
     if(cartId){
         const cartLink = document.querySelector("#cart__link")
-        cartLink.children[0].href = URL + cart._id + "/show"
+        cartLink.children[0].href = lINK__URL + cart._id 
         cartLink.children[1].innerHTML = `<span>${cart.products.map(e => e.quantity).reduce((acum, current) => acum + current, 0)}</span>`
         cartLink.children[1].style.display = "inline"
         cartLink.children[1].style.marginLeft = "10px"

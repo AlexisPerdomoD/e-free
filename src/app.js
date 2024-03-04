@@ -8,6 +8,7 @@ import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
 import __dirname from "./getPath.js"
 import connectDB from "./utils/connectDB.js"
 import eH from "./utils/handlebarsConfig.js"
+import viewsRouter from "./routes/views.routes.js"
 //App alias server
 const app = express()
 //these are middlewires 
@@ -32,6 +33,7 @@ app.get("/",(req, res)=>{
 connectDB("e-comerse")
 app.use("/api/products", productsRouter)
 app.use("/api/cart", cartRouter)
+app.use("/", viewsRouter)
 app.use("/chat", chatRouter)
     
 const PORT = 8080
