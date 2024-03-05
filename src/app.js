@@ -9,8 +9,22 @@ import connectDB from "./utils/connectDB.js"
 import eH from "./utils/handlebarsConfig.js"
 import viewsRouter from "./routes/views.routes.js"
 import usserRouter from "./routes/ussers/usser.routes.js"
+import session from "express-session"
+import MongoStore from "connect-mongo"
 //App alias server
 const app = express()
+//basic sessions config
+app.use(session({
+    //set mongo store for sessions
+    store: MongoStore.create({
+        mongoUrl:"mongodb+srv://sixela__develop:n3HVKf1n4SAFH7MP@clutster0.xg9qfiw.mongodb.net/e-comerse-server",
+        mongoOptions:{},
+        ttl:15
+    }),
+    secret:"secret",
+    resave:true,
+    saveUninitialized:true
+}))
 //these are middlewires 
 // to be able to recibe, send and work with json objects in the req.body and res.send 
 // necessary configuration needed for reciving req.body properly by url encode 

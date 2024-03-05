@@ -430,6 +430,12 @@ hr {
   flex-wrap: wrap;
   gap: var(--spacing-4);
 }
+.login{
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  max-width: 250px;
+}
 .title{
   font-family: var(--display);
   font-size: var(--font-2xl);
@@ -438,6 +444,9 @@ hr {
 .center{
   margin-inline: auto;
   text-align: center;
+}
+.c{
+  margin-inline: auto;
 }
 .full-width{
   width: 100%;

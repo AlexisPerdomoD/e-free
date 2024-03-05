@@ -42,7 +42,10 @@ viewsRouter.get("/comments/", async(req, res)=>{
     : res.render("chat", {usser:"alexis", messages: response})
 })
 
-viewsRouter.get("/createAccount", async (req, res) =>{
+viewsRouter.get("/createAccount", (req, res) =>{
     res.render("createAccount")
+})
+viewsRouter.get("/login", (req, res) =>{
+    res.render("login")
 })
 export default viewsRouter
