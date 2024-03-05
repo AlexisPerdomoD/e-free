@@ -1,0 +1,41 @@
+<section class="section">
+    <div class="hero">
+        <div class="hero__content">
+            <h4 class="hero__lead">
+                Create your account to use our services
+            </h4>
+            <p>Email must be unique so be sure to use your own</p>
+            <p>Email and password are what you gonna need for login later</p>
+        </div>
+    </div>
+</section>
+<section class="section-sm">
+    <div class="container">
+        <h4 class="title center">Sign Up Form</h4>
+        <form action="/api/usser" method="post" class="form">
+            <label class="label">
+                <p>First Name</p>
+                <input type="text" required name="first_name"  class="input">
+            </label>
+            <label class="label">
+                <p>Last Name</p>
+                <input type="text" required name="last_name"  class="input">
+            </label>
+            <label class="label">
+                <p>Age</p>
+                <input type="number" required name="age"  class="input">
+            </label>
+            <label class="label">
+                <p>Password</p>
+                <input type="password" required name="password" class="input">
+            </label>
+            <label class="label">
+                <p>Email</p>
+                <input type="email" required name="email"  class="input">
+            </label>
+            <button class="button full-width">
+                Create Account
+            </button>
+        </form>
+    </div>
+</section>

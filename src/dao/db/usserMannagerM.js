@@ -1,4 +1,4 @@
-import usserModel from "../models/usser.model"
+import usserModel from "../models/usser.model.js"
 
 export default class UsserMannagerM{
     async getUsser(id){
@@ -14,7 +14,7 @@ export default class UsserMannagerM{
     async setUser(usser){
         try {
             let newUsser =  new usserModel(usser)
-            newUsser = await usserModel.save()
+            newUsser = await newUsser.save()
             return {
                 message: "usser properly added, id: " + newUsser._id,
                 content: newUsser

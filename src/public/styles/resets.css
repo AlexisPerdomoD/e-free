@@ -323,6 +323,7 @@ hr {
   color: var(--muted-foreground, #525252);
   font-size: var(--font-sm);
   line-height: var(--leading-5); /* 142.857% */
+  margin-block: var(--spacing-2);
 }
 .input{
   color: var(--foreground);
@@ -422,8 +423,25 @@ hr {
 .social-links a:hover {
   color: var(--muted-foreground);
 }
-
-
+.form{
+  max-width: 500px;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+}
+.title{
+  font-family: var(--display);
+  font-size: var(--font-2xl);
+  line-height: var(--leading-10);
+}
+.center{
+  margin-inline: auto;
+  text-align: center;
+}
+.full-width{
+  width: 100%;
+}
 
 
 
