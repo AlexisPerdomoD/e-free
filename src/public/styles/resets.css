@@ -300,7 +300,9 @@ hr {
   line-height: var(--leading-none);
   color: var(--muted-foreground);
 }
-
+.hero__error{
+  --muted-foreground: var(--danger-foreground)
+}
 .hero__actions {
   margin-top: 40px;
   display: inline-flex;
@@ -388,7 +390,9 @@ hr {
   background-color: var(--primary);
   transition: width 0.3s;
 }
-
+.link--error{
+  --primary: var(--danger-foreground)
+}
 .link--branded:hover::after {
   width: 100%;
 }
@@ -451,7 +455,12 @@ hr {
 .full-width{
   width: 100%;
 }
-
+.error__container{
+  color: var(--danger-foreground);
+  background-color: var(--danger);
+  border: solid 1px var(--danger-border);
+  padding-block: var(--spacing-6);
+}
 
 
 @media (prefers-color-scheme:dark) {

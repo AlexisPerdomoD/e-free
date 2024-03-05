@@ -1,5 +1,6 @@
 import { Router } from "express"
 import ProductMannagerM from "../../dao/db/ProductMannagerM.js"
+import { auth } from "../ussers/usser.routes.js" 
 const productsRouter = Router()
 //CONECT TO PRODUCTS COLLECTION
 const pm = new ProductMannagerM()
@@ -27,12 +28,6 @@ productsRouter.get("/", async (req,res)=>{
     }
 })
 
-productsRouter.get("/realTimeProducts", async(req, res) =>{
-    let response = await pm.getProducts()
-    response.error
-    ? res.status(500).send(response)
-    : res.send({products: response})
-})
 // SEND PRODUCT BY ID
 productsRouter.get("/:pid", async(req, res)=>{
     let id = req.params.pid

@@ -63,10 +63,10 @@ const eH = expressHandlerBars.create({
             }
 
             let nav = `
-            <nav>
-                <a href =${info.url + setUrl(info.querys, previus)} >back</a> 
-                <span> current page:${info.page} of ${info.totalPages}</span> 
-                <a href = ${info.url + setUrl(info.querys, next)} >next</a> 
+            <nav class="center">
+                <a class="link link--branded" href =${info.url + setUrl(info.querys, previus)} >back</a> 
+                <span> current page: ${info.page} of ${info.totalPages}</span> 
+                <a class="link link--branded" href = ${info.url + setUrl(info.querys, next)} >next</a> 
             </nav>`
 
             return new eH.handlebars.SafeString(nav)

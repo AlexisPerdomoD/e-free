@@ -16,17 +16,17 @@ usserRouter.post("/", async (req, res) =>{
 })
 // get an usser logged in 
 usserRouter.post("/login", async(req, res) =>{
-    const {password, ussername} = req.body
+    const {password, ussername, rol} = req.body
     if(!password || !ussername) return res.status(401).send({error:"error, credentials needed"})
 
     const response = await um.getUsser(ussername)
-    if(response.error) return res.status(404).send({message:"username or password invalid"})
-    req.session.ussername = response._id
-    console.log(req.session)
+    
+    if(response.error || response.password !== password) return res.status(404).send({message:"username or password invalid"})
+    req.session.ussername = response.email
+    req.session.rol = rol === "admin" ?  rol : "regular"
+    return res.redirect("/")
 })
-usserRouter.get("/check", (req, res)=>{
-    res.send(req.session)
-})
+
 usserRouter.get("/logout", (req, res)=>{
     if(!req.session.ussername) return res.redirect("/login")
     req.session.destroy(err => {
@@ -35,4 +35,19 @@ usserRouter.get("/logout", (req, res)=>{
         
     })
 })
+
+export const auth = async (req, res, next) =>{
+    const notSecureRoutes = ["/login", "/createAccount", "/api/usser/login"]
+    if (notSecureRoutes.includes(req.path))return next()
+
+    if(!req.session.ussername)
+     return res.status(401).render("error", {
+        status:401,  
+        message: "not authoritation for this route, please log in",
+        destiny:" Login",
+        redirect: "/login"
+        })
+
+    next()
+}
 export default usserRouter

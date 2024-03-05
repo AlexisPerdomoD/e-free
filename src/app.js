@@ -8,7 +8,7 @@ import __dirname from "./getPath.js"
 import connectDB from "./utils/connectDB.js"
 import eH from "./utils/handlebarsConfig.js"
 import viewsRouter from "./routes/views.routes.js"
-import usserRouter from "./routes/ussers/usser.routes.js"
+import usserRouter, { auth } from "./routes/ussers/usser.routes.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 //App alias server
@@ -19,7 +19,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://sixela__develop:n3HVKf1n4SAFH7MP@clutster0.xg9qfiw.mongodb.net/e-comerse-server",
         mongoOptions:{},
-        ttl:15
+        ttl:150000
     }),
     secret:"secret",
     resave:true,
@@ -40,11 +40,12 @@ app.set("views", __dirname + "/views")
 //Go
 // set public route
 app.use(express.static(__dirname + "/public"))
-app.get("/",(req, res)=>{
+app.get("/", auth, (req, res)=>{
     res.render('home', {usser:"alexisss"})
 })
 // connect db 
 connectDB("e-comerse")
+app.all("*", auth)
 app.use("/api/products", productsRouter)
 app.use("/api/usser", usserRouter)
 app.use("/api/cart", cartRouter)
