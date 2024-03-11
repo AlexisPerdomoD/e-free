@@ -20,6 +20,7 @@ cartRouter.post("/", async (req, res) =>{
     : res.send(response)
 })
 //get cart by id
+// cart in the future should be relate to the usser
 cartRouter.get("/:cid", async(req, res) =>{
     const response = await cM.getCartById(req.params.cid)
     response.status === "error"
