@@ -26,7 +26,7 @@ app.use(session({
     saveUninitialized:true
 }))
 //these are middlewires 
-// to be able to recibe, send and work with json objects in the req.body and res.send 
+// to be able to recive, send and work with json objects in the req.body and res.send 
 // necessary configuration needed for reciving req.body properly by url encode 
 // to let the app knows it'll recive any kind of value (objects included)
 app.use(express.json())
@@ -43,13 +43,13 @@ app.use(express.static(__dirname + "/public"))
 app.get("/", auth, (req, res)=>{
     res.render('home', {usser:"alexisss"})
 })
+
 // connect db 
 connectDB("e-comerse")
-app.all("*", auth)
 app.use("/api/products", productsRouter)
-app.use("/api/usser", usserRouter)
-app.use("/api/cart", cartRouter)
-app.use("/", viewsRouter)
+app.use("/api/usser",auth, usserRouter)
+app.use("/api/cart",auth, cartRouter)
+app.use("/", auth, viewsRouter)
     
 const PORT = 8080
 // regular http server by express 
