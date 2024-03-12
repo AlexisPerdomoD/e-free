@@ -1,23 +1,7 @@
 import { Router } from "express"
 import ProductMannagerM from "../../dao/db/ProductMannagerM.js"
-import { auth } from "../ussers/usser.routes.js" 
 const productsRouter = Router()
-//CONECT TO PRODUCTS COLLECTION
 const pm = new ProductMannagerM()
-
-// SEND CATALOGO 
-// productsRouter.get("/show", async(req,res)=>{
-//     let response = await pm.getProductsPaginate({...req.query})
-//     if(response.error) res.status(500).send(response)
-//     else{
-//         response.querys = req.query
-//         response.url = "http://localhost:8080/api/products/show"
-//         res.render("catalogo", {
-//             products: response.products,
-//             response: response
-//         })
-//     }
-// })
 
 productsRouter.get("/", async (req,res)=>{
     //sort limit page to (para seleccionar otro campo para implementar sort, por defecto price) y querys adicionales

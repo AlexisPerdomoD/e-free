@@ -1,6 +1,7 @@
-import { Router } from "express";
+import { Router} from "express";
 import UsserMannagerM from "../../dao/db/usserMannagerM.js";
 import { checkPass, signPass } from "../../utils/utils.js";
+import passport from "passport";
 const um = new UsserMannagerM()
 const usserRouter = Router()
 // create an account 
@@ -22,8 +23,9 @@ usserRouter.post("/login", async(req, res) =>{
 
     const usser = await um.getUsser(ussername)
     
-    if(usser.error || !checkPass(password, usser)) return res.status(404).send({message:"username or password invalid"})
+    if(usser.status === 404 || !checkPass(password, usser)) return res.status(404).send({message:"username or password invalid"})
     req.session.ussername = usser.email
+    req.session.name = req.user.first_name
     req.session.rol = usser.email === "adminCoder@coder.com" ? "admin" : "usser"
     return res.redirect("/products")
 })
@@ -33,21 +35,33 @@ usserRouter.get("/logout", (req, res)=>{
     req.session.destroy(err => {
         if(err)return res.status(500).send({message: "error while logging out", error:err})
         return res.redirect("/login")
-        
     })
 })
+//end point to call github authentication, not funtion needed 
+usserRouter.get("/github", 
+    passport.authenticate("github",  {scope:[ 'user:email' ]}))
+// end point after succes authentication from github 
+usserRouter.get("/githubcb", 
+    passport.authenticate("github", {failureRedirect:"/login"}), 
+    (req, res)=>{
+    req.session.ussername = req.user.email
+    req.session.name = req.user.first_name
+    req.session.rol = "usser"
+    res.redirect("/products")
+})
 
-export const auth = async (req, res, next) =>{
-    const notSecureRoutes = ["/login", "/createAccount", "/api/usser/login", "/api/usser" , "/"]
-    if (notSecureRoutes.includes(req.path))return next()
-    if(!req.session.ussername)
-     return res.status(401).render("error", {
-        status:401,  
-        message: "not authoritation for this route, please log in",
-        destiny:" Login",
-        redirect: "/login"
-        })
+
+
+
+ export const auth = async (req, res, next) =>{
+      if(!req.session.ussername)
+      return res.status(401).render("error", {
+         status:401,  
+         message: "not authoritation for this route, please log in",
+         destiny:" Login",
+         redirect: "/login"
+         })
 
     next()
-}
+ }
 export default usserRouter

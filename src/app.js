@@ -2,7 +2,6 @@ import  express  from "express"
 import productsRouter from "./routes/products/products.routes.js"
 import cartRouter from "./routes/carts/carts.routes.js"
 import { Server } from "socket.io"
-import rTPSocketHandler from "./routes/realTimeProducts/RTPSocketHandler.js"
 import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
 import __dirname from "./getPath.js"
 import connectDB from "./utils/connectDB.js"
@@ -11,6 +10,8 @@ import viewsRouter from "./routes/views.routes.js"
 import usserRouter, { auth } from "./routes/ussers/usser.routes.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
+import initializatePassport from "./config/passport.config.js"
+import passport from "passport"
 //App alias server
 const app = express()
 //basic sessions config
@@ -37,19 +38,22 @@ app.engine("handlebars", eH.engine)
 app.set("view engine", "handlebars")
 // setear ruta a las vistas
 app.set("views", __dirname + "/views")
-//Go
 // set public route
 app.use(express.static(__dirname + "/public"))
-app.get("/", auth, (req, res)=>{
-    res.render('home', {usser:"alexisss"})
+app.get("/", (req, res)=>{
+    res.render('home', {usser: req.session ?  req.session.name : ""})
 })
-
+// set passport middleware authenticate methods
+initializatePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 // connect db 
 connectDB("e-comerse")
-app.use("/api/products", productsRouter)
-app.use("/api/usser",auth, usserRouter)
-app.use("/api/cart",auth, cartRouter)
-app.use("/", auth, viewsRouter)
+// routes
+app.use("/api/products", auth, productsRouter)
+app.use("/api/usser", usserRouter)
+app.use("/api/cart", auth, cartRouter)
+app.use("/", viewsRouter)
     
 const PORT = 8080
 // regular http server by express 
@@ -57,8 +61,8 @@ const httpServer = app.listen(PORT, ()=> {
     console.log(`App listening on port ${PORT}`)
 })
 // server from HTTP server by socket.io for dual way comunication 
-//this time used to realTimeProducts end point 
+//comments sections use it
 const io = new Server(httpServer)
 
-rTPSocketHandler(io)
+// rTPSocketHandler(io) real time products end point not longer used
 chatSocketHandler(io)

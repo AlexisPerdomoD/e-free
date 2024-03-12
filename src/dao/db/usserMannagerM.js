@@ -24,13 +24,9 @@ export default class UsserMannagerM{
         }
     }
     async getUsser(ussername){
-        try {
-            const response = await usserModel.findOne({email:ussername})
-            if(response === null) throw new Error({status:404})
+        const response = await usserModel.findOne({email:ussername})
+            if(response === null) return({status:404})
             if(!response) throw new Error({status:500})
             return response
-        } catch (error) {
-            return {error : true, status:error.status}
-        }
     }
 }
