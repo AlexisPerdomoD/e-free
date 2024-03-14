@@ -56,16 +56,23 @@ const initializatePassport = () =>{
         callbackURl: "http://localhost:8080/api/usser/githubcb"
     }, async (accessToken, refreshToken, profile, done) =>{
         try {
-            const usser = await um.getUsser(profile._json.email)
-            if(usser.email) return done(null, usser)
-            const newUsser = {
-                first_name: profile._json.name,
-                last_name: "",
-                email: profile._json.email,
-                age:18,
-                password:''
+            if(!profile._json?.email)return done(null, false, {message:"these usser does not provite any email from github"})
+            const {name, email} = profile._json
+            const usser = await um.getUsser(email)
+            if(!usser) {
+                const newUsser = {
+                    first_name: name,
+                    last_name: "",
+                    email: email,
+                    age:18,
+                    password:''
+                }
+                let response = await um.setUsser(newUsser)
+                delete response.content.password
+                return done(null, response.content)
             }
-            done(null, await um.setUsser(newUsser))
+            delete usser.password
+            return done(null, usser)
         } catch (error) {
             done(error)
         }
