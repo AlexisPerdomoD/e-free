@@ -1,33 +1,35 @@
 import { Router} from "express";
-import UsserMannagerM from "../../dao/db/usserMannagerM.js";
-import { checkPass, signPass } from "../../utils/utils.js";
 import passport from "passport";
-const um = new UsserMannagerM()
 const usserRouter = Router()
 // create an account 
-usserRouter.post("/", async (req, res) =>{
-    req.body.password = signPass(req.body.password)
-    const response = await um.setUser(req.body)
-    if(response.error) {
-        let message ="error in the request"
-        if(response.error.code === 11000) message = "these field needs to be unique, it's seems there is an existing usser with it"
-        res.status(response.status).send({message: message, ...response})
-        return 
-    }
-    res.redirect("/login")
-})
+usserRouter.post("/", 
+    passport.authenticate("register", {failureRedirect:"/api/usser/error", failureMessage:true}),
+    async (req, res) =>{
+        req.session.ussername = req.user.email
+        req.session.name = req.user.first_name
+        req.session.rol = "usser"
+        res.redirect("/")
+    })
 // get an usser logged in 
-usserRouter.post("/login", async(req, res) =>{
-    const {password, ussername} = req.body
-    if(!password || !ussername) return res.status(401).send({error:"error, credentials needed"})
+usserRouter.post("/login",
+    passport.authenticate("login", {failureRedirect:"/api/usser/error", failureMessage:true}),
+    async (req, res) =>{
+        req.session.ussername = req.user.email
+        req.session.name = req.user.first_name
+        req.session.rol = req.user.email === "adminCoder@coder.com" ? "admin" : "usser"
+        return res.redirect("/")
+})
 
-    const usser = await um.getUsser(ussername)
-    
-    if(usser.status === 404 || !checkPass(password, usser)) return res.status(404).send({message:"username or password invalid"})
-    req.session.ussername = usser.email
-    req.session.name = req.user.first_name
-    req.session.rol = usser.email === "adminCoder@coder.com" ? "admin" : "usser"
-    return res.redirect("/products")
+//for now using for both
+usserRouter.get("/error", (req, res ) => {
+    res.render("error", {
+        status:401,
+        message:req.session.messages
+        ? req.session.messages.join(" ")
+        : "problem detected to get credentials properly, pls try again",
+        redirect: "/login",
+        destiny: "login"
+    })
 })
 
 usserRouter.get("/logout", (req, res)=>{
@@ -42,13 +44,16 @@ usserRouter.get("/github",
     passport.authenticate("github",  {scope:[ 'user:email' ]}))
 // end point after succes authentication from github 
 usserRouter.get("/githubcb", 
-    passport.authenticate("github", {failureRedirect:"/login"}), 
+    passport.authenticate("github", {failureRedirect:"/login", failureMessage:true}), 
     (req, res)=>{
     req.session.ussername = req.user.email
     req.session.name = req.user.first_name
     req.session.rol = "usser"
-    res.redirect("/products")
+    res.redirect("/")
 })
+
+
+
 
 
 

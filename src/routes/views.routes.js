@@ -17,7 +17,8 @@ viewsRouter.get("/products", auth, async(req, res)=>{
         response.url = `http://${req.headers.host}/products/`
         res.render("catalogo", {
             products: response.products,
-            response: response
+            response: response,
+            usser: req.session.name ? req.session.name : "user"
         })
     }
 })

@@ -19,6 +19,7 @@
     "mongoose-paginate-v2": "^1.8.0",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
+    "passport-local": "^1.0.0",
     "socket.io": "^4.7.4"
   },
   "type": "module"

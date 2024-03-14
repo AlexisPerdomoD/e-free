@@ -20,11 +20,11 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://sixela__develop:n3HVKf1n4SAFH7MP@clutster0.xg9qfiw.mongodb.net/e-comerse-server",
         mongoOptions:{},
-        ttl:150000
+        ttl:100000
     }),
-    secret:"secret",
-    resave:true,
-    saveUninitialized:true
+secret:"secret",
+    resave:false,
+    saveUninitialized:false
 }))
 //these are middlewires 
 // to be able to recive, send and work with json objects in the req.body and res.send 

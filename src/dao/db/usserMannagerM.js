@@ -8,10 +8,10 @@ export default class UsserMannagerM{
                 content : await usserModel.findById(id)
             }
         } catch (error) {
-            return {error, status:400}
+            return {error, status:500}
         }
     } 
-    async setUser(usser){
+    async setUsser(usser){
         try {
             let newUsser =  new usserModel(usser)
             newUsser = await newUsser.save()
@@ -20,12 +20,12 @@ export default class UsserMannagerM{
                 content: newUsser
             }
         } catch (error) {
-            return {error, status:400}
+            return {error, status:500}
         }
     }
     async getUsser(ussername){
         const response = await usserModel.findOne({email:ussername})
-            if(response === null) return({status:404})
+            if(response === null) return null
             if(!response) throw new Error({status:500})
             return response
     }
