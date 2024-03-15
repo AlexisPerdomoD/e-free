@@ -7,7 +7,8 @@ usserRouter.post("/",
     async (req, res) =>{
         req.session.ussername = req.user.email
         req.session.name = req.user.first_name
-        req.session.rol = "usser"
+        req.session.rol = req.user.rol
+        req.session.cart = req.user.cart
         res.redirect("/")
     })
 // get an usser logged in 
@@ -16,7 +17,8 @@ usserRouter.post("/login",
     async (req, res) =>{
         req.session.ussername = req.user.email
         req.session.name = req.user.first_name
-        req.session.rol = req.user.email === "adminCoder@coder.com" ? "admin" : "usser"
+        req.session.rol = req.user.rol
+        req.session.cart = req.user.cart
         return res.redirect("/")
 })
 
@@ -44,11 +46,12 @@ usserRouter.get("/github",
     passport.authenticate("github",  {scope:[ 'user:email' ]}))
 // end point after succes authentication from github 
 usserRouter.get("/githubcb", 
-    passport.authenticate("github", {failureRedirect:"/login", failureMessage:true}), 
+    passport.authenticate("github", {failureRedirect:"/api/usser/error", failureMessage:true}), 
     (req, res)=>{
-    req.session.ussername = req.user.email
-    req.session.name = req.user.first_name
-    req.session.rol = "usser"
+        req.session.ussername = req.user.email
+        req.session.name = req.user.first_name
+        req.session.rol = req.user.rol
+        req.session.cart = req.user.cart
     res.redirect("/")
 })
 

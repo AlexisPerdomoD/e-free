@@ -25,8 +25,21 @@ const usserSchema = new Schema({
         min:[18, "must be older than 18 to buy in our store"],
         type:Number,
         default: 18
+    },
+    rol:{
+        type:String,
+        enum:["admin", "usser"],
+        default:"usser"
+    },
+    cart:{
+        type:Schema.Types.ObjectId,
+        ref: "carts",
+        default: null
     }
 })
-
+//maybe not needed here 
+// usserSchema.pre("findOne", function(){
+//     this.populate("cart")
+// })
 const usserModel = model("ussers", usserSchema)
 export default usserModel

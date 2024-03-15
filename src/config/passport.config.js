@@ -3,7 +3,9 @@ import  GitHubStrategy from "passport-github2"
 import local from "passport-local"
 import UsserMannagerM from "../dao/db/usserMannagerM.js"
 import { checkPass, signPass } from "../utils/utils.js"
+import CartMannagerM from "../dao/db/CartMannagerM.js"
 const um = new UsserMannagerM()
+const cm = new CartMannagerM()
 
 const initializatePassport = () =>{
     // here i'll be settle every end point and strategy to authenticate ussers
@@ -13,11 +15,7 @@ const initializatePassport = () =>{
         },
         async (req, ussername, password, done) =>{
             try {
-                //chequear para enviar mensajes personalizados luego
                 const usser = await um.getUsser(ussername)
-
-                
-
                 if(!usser) return done(null, false,{message:"there is not usser found"})
                 if(!checkPass(password, usser)) return done(null, false , {message:"user or password incorrect"})
                 delete usser.password
@@ -30,15 +28,23 @@ const initializatePassport = () =>{
     passport.use( "register", new local.Strategy({
         usernameField:"email",
         passReqToCallback:true
-        },
+            },
         async (req, ussername, password, done) =>{
             try {
                 const usser = await um.getUsser(ussername)
                 if(usser) return done(null, false, {message:"the email is already being used"})
-                
+                //create cart for usser
                 const {age, first_name, last_name} = req.body
                 const signedPass = signPass(password)
-                const newUsser = await um.setUsser({age, first_name, last_name, signedPass, email:ussername})
+                const usserCart = await cm.addCart()
+                const newUsser = await um.setUsser({
+                    age, 
+                    first_name, 
+                    last_name, 
+                    password:signedPass, 
+                    email:ussername, 
+                    cart:usserCart.content._id
+                })
 
                 if(newUsser.error) return done(null, false, {message: "there was a problem creating your account"})
 
@@ -60,12 +66,14 @@ const initializatePassport = () =>{
             const {name, email} = profile._json
             const usser = await um.getUsser(email)
             if(!usser) {
+                const usserCart = await cm.addCart()
                 const newUsser = {
                     first_name: name,
                     last_name: "",
                     email: email,
                     age:18,
-                    password:''
+                    password:'',
+                    cart: usserCart.content._id
                 }
                 let response = await um.setUsser(newUsser)
                 delete response.content.password
