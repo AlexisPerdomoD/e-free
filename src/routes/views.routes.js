@@ -23,13 +23,17 @@ viewsRouter.get("/products", auth, async(req, res)=>{
     }
 })
 
-viewsRouter.get("/cart/:cid", auth, async (req, res) =>{
+viewsRouter.get("/cart/", auth, async (req, res) =>{
     const cM = new CartMannagerM()
-    let response = await cM.getCartById(req.params.cid)
-    if(response.status === "error") res.status(400).send(response)
+    const response = await cM.getCartById(req.session.cart)
+    if(!response) return res.status(404).render("error",{
+        status:404,
+        message:"not cart found, fatal",
+        redirect:"/api/usser/logout",
+        destiny: "pls try to logout and sign in again"
+    })
     else{
         // todo esto es por que por alguna razon handlebars no quiere tomar objetos traidos desde mongo a menos que se haga destructuracion // ver luego
-         response = response.content._doc
          response.products = response.products.map(product => {return {...product._doc}})
          response.products = response.products.map(product => {return {_id:product._id, quantity: product.quantity, product: {...product.product._doc}}})
          res.render("cart", response)

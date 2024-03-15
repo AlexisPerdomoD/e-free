@@ -2,35 +2,30 @@ import cartModel from "../models/cart.model.js"
 import ProductMannagerM from "./ProductMannagerM.js"
 
 export default class CartMannagerM{
-    async getCarts(){
+     getCarts(){
         try {
-            let response =  await cartModel.find()
-            return  response
+            return cartModel.find()
         } catch (error) {
             return {
                 message:"there was a problem getting carts collection from e-comerse-server",
-                error: error 
+                error: true
             }
         }
     }
-    async getCartById(id){
+    getCartById(id){
         try {
-            let response = await cartModel.findOne({_id: id})
-            return {
-                message: "cart found",
-                content : response
-            }
+            return cartModel.findOne({_id: id})
         } catch (error) {
             return {
                 message:"there was a problem looking for the cart with the id: "+ id,
-                status: error}
+                error: true}
         }
     }
     async deleteCartById(id){
         const response = await cartModel.findByIdAndDelete(id)
         try {
             return {
-                message:response ? "cart eliminated properly" : "cart not found"
+                message: response ? "cart eliminated properly" : "cart not found"
             }
         } catch (error) {
             return {
@@ -54,8 +49,8 @@ export default class CartMannagerM{
     async deleteProductfromCart(cId, pId){
         try {
             const cart = (await cartModel.find({_id:cId}))[0]
-            if(cart.error) throw new Error(cart.error.message)
-            if(!cart.products.find(product => product.product.toString() === pId)) throw new Error("there was no product with the given id")
+            if(!cart) throw new Error("not cart found")
+            if(!cart.products.find(product => product.product.toString() === pId)) return {message:"not product with the given id", status:false}
             cart.products = cart.products.filter(product => product.product.toString() !== pId)
             let response = await cartModel.updateOne({_id:cId}, {$set: {products: cart.products}})
             return {
@@ -65,7 +60,7 @@ export default class CartMannagerM{
         } catch (error) {
             return {
                 message:`there was a problem deleting the product in the cart with id: ${cId}`,
-                error: error
+                error
             }
         }
     }
@@ -74,7 +69,7 @@ export default class CartMannagerM{
         const pm = new ProductMannagerM()
         const product = await pm.getProductById(pId)
 
-        if(product.error)return {message:"there was a problem to find the product", error: product.error}
+        if(product.error) return {message:"there was a problem to find the product", error: product.error}
         try {
             const cart = (await cartModel.find({_id:cId}))[0]
             const oldProduct = cart.products.find(product => product.product.toString() === pId)
@@ -88,7 +83,7 @@ export default class CartMannagerM{
                     return product
                 })
             }else{
-                if(quantity < 1)return {message:"you are not adding any product, bad request", status:404}
+                if(quantity < 1)return {message:"you are not adding any product, bad request", status:400}
                 let p =  await pm.getProductById(pId)
                 cart.products.push({"product": p.content._id, "quantity": quantity})
             } 

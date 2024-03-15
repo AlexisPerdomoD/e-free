@@ -4,39 +4,27 @@ import CartMannagerM from "../../dao/db/CartMannagerM.js"
 const cartRouter = Router()
 const cM = new CartMannagerM()
 
-//get all carts
-cartRouter.get("/", async (req, res) =>{
-    let response = await cM.getCarts()
-    response.error 
-    ? res.status(500).send(response)
-    : res.send(response)
-})
-// create a new cart with or without products ()
-cartRouter.post("/", async (req, res) =>{
-    const cartToAdd = req.body.cart
-    const response = await cM.addCart(cartToAdd)
-    response.error
-    ? res.status(400).send(response)
-    : res.send(response)
-})
 //get cart by id
-// cart in the future should be relate to the usser
-cartRouter.get("/:cid", async(req, res) =>{
-    const response = await cM.getCartById(req.params.cid)
-    response.status === "error"
-    ? res.status(404).send(response)
+cartRouter.get("/", async(req, res) =>{
+    if(!req.session.cart) return false
+    const response = await cM.getCartById(req.session.cart)
+    if(!response) return res.status(404).send({error:"no cart found"})
+    response.error
+    ? res.status(500).send(false)
     : res.send(response)
 })
+
 //update one product in the cart {quantity: Number} if quantity < 1 the product i'll be delete form cart
-cartRouter.put("/:cid/product/:pid", async(req, res) => {
-    const response = await cM.updateCartProduct(req.params.cid, req.params.pid, req.body.quantity)
+cartRouter.put("/product/:pid", async(req, res) => {
+    const response = await cM.updateCartProduct(req.session.cart, req.params.pid, req.body.quantity)
     response.error
     ? res.status(404).send(response)
     : res.send(response)
 })
+
 //delete product directly
-cartRouter.delete("/:cid/product/:pid", async(req, res) => {
-    const response = await cM.deleteProductfromCart(req.params.cid, req.params.pid)
+cartRouter.delete("/product/:pid", async (req, res) => {
+    const response = await cM.deleteProductfromCart(req.session.cart, req.params.pid)
     response.error
     ? res.status(404).send(response)
     : res.send(response)
@@ -50,5 +38,21 @@ cartRouter.delete("/delete/:cid", async(req, res) =>{
     : res.send(response)
 })
 
+//get all carts
+// cartRouter.get("/all", async (req, res) =>{
+//     let response = await cM.getCarts()
+//     response.error 
+//     ? res.status(500).send(response)
+//     : res.send(response)
+// })
+
+// // create a new cart with or without products ()
+// cartRouter.post("/", async (req, res) =>{
+//     const cartToAdd = req.body.cart
+//     const response = await cM.addCart(cartToAdd)
+//     response.error
+//     ? res.status(400).send(response)
+//     : res.send(response)
+// })
 
 export default cartRouter
