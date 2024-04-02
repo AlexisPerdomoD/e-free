@@ -28,7 +28,6 @@ const cartModel = mongoose.model("carts", cartScheme)
 export default cartModel
 
 
-
 // ref
 // const CartSchema = new mongoose.Schema({
 //     date: {

@@ -63,14 +63,14 @@ const initializatePassport = () =>{
     }, async (accessToken, refreshToken, profile, done) =>{
         try {
             if(!profile._json?.email)return done(null, false, {message:"these usser does not provite any email from github"})
-            const {name, email} = profile._json
+            const {name, email, login} = profile._json
             const usser = await um.getUsser(email)
             if(!usser) {
                 const usserCart = await cm.addCart()
                 const newUsser = {
                     first_name: name,
                     last_name: "",
-                    email: email,
+                    email: email || login + "@github.usser",
                     age:18,
                     password:'',
                     cart: usserCart.content._id
