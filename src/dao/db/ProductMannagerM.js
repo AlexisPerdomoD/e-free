@@ -37,20 +37,6 @@ export default class ProductMannagerM{
             
         } catch (error) {
             console.log(error)
-            return {error, status:400}
-        }
-    }
-    async getProducts(){
-        try {
-            let response =  await productModel.find()
-            return  response.map(item => {
-                let res = {}
-                for (const key in item) {
-                    res[key] = item[key]
-                }
-                return res
-            })
-        } catch (error) {
             return {error, status:500}
         }
     }
@@ -62,7 +48,8 @@ export default class ProductMannagerM{
                 content : await productModel.findById(id)
             }
         } catch (error) {
-            return {error, status:400}
+            if(error.name === "CastError") return {error, status:404}
+            return {error, status:500}
         }
     }
     async deleteProductById(id){
@@ -73,10 +60,8 @@ export default class ProductMannagerM{
                 content : response
             }
         } catch (error) {
-            return {
-                message:"there was a problem looking for the product with the id: "+ id,
-                error: error
-            }
+            if(error.name === "CastError") return {error, status:404}
+            return {error, status:500}
         }
     }
     async addProduct(product){
@@ -88,13 +73,12 @@ export default class ProductMannagerM{
                 content: newProduct
             }
         } catch (error) {
-            return {
-                message:`there was a problem adding the product`,
-                error: error 
-            }
+            console.log(error)
+            if(error.name === "CastError") return {error, status:400}
+            return {error: error, status:500}
         }
     }
-    async updateDocument(id, updates){
+    async updateProduct(id, updates){
         try {
             let response = await productModel.updateOne({_id: id}, {$set: updates})
             return {
@@ -102,10 +86,8 @@ export default class ProductMannagerM{
                 content: response
             }
         } catch (error) {
-            return {
-                message:`there was a problem updating the product id: ${id}`,
-                error: error 
-            }
+            if(error.name === "CastError") return {error, status:404}
+            return {error: error, status:500}
         }
     }
 }
