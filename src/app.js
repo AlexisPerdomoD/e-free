@@ -5,26 +5,25 @@ import { Server } from "socket.io"
 import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
 import __dirname from "./getPath.js"
 import connectDB from "./utils/connectDB.js"
-import eH from "./utils/handlebarsConfig.js"
+import eH from "./config/handlebars.config.js"
 import viewsRouter from "./routes/views.routes.js"
 import usserRouter, { auth } from "./routes/ussers/usser.routes.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import initializatePassport from "./config/passport.config.js"
 import passport from "passport"
+import envOptions from "./config/dotenv.config.js"
 //App alias server
 const app = express()
 //basic sessions config
 app.use(session({
     //set mongo store for sessions
     store: MongoStore.create({
-        //env
-        mongoUrl:"mongodb+srv://sixela__develop:n3HVKf1n4SAFH7MP@clutster0.xg9qfiw.mongodb.net/e-comerse-server",
+        mongoUrl: envOptions.db,
         mongoOptions:{},
         ttl:100000
     }),
-    //env 
-secret:"secret",
+secret: envOptions.secret,
     resave:false,
     saveUninitialized:false
 }))
@@ -51,15 +50,13 @@ initializatePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 // connect db 
-//env 
-connectDB("e-comerse")
+connectDB(envOptions.db)
 // routes
 app.use("/api/products", auth, productsRouter)
 app.use("/api/usser", usserRouter)
 app.use("/api/cart", auth, cartRouter)
 app.use("/", viewsRouter)
-//env 
-const PORT = 8080
+const PORT = envOptions.port
 // regular http server by express 
 const httpServer = app.listen(PORT, ()=> {
     console.log(`App listening on port ${PORT}`)
