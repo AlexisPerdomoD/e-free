@@ -1,4 +1,4 @@
-import  express  from "express"
+import express  from "express"
 import productsRouter from "./routes/products/products.routes.js"
 import cartRouter from "./routes/carts/carts.routes.js"
 import { Server } from "socket.io"
@@ -18,10 +18,12 @@ const app = express()
 app.use(session({
     //set mongo store for sessions
     store: MongoStore.create({
+        //env
         mongoUrl:"mongodb+srv://sixela__develop:n3HVKf1n4SAFH7MP@clutster0.xg9qfiw.mongodb.net/e-comerse-server",
         mongoOptions:{},
         ttl:100000
     }),
+    //env 
 secret:"secret",
     resave:false,
     saveUninitialized:false
@@ -38,23 +40,25 @@ app.engine("handlebars", eH.engine)
 app.set("view engine", "handlebars")
 // setear ruta a las vistas
 app.set("views", __dirname + "/views")
-// set public route
-app.use(express.static(__dirname + "/public"))
 app.get("/", (req, res)=>{
     res.render('home', {usser: req.session ?  req.session.name : ""})
 })
+
+// set public route
+app.use(express.static(__dirname + "/public"))
 // set passport middleware authenticate methods
 initializatePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 // connect db 
+//env 
 connectDB("e-comerse")
 // routes
 app.use("/api/products", auth, productsRouter)
 app.use("/api/usser", usserRouter)
 app.use("/api/cart", auth, cartRouter)
 app.use("/", viewsRouter)
-    
+//env 
 const PORT = 8080
 // regular http server by express 
 const httpServer = app.listen(PORT, ()=> {
