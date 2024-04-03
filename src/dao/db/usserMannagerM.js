@@ -5,6 +5,7 @@ export default class UsserMannagerM{
         try {
             return await usserModel.findById(id)
         } catch (error) {
+            if(error.name === "CastError") return {error, status:404}
             return {error, status:500}
         }
     } 
@@ -17,6 +18,7 @@ export default class UsserMannagerM{
                 content: newUsser
             }
         } catch (error) {
+            if(error.name === "CastError") return {error, status:400}
             return {error, status:500}
         }
     }

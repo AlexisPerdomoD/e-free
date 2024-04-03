@@ -1,29 +1,41 @@
-import { Router} from "express";
+import {Router} from "express";
 import passport from "passport";
+import {loginController, logoutController } from "../../controllers/ussers/ussersControllers.js";
+
 const usserRouter = Router()
-// create an account 
+// SIGN UP
 usserRouter.post("/", 
     passport.authenticate("register", {failureRedirect:"/api/usser/error", failureMessage:true}),
-    async (req, res) =>{
-        req.session.ussername = req.user.email
-        req.session.name = req.user.first_name
-        req.session.rol = req.user.rol
-        req.session.cart = req.user.cart
-        res.redirect("/")
-    })
-// get an usser logged in 
+    (req, res) => loginController(req, res))
+// LOG IN 
 usserRouter.post("/login",
     passport.authenticate("login", {failureRedirect:"/api/usser/error", failureMessage:true}),
-    async (req, res) =>{
-        req.session.ussername = req.user.email
-        req.session.name = req.user.first_name
-        req.session.rol = req.user.rol
-        req.session.cart = req.user.cart
-        return res.redirect("/")
-})
+    (req, res) => loginController(req, res)
+)
+//CALL GITHUB STRATEGY
+usserRouter.get("/github", 
+    passport.authenticate("github",  {scope:[ 'user:email' ]}))
+//GITHUB STRATEGY CALLBACK
+usserRouter.get("/githubcb", 
+    passport.authenticate("github", {failureRedirect:"/api/usser/error", failureMessage:true}),
+    (req, res)=> loginController(req, res)
+)
+//LOG OUT 
+usserRouter.get("/logout", (req, res)=> logoutController(req, res))
 
-//for now using for both
-usserRouter.get("/error", (req, res ) => {
+// AUTHENTICATE MIDDLEWARE
+export const auth = async (req, res, next) =>{
+    if(!req.session.ussername) return res.status(401)
+    .render("error", {
+        status:401,  
+        message: "not authoritation for this route, please log in",
+        destiny:" Login",
+        redirect: "/login"
+    })
+    next()
+ }
+// AUTH ERROR CALLBACK RENDER
+ usserRouter.get("/error", (req, res ) => {
     res.render("error", {
         status:401,
         message:req.session.messages
@@ -33,43 +45,4 @@ usserRouter.get("/error", (req, res ) => {
         destiny: "login"
     })
 })
-
-usserRouter.get("/logout", (req, res)=>{
-    if(!req.session.ussername) return res.redirect("/login")
-    req.session.destroy(err => {
-        if(err)return res.status(500).send({message: "error while logging out", error:err})
-        return res.redirect("/login")
-    })
-})
-//end point to call github authentication, not funtion needed 
-usserRouter.get("/github", 
-    passport.authenticate("github",  {scope:[ 'user:email' ]}))
-// end point after succes authentication from github 
-usserRouter.get("/githubcb", 
-    passport.authenticate("github", {failureRedirect:"/api/usser/error", failureMessage:true}), 
-    (req, res)=>{
-        req.session.ussername = req.user.email
-        req.session.name = req.user.first_name
-        req.session.rol = req.user.rol
-        req.session.cart = req.user.cart
-    res.redirect("/")
-})
-
-
-
-
-
-
-
- export const auth = async (req, res, next) =>{
-      if(!req.session.ussername)
-      return res.status(401).render("error", {
-         status:401,  
-         message: "not authoritation for this route, please log in",
-         destiny:" Login",
-         redirect: "/login"
-         })
-
-    next()
- }
 export default usserRouter
