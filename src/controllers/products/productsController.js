@@ -1,5 +1,4 @@
-import ProductMannagerM from "../../dao/db/ProductMannagerM.js"
-const pm = new ProductMannagerM()
+import { pm } from "../../dao/index.js"
 
 export async function getProductsController(req, res){
     //sort limit page to (para seleccionar otro campo para implementar sort, por defecto price) y querys adicionales

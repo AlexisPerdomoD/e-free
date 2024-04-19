@@ -3,7 +3,7 @@ import productsRouter from "./routes/products/products.routes.js"
 import cartRouter from "./routes/carts/carts.routes.js"
 import { Server } from "socket.io"
 import chatSocketHandler from "./routes/chats/chatSocketHandler.js"
-import __dirname from "./getPath.js"
+import __dirname from "./dirname.js"
 import connectDB from "./utils/connectDB.js"
 import eH from "./config/handlebars.config.js"
 import viewsRouter from "./routes/views.routes.js"
@@ -15,6 +15,7 @@ import passport from "passport"
 import envOptions from "./config/dotenv.config.js"
 //App alias server
 const app = express()
+console.log(envOptions)
 //basic sessions config
 app.use(session({
     //set mongo store for sessions

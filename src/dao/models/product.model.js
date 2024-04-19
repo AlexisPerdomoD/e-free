@@ -4,7 +4,6 @@ import  mongoosePaginate  from "mongoose-paginate-v2"
 const productScheme =  new Schema({
     title:{
         type: String,
-        unique: true,
         require: true,
         trim: true,
     },
@@ -36,9 +35,13 @@ const productScheme =  new Schema({
     status:{
         type: Boolean,
         default: true
+    },
+    stock:{
+        type:Number,
+        default:0,
+        min:[0, "stock invalid"]
     }
 })
 productScheme.plugin(mongoosePaginate)
 const productModel = model("products", productScheme)
-
 export default productModel

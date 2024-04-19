@@ -26,13 +26,13 @@ export default class ProductMannagerM{
             let data = await productModel.paginate(querys, options)
             const response = {status: "success"}
             response.payload = data.totalDocs
+            response.products = data.docs
             response.totalPages = data.totalPages
-            response.page = data.page,
+            response.page = data.page
             response.hasPrevPage = data.hasPrevPage
             response.hasNextPage = data.hasNextPage
             response.nextPage = data.nextPage
             response.prevPage = data.prevPage
-            response.products = data.docs
             return response
             
         } catch (error) {
