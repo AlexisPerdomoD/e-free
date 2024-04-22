@@ -19,7 +19,6 @@ export async function updateCartController(req, res){
         error:true
     })
     const response = await cM.updateCartProduct(req.session.cart, req.params.pid, req.body.quantity)
-
     response.error
     ? res.status(response.status).send({message: response?.message || "something went wrong"})
     : res.send(response)
@@ -38,6 +37,13 @@ export async function deleteCart(req, res){
 
     response.error
     ? res.status(response.status).send(response)
+    : res.send(response)
+}
+
+export async function checkOutCart(req, res){
+    const response = await cM.cartCheckOut(req.session.cart)
+    response.error
+    ? res.status(response.status).send({message: response?.message || "something went wrong"})
     : res.send(response)
 }
 

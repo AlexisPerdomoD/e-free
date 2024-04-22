@@ -13,9 +13,14 @@ import MongoStore from "connect-mongo"
 import initializatePassport from "./config/passport.config.js"
 import passport from "passport"
 import envOptions from "./config/dotenv.config.js"
+import cors from "cors"
 //App alias server
 const app = express()
-console.log(envOptions)
+app.use(cors({
+    origin: '*', // Permitir cualquier origen
+    methods: ['GET', 'POST'], // Permitir solo métodos GET y POST
+    allowedHeaders: ['Content-Type'], // Permitir solo el encabezado Content-Type
+  }));
 //basic sessions config
 app.use(session({
     //set mongo store for sessions

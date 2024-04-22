@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt"
+import  fs  from 'fs';
 // create hash 
 export const signPass = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 // compare password
