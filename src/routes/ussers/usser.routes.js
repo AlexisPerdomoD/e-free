@@ -23,19 +23,8 @@ usserRouter.get("/githubcb",
 //LOG OUT 
 usserRouter.get("/logout", (req, res)=> logoutController(req, res))
 
-// AUTHENTICATE MIDDLEWARE
-export const auth = async (req, res, next) =>{
-    if(!req.session.ussername) return res.status(401)
-    .render("error", {
-        status:401,  
-        message: "not authoritation for this route, please log in",
-        destiny:" Login",
-        redirect: "/login"
-    })
-    next()
- }
 // AUTH ERROR CALLBACK RENDER
- usserRouter.get("/error", (req, res ) => {
+usserRouter.get("/error", (req, res ) => {
     res.render("error", {
         status:401,
         message:req.session.messages
@@ -46,3 +35,19 @@ export const auth = async (req, res, next) =>{
     })
 })
 export default usserRouter
+
+
+
+
+
+// AUTHENTICATE MIDDLEWARE reference, now using users.midleware.js on utils directory 
+// export const auth = async (req, res, next) =>{
+//     if(!req.session.ussername) return res.status(401)
+//     .render("error", {
+//         status:401,  
+//         message: "not authoritation for this route, please log in",
+//         destiny:" Login",
+//         redirect: "/login"
+//     })
+//     next()
+//  }

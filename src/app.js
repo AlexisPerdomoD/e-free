@@ -7,7 +7,7 @@ import __dirname from "./dirname.js"
 import connectDB from "./utils/connectDB.js"
 import eH from "./config/handlebars.config.js"
 import viewsRouter from "./routes/views.routes.js"
-import usserRouter, { auth } from "./routes/ussers/usser.routes.js"
+import usserRouter from "./routes/ussers/usser.routes.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import initializatePassport from "./config/passport.config.js"
@@ -41,7 +41,7 @@ app.set("view engine", "handlebars")
 // setear ruta a las vistas
 app.set("views", __dirname + "/views")
 app.get("/", (req, res)=>{
-    res.render('home', {usser: req.session ?  req.session.name : ""})
+    res.render('home', {usser: req.session ?  req.session.name : "", role: req.session ?  req.session.rol : ""})
 })
 
 // set public route
@@ -53,9 +53,9 @@ app.use(passport.session())
 // connect db 
 connectDB(envOptions.db)
 // routes
-app.use("/api/products", auth, productsRouter)
+app.use("/api/products", productsRouter)
 app.use("/api/usser", usserRouter)
-app.use("/api/cart", auth, cartRouter)
+app.use("/api/cart", cartRouter)
 app.use("/", viewsRouter)
 const PORT = envOptions.port
 // regular http server by express 
