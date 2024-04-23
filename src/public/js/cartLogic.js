@@ -1,5 +1,5 @@
-const URL = "http://localhost:8080/api/cart/"
-const lINK__URL = "http://localhost:8080/cart/"
+const URL = "http://localhost:3000/api/cart/"
+const lINK__URL = "http://localhost:3000/cart/"
 
 async function checkCartDom(){
     const cart = await getCart()

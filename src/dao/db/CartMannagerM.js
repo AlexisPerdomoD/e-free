@@ -119,32 +119,29 @@ export default class CartMannagerM{
             }
 
             for (const p of cart.products) {
-
+                cart = (await cartModel.find({_id:cId}))[0]
                 let product = await pm.getProductById(p.product)
                 if(product.status === 404) throw new Error({error:true, message:"there was a product id in this cart that is not in the database"})
                 product = product.content
                 
-            if(product.stock >= p.quantity){
-                ticketInfo.amount += p.quantity * product.price
+                if(product.stock >= p.quantity){
+                    ticketInfo.amount += p.quantity * product.price
 
-                ticketInfo.products.push({
+                    ticketInfo.products.push({
                         product_name: product.title,
                         quantity : p.quantity,
                         product_amount: p.quantity * product.price,
                         price: product.price
                     })
 
-                await pm.updateProduct(product._id, {stock:product.stock -p.quantity})
+                    await pm.updateProduct(product._id, {stock:product.stock -p.quantity})
 
-                const newProducts = cart.products.filter(pr => pr.product.toString() !== product._id.toString())
-                
-
-                const cStatus = await cartModel.findByIdAndUpdate(
-                    cId,
-                    {products:newProducts},
-                    {new:true}
-                )
-                console.log(cStatus)
+                    const newProducts = cart.products.filter(pr => pr.product.toString() !== product._id.toString())
+                    await cartModel.findByIdAndUpdate(
+                        cId,
+                        {products:newProducts},
+                        {new:true}
+                    )
                 }
             }
 

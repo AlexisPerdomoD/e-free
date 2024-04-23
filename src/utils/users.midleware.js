@@ -16,7 +16,6 @@ export function isUsser(req, res, next){
             error:true
         })
     }
-    console.log("is user activated")
     return next()
 }
 export function isLogged(req, res, next){

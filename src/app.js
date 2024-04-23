@@ -16,9 +16,10 @@ import envOptions from "./config/dotenv.config.js"
 import cors from "cors"
 //App alias server
 const app = express()
+console.log(envOptions)
 app.use(cors({
     origin: '*', // Permitir cualquier origen
-    methods: ['GET', 'POST'], // Permitir solo métodos GET y POST
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
     allowedHeaders: ['Content-Type'], // Permitir solo el encabezado Content-Type
   }));
 //basic sessions config

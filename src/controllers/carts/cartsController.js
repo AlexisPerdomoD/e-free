@@ -44,7 +44,7 @@ export async function checkOutCart(req, res){
     const response = await cM.cartCheckOut(req.session.cart)
     response.error
     ? res.status(response.status).send({message: response?.message || "something went wrong"})
-    : res.send(response)
+    : res.send({...response, user: req.session.ussername})
 }
 
 // cartRouter.post("/", async (req, res) =>{
