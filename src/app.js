@@ -14,6 +14,7 @@ import initializatePassport from "./config/passport.config.js"
 import passport from "passport"
 import envOptions from "./config/dotenv.config.js"
 import cors from "cors"
+import {errorMidleware} from "./utils/error.manager.js"
 //App alias server
 const app = express()
 console.log(envOptions)
@@ -63,6 +64,7 @@ app.use("/api/products", productsRouter)
 app.use("/api/usser", usserRouter)
 app.use("/api/cart", cartRouter)
 app.use("/", viewsRouter)
+app.use(errorMidleware)
 const PORT = envOptions.port
 // regular http server by express 
 const httpServer = app.listen(PORT, ()=> {

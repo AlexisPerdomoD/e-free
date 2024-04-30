@@ -4,6 +4,8 @@ import local from "passport-local"
 import UsserMannagerM from "../dao/db/usserMannagerM.js"
 import { checkPass, signPass } from "../utils/utils.js"
 import CartMannagerM from "../dao/db/CartMannagerM.js"
+//import em from "../utils/error.manager.js"
+
 const um = new UsserMannagerM()
 const cm = new CartMannagerM()
 
@@ -110,7 +112,7 @@ export default initializatePassport
 //     organizations_url: 'https://api.github.com/users/AlexisPerdomoD/orgs',
 //     repos_url: 'https://api.github.com/users/AlexisPerdomoD/repos',
 //     events_url: 'https://api.github.com/users/AlexisPerdomoD/events{/privacy}',
-//     received_events_url: 'https://api.github.com/users/AlexisPerdomoD/received_events',
+//     recei15ved_events_url: 'https://api.github.com/users/AlexisPerdomoD/received_events',
 //     type: 'User',
 //     site_admin: false,
 //     name: 'Alexis j Perdomo D',

@@ -50,9 +50,14 @@ export const ErrorCode = {
     INTERNAL_SERVER_ERROR:5
 }
 
-export const errorMidleware = (error, req, res, next) =>{
+export const errorMidleware = (error, _req, res, _next) =>{
     if(error.status){
-        return res.status(error.status).send(error)
+        return res.status(error.status).send({
+            name:error.name || "Error",
+            message:error.message,
+            status:error.status,
+            code:error.code,
+        })
     }
     return res.status(500).send("something went wrong, please reload")
 }
