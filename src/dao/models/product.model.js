@@ -19,7 +19,6 @@ const productScheme =  new Schema({
     },
     category:{
         type: String,
-        enum:["sandwich","chicken","sides", "tortillas", "sea food", "beef", "desserts", "drinks"],
         require: true
     },
     code: {
