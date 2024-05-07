@@ -14,11 +14,18 @@ const eH = expressHandlerBars.create({
             return out
         },
         printCartItem: (item) => {
-            let result = `
+            let result = `<div class="cart__item">
             <span> ${item.product.title} </span>
             <span>unit price $ ${item.product.price} * quantity ${
                 item.quantity
             } = $ ${item.product.price * item.quantity}</span>
+                <button  
+                    class="button button--secondary" 
+                    onclick="deleteProductAndReload('${item.product._id}')"
+                >
+                    remove from cart
+                </button>
+            </div>
             `
             return new eH.handlebars.SafeString(result)
         },
@@ -37,13 +44,13 @@ const eH = expressHandlerBars.create({
                
                 <div class="card__button">
                     <button 
-                            class="button" 
+                            class="button button--secondary button--sm" 
                             onclick="deleteProduct('${product._id}')"
                         >
-                            delete
+                            remove 
                         </button>
                     <button 
-                            class="add-card button" 
+                            class="add-card button button--sm" 
                             onclick="addProduct('${product._id}')"
                         >
                             add to card

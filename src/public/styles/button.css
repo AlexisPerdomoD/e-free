@@ -45,11 +45,13 @@
   }
   
   .button--secondary:hover {
-    background-color: var(--secondary-hover);
+    background-color: var(--danger);
+    color: var(--danger-foreground);
   }
   
   .button--secondary:active {
-    background-color: var(--secondary-active);
+     color: var(--danger-foreground);
+     background-color: var(--danger);
   }
   
   /* Outline */
@@ -84,4 +86,7 @@
     height: 2.5rem;
     width: 2.5rem;
     padding: 0;
+  }
+  a{
+      text-decoration: none;
   }

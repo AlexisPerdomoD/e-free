@@ -36,5 +36,8 @@ async function addProduct(pId, quantity = 1) {
 }
 const deleteProduct = (pId) => addProduct(pId, 0)
 checkCartDom(window.host2)
-console.log(window)
+const deleteProductAndReload = async(pId) =>{
+    await deleteProduct(pId)
+    window.location.reload()
+}
 

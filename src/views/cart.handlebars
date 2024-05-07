@@ -1,16 +1,30 @@
 <script>
-    
+
 </script>
 <section class="section">
-    <div class="cart__container">
+    <div class="hero">
         <div class="hero__content">
-            <p class="hero__lead">this is the lis of products added to the cart with the id: {{_id}}</p>
+            <h2 class="hero__lead">
+                Cart Rendering
+            </h2>
+            <p>
+                through populate feature from mongoDB, we are able to deliver
+                products' in cart information.
+            </p>
 
         </div>
-        <ul class="product"> 
-        {{#checkList products}}
-            {{printCartItem this}}
-        {{/checkList}}
+    </div>
+    <div class="cart__lead section container center">
+        <h3 class="hero__lead">
+            current cart's products List
+        </h3>
+        <ul class="cart__products">
+            {{#checkList products}}
+                {{printCartItem this}}
+            {{/checkList}}
         </ul>
-    </div>  
+        <a class="button" href="/api/cart/purchase">
+            Go to checkout
+        </a>
+    </div>
 </section>
