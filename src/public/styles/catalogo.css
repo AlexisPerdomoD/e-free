@@ -125,3 +125,14 @@
 #cart__link:hover > span{
     display: inline;
 }
+.info__list{
+    list-style: none;
+    padding-left: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-2);
+}
+.info__title{
+    font-weight: 600;
+
+}

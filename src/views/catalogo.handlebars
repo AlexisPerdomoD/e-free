@@ -1,18 +1,61 @@
 <section class="section">
-    <div class=" catalogo__container">
-        <div class="hero ">
-            <h2 class="hero__lead">{{usser}}, Wellcome to our list of products 🍔 </h2>
-            <p class="">this is the list of products comming throught regular CRUD HTTP requests</p>
-            
+    <div class="catalogo__container">
+        <div class="hero">
+            <h2 class="hero__title">{{usser}}
+                🍔, Wellcome! Products Template page</h2>
+            <p class="">
+                In this section is shown a small demo collection, the purpuses
+                is to show how pagination, limit and querys works, besides there
+                is a small demo of add or remove products to the current user's
+                shopping cart.
+            </p>
+            <h3 class="hero__lead">Ussage</h3>
+            <p>
+                With the products main endpoint you can mannage the data through
+                the following querrys (remember use "/?").
+            </p>
+            <br />
+            <ul class="info__list">
+                <li>
+                    <strong class="info__title">Limit and Page:</strong>
+                    by default limit=10, page=1, this template uses it so you
+                    can see how it works, this values define number of pages
+                    avalible
+                </li>
+                <li>
+                    <strong class="info__title">Category:</strong>
+                    Filters products by category, an example is
+                    category=tortillas
+                </li>
+                <li>
+                    <strong class="info__title">Order:</strong>
+                    Order the products by default in an ascend order, the
+                    reference by default is price, example: order=1 (asc order),
+                    order=-1 (desc order)
+                </li>
+                <li>
+                    <strong class="info__title">To:</strong>
+                    Uses for refer another property diferent than price to order by in your querry, an example is order by title (to=title)
+                </li>
+            </ul>
+            <br />
+            <p>
+                More information about the payload is detailed in
+                <a
+                    class="link link--branded"
+                    href="https://github.com/AlexisPerdomoD/e-free"
+                >E-free github Repository.</a>
+            </p>
+
         </div>
         <div class="catalogo container">
             <div class="hero__content">
-                <p class="hero__lead">this is our complete catalogo</p>
+                <h4 class="hero__lead">Catalogo section</h4>
             </div>
             <ul class="catalogo__list">
-    {{#checkList products}}
-        {{printProduct this}}
-    {{/checkList}}
+                {{#checkList products}}
+                    {{printProduct this}}
+                {{/checkList}}
             </ul>
         </div>
     </div>
