@@ -1,25 +1,77 @@
 <section class="section">
+
     <div class="hero">
-        <div class="hero__content c">
+        <div class="hero__content">
+            <div class="hero__content">
+                <h2 class="hero__lead">
+                    Sessions and secure endpoints
+                </h2>
+                <p>
+                    In order to experience the session feactures E-commerse Api
+                    can offer you can sign in through this templates.
+                </p>
+                <br />
+                <p>
+                    You can use any email valid to test, demo porpuses only
+                    required about it is to be unique, you can also just use the
+                    following:
+                </p>
+                <br />
+                <h3 class="hero__lead">
+                    <strong>Email</strong>: testino@mail.com
+                </h3>
+                <h3 class="hero__lead">
+                    <strong>
+                        <strong>Password</strong>: Secr3t123
+                    </strong>
+                </h3>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div>
+        <div>
             <h4 class="hero__lead center">
-                Login 
+                Login
             </h4>
-            <form action="/api/usser/login_template" method="post" class="login c">
+
+            <form
+                action="/api/usser/login_template"
+                method="post"
+                class="login c"
+            >
                 <label class="label">
                     <p>Email</p>
-                    <input type="email" required name="ussername"  class="input">
+                    <input
+                        type="email"
+                        required
+                        name="ussername"
+                        class="input"
+                        placeholder="testino@mail.com"
+                    />
                 </label>
                 <label class="label">
                     <p>Password</p>
-                    <input type="password" required name="password" class="input ">
+                    <input
+                        type="password"
+                        required
+                        name="password"
+                        class="input"
+                        placeholder="********"
+                    />
                 </label>
                 <button class="button full-width">
                     Log in
                 </button>
             </form>
-            <p class="center">you can also use <a href="/api/usser/github" class="link link--branded">github to login</a></p>
-            <p class="center">
-                do not have an account yet? <a href="/createAccount" class="link link--branded">sign up</a>
+            <br />
+            <p class="center sm">you can also use
+                <a href="/api/usser/github" class="link link--branded sm">github to
+                    login</a></p>
+            <p class="center sm">
+                do not have an account yet?
+                <a href="/createAccount" class="link link--branded sm">sign up</a>
             </p>
         </div>
     </div>

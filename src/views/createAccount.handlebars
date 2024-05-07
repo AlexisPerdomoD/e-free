@@ -4,7 +4,12 @@
             <h4 class="hero__lead">
                 Create your account to use our services
             </h4>
-            <p>Email must be unique so be sure to use your own</p>
+            <p>Email must be unique and valid email</p>
+            <br>
+            <p>Password only requires to be 8 caracters minimum, for sure you could implement an especific REGEX for your own</p>
+            <br>
+            <p>By default the Api and also the template's demo requires users +18</p>
+            <br>
             <p>Email and password are what you gonna need for login later</p>
         </div>
     </div>
@@ -15,30 +20,31 @@
         <form action="/api/usser/template" method="post" class="form">
             <label class="label">
                 <p>First Name</p>
-                <input type="text" required name="first_name"  class="input">
+                <input type="text" required name="first_name"  class="input" placeholder="Alexis">
             </label>
             <label class="label">
                 <p>Last Name</p>
-                <input type="text" required name="last_name"  class="input">
+                <input type="text" required name="last_name"  class="input" placeholder="Perdomo">
             </label>
             <label class="label">
                 <p>Age</p>
-                <input type="number" required name="age"  class="input">
+                <input type="number" required name="age"  class="input" placeholder="21">
             </label>
             <label class="label">
                 <p>Password</p>
-                <input type="password" required name="password" class="input">
+                <input type="password" required name="password" class="input" placeholder="********">
             </label>
             <label class="label">
                 <p>Email</p>
-                <input type="email" required name="email"  class="input">
+                <input type="email" required name="email"  class="input" placeholder="testino@mail.com">
             </label>
             <button class="button full-width">
                 Create Account
             </button>
         </form>
-        <p class="center">
-            Already have an account?? <a href="/login" class="link link--branded">sign in</a>
+        <br>
+        <p class="center sm">
+            Already have an account?? <a href="/login" class="link link--branded sm">sign in</a>
         </p>
         
     </div>

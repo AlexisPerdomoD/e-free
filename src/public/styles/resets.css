@@ -461,6 +461,9 @@ hr {
   border: solid 1px var(--danger-border);
   padding-block: var(--spacing-6);
 }
+.sm{
+    font-size: var(--font-xs);
+}
 
 
 @media (prefers-color-scheme:dark) {

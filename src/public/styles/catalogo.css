@@ -12,7 +12,11 @@
 }
 
 .card{
-    width: 180px;
+    width: 200px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding-bottom:  var(--spacing-1);
     
     background-color: var(--muted);
@@ -29,15 +33,15 @@
         height: var(--spacing-20);
         overflow-y:scroll;
         position: relative;
-        padding-inline: var(--spacing-2);
+        padding-inline: var(--spacing-1);
 
     }
     .card__content >  h4{
     font-family: var(--display);
     padding-inline: var(--spacing-1);
     color: var(--primary);
-    font-size: var(--font-lg);
-    line-height: var(--leading-5);
+    font-size: var(--font-base);
+    line-height: var(--leading-4);
     position: sticky;
     top: 0;
     background-color: var(--muted);
@@ -45,24 +49,29 @@
 }
 .card__content >  p{
     font-size: var(--font-xs);
-    padding-block: var(--spacing-2);
+    padding-block: var(--spacing-0_5);
     line-height: var(--leading-none);
     height: var(--font-5xl);
 }
-
-.card > .prices {
+.card > .pricing{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.pricing > .prices, .category{
     padding: var(--spacing-1) var(--spacing-2);
-    font-size: var(--font-sm);
+    font-size: var(--font-xs);
     line-height: var(--leading-none);
 }
 .card > .card__button{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding-inline: var(--spacing-1);
 }
 .card__button > button{
     font-size: var(--font-xs);
     line-height: var(--leading-none);
-    padding: var(--spacing-1);
+    padding: var(--spacing-0_5);
     font-weight: 500;
 }
 #test{

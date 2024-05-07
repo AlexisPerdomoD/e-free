@@ -30,8 +30,11 @@ const eH = expressHandlerBars.create({
                     <h4>${product.title}</h4> 
                     <p>${product.description}</p>
                 </div>
+                <div class="pricing"> 
+                    <p class="category">${product.category || "general"}</p>
                 <p class="prices">price: $${product.price}</p>
-                <p id="test">id for test: ${product["_id"]}</p>
+                </div>
+               
                 <div class="card__button">
                     <button 
                             class="button" 
@@ -92,4 +95,3 @@ const eH = expressHandlerBars.create({
     },
 })
 export default eH
-
