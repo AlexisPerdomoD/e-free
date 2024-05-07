@@ -11,10 +11,26 @@ productsRouter.get("/",isLogged, getProductsController)
 // SEND PRODUCT BY ID
 productsRouter.get("/:pid",isLogged, (req, res) => getProductController(req, res))
 // Delete product by id 
-productsRouter.delete("/delete/:pid",isAdm, (req, res) => deleteProductController(req, res))
+productsRouter.delete("/:pid",isAdm, (req, res) => deleteProductController(req, res))
 // add new product 
- productsRouter.post("/add_product",isAdm, (req, res) => addProductController(req, res))
+ productsRouter.post("/",isAdm, (req, res) => addProductController(req, res))
 // update product by id 
-productsRouter.patch("/update_product/:pid",isAdm, (req, res) => updateProductController(req, res))
+productsRouter.patch("/:pid",isAdm, (req, res) => updateProductController(req, res))
 
 export default productsRouter
+
+// {
+//   "message": "product properly added, id: 663997aefcd770c251b6d45f",
+//   "content": {
+//     "title": "nuevo producto",
+//     "description": "Golden-fried chicken tenders served with your choice of dipping sauce – BBQ, honey mustard, or ranch",
+//     "price": 7.49,
+//     "category": "nuevo",
+//     "code": "nuevo",
+//     "thumbnail": null,
+//     "status": true,
+//     "stock": 99,
+//     "_id": "663997aefcd770c251b6d45f",
+//     "__v": 0
+//   }
+// }
