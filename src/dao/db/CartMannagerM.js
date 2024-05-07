@@ -22,7 +22,7 @@ export default class CartMannagerM {
             }
         } catch (error) {
             if (error instanceof Error && error.name === "CastError") {
-                throw em.createError({
+                return em.createError({
                     name: error.name,
                     message: error.message,
                     code: ErrorCode.GENERAL_USER_ERROR,
@@ -30,7 +30,7 @@ export default class CartMannagerM {
                     cause: "client problem",
                 })
             }
-            throw em.createError({
+            return em.createError({
                 name: "internal error server",
                 message: "somethinng when wrong creating the cart",
                 status: 500,
@@ -41,7 +41,7 @@ export default class CartMannagerM {
     async deleteProductfromCart(cId, pId) {
         const product = await pm.getProductById(pId)
         if (product === null)
-            throw em.createError({
+            return em.createError({
                 status: 404,
                 message: "the product with the given id does not exist",
                 name: "CastError",
@@ -49,7 +49,7 @@ export default class CartMannagerM {
             })
         const cart = (await cartModel.find({ _id: cId }))[0]
         if (cart === null)
-            throw em.createError({
+            return  em.createError({
                 name: "CastError",
                 status: 404,
                 message: "not cart with the given id",
@@ -59,7 +59,7 @@ export default class CartMannagerM {
         if (
             !cart.products.find((product) => product.product.toString() === pId)
         )
-            throw em.createError({
+            return em.createError({
                 name: "CastError",
                 status: 404,
                 code: ErrorCode.GENERAL_USER_ERROR,
@@ -81,7 +81,7 @@ export default class CartMannagerM {
         const product = await pm.getProductById(pId)
         //return product error
         if (product === null)
-            throw em.createError({
+            return em.createError({
                 name: "CastError",
                 message: "the product with the given id does not exist",
                 status: 404,
@@ -90,7 +90,7 @@ export default class CartMannagerM {
 
         const cart = (await cartModel.find({ _id: cId }))[0]
         if (cart === null)
-            throw em.createError({
+            return em.createError({
                 name: "CastError",
                 status: 404,
                 message: "not cart with the given id",
@@ -102,7 +102,7 @@ export default class CartMannagerM {
         )
         quantity = +quantity
         if (!existingProduct && quantity === 0)
-            throw em.createError({
+            return em.createError({
                 message: `the product id:${pId} is not in the cart list`,
                 name: "CastError",
                 status: 404,
@@ -132,7 +132,7 @@ export default class CartMannagerM {
     async cartCheckOut(cId) {
         let cart = (await cartModel.find({ _id: cId }))[0]
         if (cart.products.length <= 0)
-            throw em.createError({
+            return em.createError({
                 status: 400,
                 code: ErrorCode.GENERAL_USER_ERROR,
                 message: "the cart does not have any product yet",
@@ -148,7 +148,7 @@ export default class CartMannagerM {
             cart = (await cartModel.find({ _id: cId }))[0]
             let product = await pm.getProductById(p.product)
             if (product.status === 404)
-                throw em.createError({
+                return em.createError({
                     name: "fatal error",
                     message:
                         "there was a product id in this cart that is not in the database",
