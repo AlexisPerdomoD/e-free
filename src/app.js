@@ -41,6 +41,8 @@ secret: envOptions.secret,
 // to let the app knows it'll recive any kind of value (objects included)
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+// set public route
+app.use(express.static(__dirname + "/public"))
 //eH confg con helpers importada de otro archivo
 app.engine("handlebars", eH.engine)
 //setear engine 
@@ -50,9 +52,6 @@ app.set("views", __dirname + "/views")
 app.get("/", (req, res)=>{
     res.render('home', {usser: req.session ?  req.session.name : "", role: req.session ?  req.session.rol : ""})
 })
-
-// set public route
-app.use(express.static(__dirname + "/public"))
 // set passport middleware authenticate methods
 initializatePassport()
 app.use(passport.initialize())
@@ -60,10 +59,10 @@ app.use(passport.session())
 // connect db 
 connectDB(envOptions.db)
 // routes
+app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/usser", usserRouter)
 app.use("/api/cart", cartRouter)
-app.use("/", viewsRouter)
 app.use(errorMidleware)
 const PORT = envOptions.port
 // regular http server by express 

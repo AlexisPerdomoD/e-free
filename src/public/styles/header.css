@@ -14,9 +14,12 @@
   .header__logo {
     color: var(--primary);
     font-family: var(--display);
-    font-size: var(--font-3xl);
+    font-size: var(--font-4xl);
     font-weight: 500;
     line-height: var(--leading-none);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-2);
   }
   
   .header__logo a {
@@ -27,6 +30,10 @@
   
   .header__logo a:hover {
     color: var(--primary-hover);
+  }
+  .header__logo > #tags{
+      font-size: var(--font-xs);
+      color: var(--foreground);
   }
   .nav{
     display: inline;

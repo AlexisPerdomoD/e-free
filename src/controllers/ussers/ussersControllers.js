@@ -1,10 +1,9 @@
-import em from "../../utils/error.manager.js"
-export function loginController(req, res){
+import em, {ErrorCode} from "../../utils/error.manager.js"
+export function loginController(req, _res){
     req.session.ussername = req.user.email
     req.session.name = req.user.first_name
     req.session.rol = req.user.rol
     req.session.cart = req.user.cart
-    res.redirect("/")
 }
 
 export function logoutController(req, res){
@@ -13,8 +12,8 @@ export function logoutController(req, res){
         if(err)throw em.createError({
             name:"SESION ERROR",
             message:"error while logging out",
-            status:500
+            status:500,
+            code: ErrorCode.DATABASE_ERROR
         })
-    res.redirect("/login")
     })
 }

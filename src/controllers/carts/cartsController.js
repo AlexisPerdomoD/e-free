@@ -4,7 +4,7 @@ const cM = new CartMannagerM()
 
 export async function getCartController(req, res) {
     const response = await cM.getCartById(req.session.cart)
-    if (cart === null)
+    if ( response === null)
         throw em.createError({
             name: "CastError",
             status: 404,

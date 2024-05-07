@@ -6,7 +6,7 @@ const productsRouter = Router()
 
 
 // get paginate object from products 
-productsRouter.get("/",isLogged,(req, res) => getProductsController(req, res))
+productsRouter.get("/",isLogged, getProductsController)
 
 // SEND PRODUCT BY ID
 productsRouter.get("/:pid",isLogged, (req, res) => getProductController(req, res))

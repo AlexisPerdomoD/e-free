@@ -31,6 +31,7 @@ export default class ProductMannagerM {
     response.hasNextPage = data.hasNextPage;
     response.nextPage = data.nextPage;
     response.prevPage = data.prevPage;
+     
     return response;
   }
   async getProductById(id) {
@@ -41,10 +42,10 @@ export default class ProductMannagerM {
       };
     } catch (error) {
       if (error.name === "CastError")
-        throw em.createError({
+        return  em.createError({
           name: error.name,
           status: 404,
-          message: error.message || "product not found",
+          message: error.message,
           code: ErrorCode.GENERAL_USER_ERROR,
         });
     }
@@ -63,7 +64,7 @@ export default class ProductMannagerM {
           id,
           "it seems there is no coincidence with this id"
         );
-      throw em.createError({
+      return em.createError({
         name: "Error",
         message: "Error trying to delete product",
         code: ErrorCode.DATABASE_ERROR,
@@ -81,7 +82,7 @@ export default class ProductMannagerM {
       };
     } catch (error) {
       if (error.name === "CastError") em.generateProductError(product);
-      throw em.createError({
+      return em.createError({
         name: "Error",
         message: "Error trying to add product",
         code: ErrorCode.DATABASE_ERROR,
@@ -105,7 +106,7 @@ export default class ProductMannagerM {
           id,
           "there is not product with the given id: " + id
         );
-      throw em.createError({
+      return em.createError({
         name: "Error",
         message: "Error trying to update product",
         code: ErrorCode.DATABASE_ERROR,
