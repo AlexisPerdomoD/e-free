@@ -23,7 +23,7 @@ const logger = winston.createLogger({
     levels: custom.levels,
     transports:[
         new transports.Console({
-            level:envConfig.mode === "PRO" ? "warning" : "http",
+            level:envConfig.mode === "PRO" ? "info" : "http",
             format: format.combine(
                 format.colorize({colors:custom.colors}),
                 format.simple()

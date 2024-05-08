@@ -1,14 +1,14 @@
 {
-  "name": "express_server",
+  "name": "e_free",
   "version": "1.0.0",
-  "description": "",
+  "description": "open source solution for API REST e-comerse",
   "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js --mode pro",
+    "start": "node src/app.js --mode pro",
     "dev": "nodemon src/app.js --mode dev"
   },
-  "author": "",
+  "author": "Dropdibemol@gmail.com",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
