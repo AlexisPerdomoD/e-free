@@ -1,11 +1,14 @@
-import mongoose from "mongoose";
-
+import mongoose from "mongoose"
+import logger from "../config/winston.config.js"
+import em from "./error.manager.js"
 export default async function connectDB(collection) {
     try {
         const response = await mongoose.connect(collection)
-        console.log("data base connected properly")
+        logger.debug("data base connected properly")
         return response
-    } catch (error) { 
-        console.error("problem connecting to data base" + error?.message || "")
+    } catch (error) {
+        logger.fatal("problem connecting to data base. " + error?.message || "")
+        return em.generateExternalServiceError("MongoDB")
     }
 }
+

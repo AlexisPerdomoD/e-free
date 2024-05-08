@@ -21,11 +21,14 @@
     "express-session": "^1.18.0",
     "mongoose": "^8.1.1",
     "mongoose-paginate-v2": "^1.8.0",
-    "nodemon": "^3.1.0",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "passport-local": "^1.0.0",
-    "socket.io": "^4.7.4"
+    "socket.io": "^4.7.4",
+    "winston": "^3.13.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
 }

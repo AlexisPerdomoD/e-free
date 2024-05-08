@@ -1,3 +1,5 @@
+import logger from "../config/winston.config.js"
+
 export default class CustomError {
     static generateUserError = (user) => {
         const message = `One or more properties were incomplete or not valid.
@@ -91,7 +93,7 @@ export const ErrorCode = {
 
 export const errorMidleware = (error, _req, res, _next) => {
     if (error.code) {
-        console.log("lo toma?")
+        logger.info(`error incomming status:${error.status} ${error.name}`)
         return res.status(error.status).send({
             name: error.name || "Error",
             message: error.message,
@@ -118,11 +120,20 @@ export const errorMidleware = (error, _req, res, _next) => {
             }
             return res.status(400).send(response)
         }
+        logger.error(`error status 500 or lost: ${error.status} 
+            ${error.name} 
+            ${error.message}
+        `)
         return res.status(error.status || 500).send({
             name: error.name || "ERROR INTERNAL_SERVER_ERROR",
             message: error.message ,
         })
     }
+    logger.fatal(`error status lost: ${error.status} process probably dead
+        ${error.name} 
+        ${error.message}
+        ${error.cause}
+        `)
     return res.status(500).send("something went wrong, please reload")
 }
 

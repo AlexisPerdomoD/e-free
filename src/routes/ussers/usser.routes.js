@@ -30,7 +30,7 @@ usserRouter.post(
     }),
     (req, res) => {
         loginController(req, res)
-        res.redirect("/")
+        res.redirect("/products")
     }
 )
 //login 
@@ -57,7 +57,7 @@ usserRouter.post(
     }),
     (req, res) => {
         loginController(req, res)
-        res.redirect("/")
+        res.redirect("/products")
     }
 )
 //CALL GITHUB STRATEGY, needs to use browser

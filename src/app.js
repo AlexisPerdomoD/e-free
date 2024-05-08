@@ -1,4 +1,4 @@
-import express  from "express"
+import express from "express"
 import productsRouter from "./routes/products/products.routes.js"
 import cartRouter from "./routes/carts/carts.routes.js"
 import { Server } from "socket.io"
@@ -14,64 +14,64 @@ import initializatePassport from "./config/passport.config.js"
 import passport from "passport"
 import envOptions from "./config/dotenv.config.js"
 import cors from "cors"
-import {errorMidleware} from "./utils/error.manager.js"
+import { errorMidleware } from "./utils/error.manager.js"
+import logger, { loggerMidleware } from "./config/winston.config.js"
+import dotenvConfig from "./config/dotenv.config.js"
 //App alias server
 const app = express()
-console.log(envOptions)
-app.use(cors({
-    origin: '*', // Permitir cualquier origen
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-    allowedHeaders: ['Content-Type'], // Permitir solo el encabezado Content-Type
-  }));
+logger.info(`starting Api mode ${dotenvConfig.mode} port ${dotenvConfig.port} db ${dotenvConfig.persistence}`)
+app.use(
+    cors({
+        origin: dotenvConfig.host,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type"], // Permitir solo el encabezado Content-Type
+    })
+)
 //basic sessions config
-app.use(session({
-    //set mongo store for sessions
-    store: MongoStore.create({
-        mongoUrl: envOptions.db,
-        mongoOptions:{},
-        ttl:100000
-    }),
-secret: envOptions.secret,
-    resave:false,
-    saveUninitialized:false
-}))
-//these are middlewires 
-// to be able to recive, send and work with json objects in the req.body and res.send 
-// necessary configuration needed for reciving req.body properly by url encode 
-// to let the app knows it'll recive any kind of value (objects included)
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-// set public route
+app.use(
+    session({
+        //set mongo store for sessions
+        store: MongoStore.create({
+            mongoUrl: envOptions.db,
+            mongoOptions: {},
+            ttl: 100000,
+        }),
+        secret: envOptions.secret,
+        resave: false,
+        saveUninitialized: false,
+    })
+)
+// set public route for static files
 app.use(express.static(__dirname + "/public"))
-//eH confg con helpers importada de otro archivo
+//Handlebars config including helpers using config from config directory
 app.engine("handlebars", eH.engine)
-//setear engine 
 app.set("view engine", "handlebars")
-// setear ruta a las vistas
 app.set("views", __dirname + "/views")
-app.get("/", (req, res)=>{
-    res.render('home', {usser: req.session ?  req.session.name : "", role: req.session ?  req.session.rol : ""})
-})
+//middlewares
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 // set passport middleware authenticate methods
 initializatePassport()
 app.use(passport.initialize())
 app.use(passport.session())
-// connect db 
-connectDB(envOptions.db)
+//logger
+app.use(loggerMidleware)
 // routes
 app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/usser", usserRouter)
 app.use("/api/cart", cartRouter)
+// error final route
 app.use(errorMidleware)
+// connect db, config in config directory
+connectDB(envOptions.db)
 const PORT = envOptions.port
-// regular http server by express 
-const httpServer = app.listen(PORT, ()=> {
-    console.log(`App listening on port ${PORT}`)
+// regular http server by express
+const httpServer = app.listen(PORT, () => {
+    logger.debug(`App listening on port ${PORT}`)
 })
-// server from HTTP server by socket.io for dual way comunication 
+// server from HTTP server by socket.io for dual way comunication
 //comments sections use it
 const io = new Server(httpServer)
-
-// rTPSocketHandler(io) real time products end point not longer used
 chatSocketHandler(io)
+export default app
