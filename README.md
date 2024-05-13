@@ -8,6 +8,11 @@ the idea of this project is to connect or create your mongodb with your products
 
 > this proyect is considered totally open source, any contribution through pull request or comments that helps to keep increasing features are more than welcome!
 
+##
+<div align="center">
+  <img src="https://www.maketecheasier.com/assets/uploads/2013/05/Free-Open-Source-Icon.png" alt="logo"  />
+</div>
+
 ## Content
 1) [Feactures](feactures)
 2) [Tecnologies](tecnologies) 
@@ -311,8 +316,5 @@ example
 </div>
 
 ##
-![Logo]()
 
-<div align="center">
-  <img src="https://www.maketecheasier.com/assets/uploads/2013/05/Free-Open-Source-Icon.png" alt="logo"  />
-</div>
+
