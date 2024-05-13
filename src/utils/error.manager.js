@@ -129,7 +129,7 @@ export const errorMidleware = (error, _req, res, _next) => {
             message: error.message ,
         })
     }
-    logger.fatal(`error status lost: ${error.status} process probably dead
+    logger.log("fatal", `error status lost: ${error.status} process probably dead
         ${error.name} 
         ${error.message}
         ${error.cause}

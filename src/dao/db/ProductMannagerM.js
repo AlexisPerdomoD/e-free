@@ -20,7 +20,7 @@ export default class ProductMannagerM {
       options.sort = {};
       options.sort[toOrder] = +sort || sort;
     }
-
+    console.log(querys)
     let data = await productModel.paginate(querys, options);
     const response = { status: "success" };
     response.payload = data.totalDocs;

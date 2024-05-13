@@ -12,12 +12,12 @@ const cm = new CartMannagerM()
 const initializatePassport = () =>{
     // here i'll be settle every end point and strategy to authenticate ussers
     passport.use( "login", new local.Strategy({
-            usernameField:"ussername",
+            usernameField:"email",
             passReqToCallback:true
         },
-        async (req, ussername, password, done) =>{
+        async (req, username, password, done) =>{
             try {
-                const usser = await um.getUsser(ussername)
+                const usser = await um.getUsser(username)
                 if(!usser) return done(null, false,{message:"there is not usser found"})
                 if(!checkPass(password, usser)) return done(null, false , {message:"user or password incorrect"})
                 delete usser.password
@@ -33,6 +33,10 @@ const initializatePassport = () =>{
             },
         async (req, ussername, password, done) =>{
             try {
+                const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; 
+                if (!regex.test(password))return done(null, false, {
+                    message: 'password do not follows de RegExp'
+                })
                 const usser = await um.getUsser(ussername)
                 if(usser) return done(null, false, {message:"the email is already being used"})
                 //create cart for usser
