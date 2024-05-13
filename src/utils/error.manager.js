@@ -75,7 +75,7 @@ export default class CustomError {
     static createError({ message, name = "Error", code = 1, status = 404 }) {
         const error = new Error()
         error.message = message
-        error.name = name 
+        error.name = name
         error.code = code
         error.status = status
         return error
@@ -91,9 +91,10 @@ export const ErrorCode = {
     GENERAL_USER_ERROR: 6,
 }
 
-export const errorMidleware = (error, _req, res, _next) => {
-    if (error.code) {
-        logger.info(`error incomming status:${error.status} ${error.name}`)
+export function errorMidleware(error, _req, res, _next) {
+    //custom errors
+    if (error.status) {
+        logger.debug(`error incomming status:${error.status} ${error.name}`)
         return res.status(error.status).send({
             name: error.name || "Error",
             message: error.message,
@@ -101,39 +102,63 @@ export const errorMidleware = (error, _req, res, _next) => {
             code: error.code,
         })
     }
-    if(error instanceof Error){
-    //mongose validation errors
-        if(error.errors){
-            const response ={
+    if (error instanceof Error) {
+        // mongose not found 
+        if (error.name === "CastError")
+            return res.status(404).send({
+                name: error.name,
+                status: 404,
+                message: error.message,
+                code: ErrorCode.GENERAL_USER_ERROR,
+            })
+        //mongose validation errors
+        if (error.errors) {
+            const response = {
                 name: error._message || "Error",
-                errors:[]
+                errors: [],
             }
-            for (const k in error.errors){
+            for (const k in error.errors) {
                 let cur = error.errors[k]
                 response.errors.push({
                     message: cur.properties.message,
                     type: cur.properties.type,
                     field: cur.properties.path,
                     value: cur.properties.value,
-                    path: cur.path
+                    path: cur.path,
                 })
             }
             return res.status(400).send(response)
         }
+        // MongoServerError
+        if (error.keyValue)
+            return res.status(400).send({
+                error: error.name
+                    ? error.name
+                    : error.keyValue
+                    ? "Error field validation"
+                    : "Error",
+                message:
+                    error.message || error.cause || "error adding the product",
+                status: 400,
+                code: ErrorCode.GENERAL_USER_ERROR,
+            })
         logger.error(`error status 500 or lost: ${error.status} 
             ${error.name} 
             ${error.message}
         `)
         return res.status(error.status || 500).send({
             name: error.name || "ERROR INTERNAL_SERVER_ERROR",
-            message: error.message ,
+            message: error.message,
         })
     }
-    logger.log("fatal", `error status lost: ${error.status} process probably dead
+    logger.log(
+        "fatal",
+        `error status lost: ${error.status} process probably dead
         ${error.name} 
         ${error.message}
         ${error.cause}
-        `)
+        `
+    )
     return res.status(500).send("something went wrong, please reload")
 }
 
@@ -154,4 +179,3 @@ export const errorMidleware = (error, _req, res, _next) => {
 //   reason: undefined,
 //   [Symbol(mongoose#validatorError)]: true
 // }
-

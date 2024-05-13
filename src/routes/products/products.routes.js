@@ -6,16 +6,23 @@ const productsRouter = Router()
 
 
 // get paginate object from products 
-productsRouter.get("/", getProductsController)
+productsRouter.get("/",
+    async(req, res, next)=> getProductsController(req,res,next))
 
 // SEND PRODUCT BY ID
-productsRouter.get("/:pid",isLogged, (req, res) => getProductController(req, res))
+productsRouter.get("/:pid",
+    isLogged, async (req, res, next) => getProductController(req, res, next))
 // Delete product by id 
-productsRouter.delete("/:pid",isAdm, (req, res) => deleteProductController(req, res))
+productsRouter.delete("/:pid",isAdm, 
+    async(req, res, next) => deleteProductController(req, res, next))
 // add new product 
- productsRouter.post("/",isAdm, (req, res) => addProductController(req, res))
+ productsRouter.post("/",
+     isAdm, 
+     async(req, res, next) => addProductController(req, res, next))
 // update product by id 
-productsRouter.patch("/:pid",isAdm, (req, res) => updateProductController(req, res))
+productsRouter.patch("/:pid",
+    isAdm, 
+    async (req, res, next) => updateProductController(req, res, next))
 
 export default productsRouter
 
