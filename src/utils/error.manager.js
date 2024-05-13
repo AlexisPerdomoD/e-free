@@ -100,6 +100,7 @@ export function errorMidleware(error, _req, res, _next) {
             message: error.message,
             status: error.status,
             code: error.code,
+            cause:error.cause
         })
     }
     if (error instanceof Error) {

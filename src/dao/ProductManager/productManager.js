@@ -81,7 +81,7 @@ export default class ProductManager {
             const m = await checkDb(this.path)
             // VALIDACIONES
             if (m.products.find((p) => p.code === code)) {
-                return em.createError({
+                throw em.createError({
                     message:
                         "code already used in the catalogo, in order to add a new product must have an unique code",
                     name: "CastError",
@@ -113,11 +113,12 @@ export default class ProductManager {
                 }
             }
         } catch (error) {
-            return em.createError({
-                name: "Error",
-                message: "Error trying to add product",
+            throw em.createError({
+                name: error.name || "Error",
+                message: error.message || "Error trying to add product",
                 code: ErrorCode.DATABASE_ERROR,
                 status: 500,
+                cause: error.cause || "",
             })
         }
     }
@@ -133,11 +134,12 @@ export default class ProductManager {
                       status: 404,
                   })
         } catch (error) {
-            return em.createError({
-                name: "Error",
-                message: "Error trying to add product",
+            throw em.createError({
+                name: error.name || "Error",
+                message: error.message || "Error trying to get a product",
                 code: ErrorCode.DATABASE_ERROR,
                 status: 500,
+                cause: error.cause || "",
             })
         }
     }
@@ -149,12 +151,13 @@ export default class ProductManager {
                 updates.code &&
                 m.products.find((product) => product.code === updates.code)
             )
-                return em.createError({
+                throw em.createError({
                     name: "CastError",
                     status: 400,
                     message:
                         "this code is already in other product, need a newone",
                     code: ErrorCode.GENERAL_USER_ERROR,
+                    cause: "code must be unique",
                 })
             if (m.products.find((p) => p.id === id)) {
                 let index = m.products.findIndex((p) => p.id === id)
@@ -175,19 +178,21 @@ export default class ProductManager {
                     content: pManager.products[index],
                 }
             } else {
-                return em.createError({
+                throw em.createError({
                     name: "CastError",
                     status: 404,
                     message: "not product with the given id: " + id,
                     code: ErrorCode.GENERAL_USER_ERROR,
+                    cause: "product not found",
                 })
             }
         } catch (error) {
-            return em.createError({
-                name: "Error",
-                message: "Error trying to delete product",
+            throw em.createError({
+                name: error.name || "Error",
+                message: error.message || "Error trying to get a product",
                 code: ErrorCode.DATABASE_ERROR,
                 status: 500,
+                cause: error.cause || "",
             })
         }
     }
@@ -208,21 +213,22 @@ export default class ProductManager {
                 )
                 return { message: "product deleted", content: product }
             } else {
-                return em.createError({
+                throw em.createError({
                     name: "CastError",
                     status: 404,
                     message: "not product with the given id: " + id,
                     code: ErrorCode.GENERAL_USER_ERROR,
+                    cause: "not found",
                 })
             }
         } catch (error) {
-            return em.createError({
-                name: "Error",
-                message: "Error trying to delete product",
+            throw em.createError({
+                name: error.name || "Error",
+                message: error.message || "Error trying to get a product",
                 code: ErrorCode.DATABASE_ERROR,
                 status: 500,
+                cause: error.cause || "",
             })
         }
     }
 }
-
