@@ -9,21 +9,22 @@ export async function getProductsController(req, res) {
 
 export async function getProductController(req, res) {
     const response = await pm.getProductById(req.params.pid)
-    return res.send(response)
+    return res.status(response.status || 200).send(response)
 }
 
 export async function deleteProductController(req, res) {
     //params.pid return an string
     const response = await pm.deleteProductById(req.params.pid)
-    return res.send(response)
+    return res.status(response.status || 200).send(response)
 }
 
 export async function addProductController(req, res) {
     const response = await pm.addProduct(req.body)
-    res.send(response)
+    return res.status(response.status || 200).send(response)
+    
 }
 
 export async function updateProductController(req, res) {
     const response = await pm.updateProduct(req.params.pid, req.body)
-    res.send(response)
+    return res.status(response.status || 200).send(response)
 }
