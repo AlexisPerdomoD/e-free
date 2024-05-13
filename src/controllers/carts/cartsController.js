@@ -2,59 +2,58 @@ import CartMannagerM from "../../dao/db/CartMannagerM.js"
 import em, { ErrorCode } from "../../utils/error.manager.js"
 const cM = new CartMannagerM()
 
-export async function getCartController(req, res) {
-    const response = await cM.getCartById(req.session.cart)
+export async function getCartController(req, res, next) {
+    try{
+        const response = await cM.getCartById(req.session.cart)
     if ( response === null)
         throw em.createError({
             name: "CastError",
             status: 404,
             message: "not cart with the given id",
             code: ErrorCode.GENERAL_USER_ERROR,
+            cause: "not found"
         })
 
     return res.send(response)
+    }catch(err){next(err)}
+    
 }
 
-export async function updateCartController(req, res) {
-    if (
-        isNaN(req.body.quantity === undefined || +req.body.quantity) ||
+export async function updateCartController(req, res, next) {
+    try{
+if (
+       req.body.quantity === undefined || isNaN( +req.body.quantity) ||
         +req.body.quantity < 0
-    )
-        throw em.createError({
-            message: "you are not adding any product, bad request",
-            CastError: "Bad Request",
-            code: ErrorCode.GENERAL_USER_ERROR,
-            status: 400,
-        })
+)em.generateValidationDataError("quantity", "expected type number higher or equal to 0, got: "+req.body.quantity)
     const response = await cM.updateCartProduct(
         req.session.cart,
         req.params.pid,
         req.body.quantity
     )
     return res.send(response)
-}
 
-export async function deleteProductFromCartController(req, res) {
-    const response = await cM.deleteProductfromCart(
+
+    }catch(err){next(err)}
+    }
+
+export async function deleteProductFromCartController(req, res, next) {
+    try{
+         const response = await cM.deleteProductfromCart(
         req.session.cart,
         req.params.pid
     )
     return res.send(response)
-}
 
-export async function deleteCart(req, res) {
-    const response = await cM.deleteCartById(req.params.cid)
-    return res.send(response)
-}
+    }catch(err){next(err)}
+   }
 
-export async function checkOutCart(req, res) {
-    const response = await cM.cartCheckOut(req.session.cart)
+export async function checkOutCart(req, res, next) {
+    try{
+     const response = await cM.cartCheckOut(req.session.cart)
     return res.send({ ...response, user: req.session.ussername })
-}
+    }catch(err){
+        next(err)
+    }
+   }
 
-// cartRouter.post("/", async (req, res) =>{
-//     const response = await cM.addCart()
-//     response.error
-//     ? res.status(400).send(response)
-//     : res.send(response)
-// })
+

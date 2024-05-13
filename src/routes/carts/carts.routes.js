@@ -1,19 +1,23 @@
 import { Router } from "express"
-import { checkOutCart, deleteCart, deleteProductFromCartController, getCartController, updateCartController } from "../../controllers/carts/cartsController.js"
+import { checkOutCart, deleteProductFromCartController, getCartController, updateCartController } from "../../controllers/carts/cartsController.js"
 import { isUsser } from "../../utils/users.midleware.js"
 const cartRouter = Router()
 
 //get cart by id
-cartRouter.get("/",isUsser, (req, res) => getCartController(req, res))
+cartRouter.get("/",isUsser, async (req, res, next) => getCartController(req, res, next))
 //update one product in the cart {quantity: Number} if quantity < 1 the product i'll be delete form cart
-cartRouter.put("/product/:pid",isUsser, (req, res) =>{
-    updateCartController(req, res)
-})
+cartRouter.put("/product/:pid",
+    isUsser,
+    async (req, res, next) => updateCartController(req, res, next)
+)
 //delete product directly
-cartRouter.delete("/product/:pid",isUsser, (req, res) => deleteProductFromCartController(req, res))
-//delete cart
-cartRouter.delete("/delete/:cid",isUsser, (req, res) => deleteCart(req, res))
+cartRouter.delete("/product/:pid",
+    isUsser, 
+    async (req, res, next) => deleteProductFromCartController(req, res, next)
+)
 //checkout
-cartRouter.get("/purchase", isUsser, (req, res)=> checkOutCart(req, res))
+cartRouter.get("/purchase", 
+    isUsser, 
+    async(req, res, next)=> checkOutCart(req, res, next))
 
 export default cartRouter
