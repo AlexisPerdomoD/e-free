@@ -4,6 +4,7 @@ import local from "passport-local"
 import UsserMannagerM from "../dao/db/usserMannagerM.js"
 import { checkPass, signPass } from "../utils/utils.js"
 import CartMannagerM from "../dao/db/CartMannagerM.js"
+import dotenvConfig from "./dotenv.config.js"
 //import em from "../utils/error.manager.js"
 
 const um = new UsserMannagerM()
@@ -31,13 +32,13 @@ const initializatePassport = () =>{
         usernameField:"email",
         passReqToCallback:true
             },
-        async (req, ussername, password, done) =>{
+        async (req, username, password, done) =>{
             try {
                 const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; 
                 if (!regex.test(password))return done(null, false, {
                     message: 'password do not follows de RegExp'
                 })
-                const usser = await um.getUsser(ussername)
+                const usser = await um.getUsser(username)
                 if(usser) return done(null, false, {message:"the email is already being used"})
                 //create cart for usser
                 const {age, first_name, last_name} = req.body
@@ -48,8 +49,9 @@ const initializatePassport = () =>{
                     first_name, 
                     last_name, 
                     password:signedPass, 
-                    email:ussername, 
-                    cart:usserCart.content._id
+                    email:username, 
+                    cart:usserCart.content._id,
+                    rol: dotenvConfig.admin === username ? "admin" : "usser"
                 })
 
                 if(newUsser.error) return done(null, false, {message: "there was a problem creating your account"})

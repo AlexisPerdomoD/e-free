@@ -4,7 +4,7 @@ export default class UsserMannagerM {
     async getUsserById(id) {
         const response = await usserModel.findById(id)
 
-        if (response.name === "CastError")
+        if (response?.name === "CastError")
             throw em.createError({
                 name: response.name,
                 message: response.message || "no user found",

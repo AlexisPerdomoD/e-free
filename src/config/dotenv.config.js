@@ -24,5 +24,6 @@ export default {
     secret: process.env.SECRET,
     host: process.env.HOST,
     persistence: process.env.PERSISTENCE,
-    mode: process.env.MODE
+    mode: process.env.MODE,
+    admin: process.env.ADMIN
 }
