@@ -2,7 +2,7 @@
 
 # E-Free 
 
-This App is pretended to be a complete option to start with by needing and API REST Server for any kind of e-comerse.
+This App is pretended to be a complete option to start with by needing and API REST Server for any kind of e-commerse.
 
 the idea of this project is to connect or create your mongodb with your products and users and you'll be ready to use the endpoints of this.
 
@@ -12,6 +12,20 @@ the idea of this project is to connect or create your mongodb with your products
 <div align="center">
   <img src="https://www.maketecheasier.com/assets/uploads/2013/05/Free-Open-Source-Icon.png" alt="logo"  />
 </div>
+
+## Content
+1) [Feactures](feactures)
+2) [Tecnologies](tecnologies) 
+3) [Requirements](requirements)
+4) [Setup](setup)
+5) [Endpoints](endpoints)
+# E-Free 
+
+This App is pretended to be a complete option to start with by needing and API REST Server for any kind of e-comerse.
+
+the idea of this project is to connect or create your mongodb with your products and users and you'll be ready to use the endpoints of this.
+
+> this proyect is considered totally open source, any contribution through pull request or comments that helps to keep increasing features are more than welcome!
 
 ## Content
 1) [Feactures](feactures)
@@ -282,7 +296,7 @@ GET api/products/?category=sides&limit=2&sort=-1&page=2
 }
 
 ```
-### By id
+### Get by id
 
 ```http
   GET /api/products/:id
@@ -307,6 +321,282 @@ example
   }
 }
 ```
+## Admin Endpoints
+E-free allows you to add new products, update the  already existing products catalog and delete them through secured endpoints your Admin could use.
+
+### Add new product
+``` http
+POST api/products/
+```
+In order to add a new product to the existing catalog you must provide in the body of your request a json as the following model:
+```json 
+ {
+     "title": "xiaomi redmi s22",
+     "description": "high end cellphone with 32gb ram and 520 gb storage",
+     "price": 200.99,
+     "category": "   SmartPhones",
+     "code": "xiaomiS22",
+     "thumbnail": null,
+     "status": false,
+     "stock": 0
+}
+```
+
+`title:string` Required and unique.
+
+`description:string` Required.
+
+`code:string` Required, Unique, the request is returning a 400 error if there is another product with the same code.
+
+`category:string` Required, this field is being trim and lowercased in the register process. 
+`thumbnail:string` references the url to be use for product's image. Is not required.
+`status:boolean` not required, default will be true.
+`stock:number` not required, any number less than 0 is not valid,  default will be 0. 
+
+example 
+
+```json 
+{
+  "message": "product properly added, id: 66425edbb648be21a94dd1de",
+  "content": {
+    "title": "xiaomi redmi s22",
+    "description": "high end cellphone with 32gb ram and 520 gb storage",
+    "price": 200.99,
+    "category": "smartphones",
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/e/ea/No_image_preview.png",
+    "status": false,
+    "stock": 0,
+    "_id": "66425edbb648be21a94dd1de",
+    "__v": 0
+  }
+}
+```
+
+### Update an existing product.
+``` http
+PATCH api/products/:id
+```
+
+E-free allows you to update a product from a single field or some at the same time. The fields you want to update must be place in an json object and only the fields we already define above are taken, otherwise fields will be ignored. 
+
+example
+```http
+PATCH api/products/66425edbb648be21a94dd1de
+
+{
+    "stock":30,
+    "status": true,
+    "price": 250.99
+}
+```
+
+response:
+
+```json
+{
+  "message": "product properly updated",
+  "content": {
+    "acknowledged": true,
+    "modifiedCount": 1,
+    "upsertedId": null,
+    "upsertedCount": 0,
+    "matchedCount": 1
+  }
+}
+
+```
+if we get the product by id we can se the product was indeep updated.
+```json
+{
+  "message": "product found",
+  "content": {
+    "_id": "66425edbb648be21a94dd1de",
+    "title": "xiaomi redmi s22",
+    "description": "high end cellphone with 32gb ram and 520 gb storage",
+    "price": 250.99,
+    "category": "smartphones",
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/e/ea/No_image_preview.png",
+    "status": true,
+    "stock": 30,
+    "__v": 0
+  }
+}
+```
+
+### Delete an existing product.
+``` http
+DELETE api/products/:id
+```
+
+example
+```http 
+DELETE api/products/66425edbb648be21a94dd1de
+```
+
+```json
+{
+  "message": "product  eliminated properly",
+  "content": {
+    "_id": "66425edbb648be21a94dd1de",
+    "title": "xiaomi redmi s22",
+    "description": "high end cellphone with 32gb ram and 520 gb storage",
+    "price": 250.99,
+    "category": "smartphones",
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/e/ea/No_image_preview.png",
+    "status": true,
+    "stock": 30,
+    "__v": 0
+  }
+}
+```
+Now the product is not longer into the catalog.
+
+
+
+
+
+
+## Cart
+Cart endpoints provides information about the current status of the shopping cart for each user besides allows add or removes products from it. 
+
+> only users accounts have access to cart endpoints by default.
+
+### Add a product to a user cart
+
+```http
+  PATH /api/cart/product/:pid
+```
+This endpoint requires besides the product id as param, the quantity of products you're adding.
+
+`quantity:number` must be higher or equal to 0. if the quantity is 0 the product will be remove from user's cart.
+
+example 
+
+```http
+PATCH /api/cart/product/65c061c7e7934b434e25b6d6
+```
+body: 
+```json
+{
+    "quantity": 3
+}
+```
+response:
+```json
+{
+  "message": "cart properly updated",
+  "content": {
+    "acknowledged": true,
+    "modifiedCount": 1,
+    "upsertedId": null,
+    "upsertedCount": 0,
+    "matchedCount": 1
+  }
+}
+```
+
+### Get cart information
+
+```http
+  GET /api/cart/
+```
+
+Since each user has an unique cart id there is not need for params to get this. 
+the response follows this model:
+```javascript
+{
+    _id:string // cart id,
+    products:{
+        product:Product,
+        quantity:number
+    }[]
+}
+```
+
+example response
+```json
+{
+  "_id": "6642ab2f323727ba02a591b4",
+  "products": [
+    {
+      "product": {
+        "_id": "65c061c7e7934b434e25b6d6",
+        "title": "Sweet Potato Fries",
+        "description": "Crispy sweet potato fries seasoned to perfection, served with a side of chipotle aioli",
+        "price": 5.99,
+        "category": "sides",
+        "status": true,
+        "thumbnail": "https://images.unsplash.com/photo-1529589510304-b7e994a92f60?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "code": "SWEETPOTATOFRIES016",
+        "stock": 25
+      },
+      "quantity": 3,
+      "_id": "6642b60b014c9e5f015077b0"
+    }
+  ],
+  "__v": 0
+}
+```
+
+### Delete one product directly
+
+```http
+  delete /api/cart/product/:pid
+```
+this endpoints removes a product from a cart directly,  just need the product id as params.
+
+example
+```http
+DELETE /api/cart/product/6642ab2f323727ba02a591b4
+```
+response:
+
+```json
+{
+  "message": "product properly removed from cart,  product id 65c061c7e7934b434e25b6d6",
+  "content": {
+    "acknowledged": true,
+    "modifiedCount": 1,
+    "upsertedId": null,
+    "upsertedCount": 0,
+    "matchedCount": 1
+  }
+}
+```
+
+### Go to checkout
+
+```http
+  GET /api/cart/purchase
+```
+This endpoints allows user to generate a ticket, checking every product in the cart and also updating products' stock after the order is being made. 
+> if at the moment of generate the order there is not enough stock for some product in the user's cart, those products are going to stay in the cart while the other are including in the order. In this case E-free also return a message about that. 
+
+More details in TicketMannager in DAO directory.
+
+response: 
+```json
+{
+  "message": "all products were properly included in your order",
+  "ticket": {
+    "code": "02bf9bfd375b77051b9807f21887ab89",
+    "purchase_datetime": "2024-05-14T00:51:44.110Z",
+    "amount": 17.97,
+    "products": [
+      {
+        "product_name": "Sweet Potato Fries",
+        "quantity": 3,
+        "price": 5.99,
+        "product_amount": 17.97,
+        "_id": "6642bdf2014c9e5f015077d1"
+      }
+    ],
+    "_id": "6642bdf2014c9e5f015077d0",
+    "__v": 0
+  },
+  "user": "user@mail.com"
+}
+```
 ## 🔗 Links
 
 <div align="center">
@@ -316,5 +606,8 @@ example
 </div>
 
 ##
+![Logo]()
 
-
+<div align="center">
+  <img src="https://www.maketecheasier.com/assets/uploads/2013/05/Free-Open-Source-Icon.png" alt="logo"  />
+</div>
