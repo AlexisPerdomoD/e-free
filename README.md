@@ -2,7 +2,7 @@
 
 # E-Free 
 
-This App is pretended to be a complete option to start with by needing and API REST Server for any kind of e-commerse.
+This App is pretended to be a complete option to start with by needing and API REST Server for any kind of e-commeree.
 
 the idea of this project is to connect or create your mongodb with your products and users and you'll be ready to use the endpoints of this.
 
