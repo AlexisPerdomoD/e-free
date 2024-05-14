@@ -19,20 +19,6 @@ the idea of this project is to connect or create your mongodb with your products
 3) [Requirements](requirements)
 4) [Setup](setup)
 5) [Endpoints](endpoints)
-# E-Free 
-
-This App is pretended to be a complete option to start with by needing and API REST Server for any kind of e-comerse.
-
-the idea of this project is to connect or create your mongodb with your products and users and you'll be ready to use the endpoints of this.
-
-> this proyect is considered totally open source, any contribution through pull request or comments that helps to keep increasing features are more than welcome!
-
-## Content
-1) [Feactures](feactures)
-2) [Tecnologies](tecnologies) 
-3) [Requirements](requirements)
-4) [Setup](setup)
-5) [Endpoints](endpoints)
 6) [View Endpoints](view-endpoints)
 7) [Authentication](authentication)
 8) [Contributions](contribution)
@@ -143,8 +129,8 @@ to run the project using src/.env.production.
 
 ### Signup
 
-```http
-  POST /api/user/
+``` http
+  POST  /api/user/
 ```
 requires a body with the information in json that follows the user model: 
 ```
@@ -303,9 +289,10 @@ GET api/products/?category=sides&limit=2&sort=-1&page=2
 ```
 
 example 
-```json 
-/api/products/65c061c7e7934b434e25b6d6
-
+```http
+GET /api/products/65c061c7e7934b434e25b6d6
+```
+```json
 {
   "message": "product found",
   "content": {
@@ -349,8 +336,11 @@ In order to add a new product to the existing catalog you must provide in the bo
 `code:string` Required, Unique, the request is returning a 400 error if there is another product with the same code.
 
 `category:string` Required, this field is being trim and lowercased in the register process. 
+
 `thumbnail:string` references the url to be use for product's image. Is not required.
+
 `status:boolean` not required, default will be true.
+
 `stock:number` not required, any number less than 0 is not valid,  default will be 0. 
 
 example 
@@ -464,7 +454,7 @@ Cart endpoints provides information about the current status of the shopping car
 ### Add a product to a user cart
 
 ```http
-  PATH /api/cart/product/:pid
+  PATCH /api/cart/product/:pid
 ```
 This endpoint requires besides the product id as param, the quantity of products you're adding.
 
@@ -541,7 +531,7 @@ example response
 ### Delete one product directly
 
 ```http
-  delete /api/cart/product/:pid
+  DELETE /api/cart/product/:pid
 ```
 this endpoints removes a product from a cart directly,  just need the product id as params.
 
@@ -606,8 +596,3 @@ response:
 </div>
 
 ##
-![Logo]()
-
-<div align="center">
-  <img src="https://www.maketecheasier.com/assets/uploads/2013/05/Free-Open-Source-Icon.png" alt="logo"  />
-</div>
