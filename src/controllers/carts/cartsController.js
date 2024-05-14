@@ -53,7 +53,7 @@ export async function checkOutCart(req, res, next) {
     return res.send({ ...response, user: req.session.ussername })
     }catch(err){
         next(err)
-    }
+    } 
    }
 
 

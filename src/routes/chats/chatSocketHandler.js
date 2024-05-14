@@ -1,12 +1,13 @@
+import logger from "../../config/winston.config.js"
 import MongoMannager from "../../dao/db/MongoMannager.js"
 import chatModel from "../../dao/models/chat.model.js"
-
+import em from "../../utils/error.manager.js"
 export default function chatSocketHandler(io){
     const chatSH = io.of("/chat")
     const chatM = new MongoMannager(chatModel, "chat")
 
     chatSH.on("connection", async (socket) =>{
-        console.log("new usser connected to chat id: "+ socket.id)
+        logger.http("new usser connected to chat id: "+ socket.id)
         //socket to hear add products requests
         socket.emit("connection", {message: "welcome to our comment section"} )
         socket.on("send message", async (message)=>{
@@ -19,7 +20,8 @@ export default function chatSocketHandler(io){
                     socket.emit("private",  response)
                 }
             } catch (error) {
-                
+                logger.error(error.message || error.name || "WebSocket Error")
+                em.generateExternalServiceError("Socket.io")
             }
         })
     })

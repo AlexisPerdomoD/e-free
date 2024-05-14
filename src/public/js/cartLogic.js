@@ -26,7 +26,7 @@ async function addProduct(pId, quantity = 1) {
         headers: {
             "Content-Type": "application/json",
         },
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify({ quantity: +quantity }),
     }
     let response = await fetch(window.host2 + "/api/cart/product/" + pId, options)

@@ -1,30 +1,41 @@
 <section class="section-lg">
     <div class="hero">
         <div class="hero__content hero--center">
-            <h1 class="hero__title">Wellcome {{usser}} to e-comerse signed as {{role}}</h1>
-            <p class="hero__content">check our catalogo here and delite yourself</p>
-            <a href="/products" class="link link--branded">see catalogo 🔥</a>
-            <a href="/comments" class="link link--branded">real time comments 🔥</a>
-        </div>
-        <div class="hero__content hero--center">
-            <hr>
-            <h3 class="hero__content">Test Admin</h3>
-            <p>para probar agregar, editar, eliminar productos como admin hay que usar algun cliente como postman, no hay vista de plantilla para eso</p>
-            <p>hasta este momento la ruta /api/cart/purchase vacia el carrito y genera un ticket, lo pendiente a este punto es incluir el correo de eso</p>
-            <p>si deseas probar agregando los productos al carrito desde la plantilla deberas hacerlo iniciando el programa con npm run pro, que es con el port en 3000. Esto solo por que en el js de la logica del carrito de parte del cliente esta hardcodeado en ese puerto, para hacerlo con el modo dev y persistencia con fs este cliente no servira</p>
-            <p><strong>Email</strong>: adminCoder@coder.com</p>
-            <p><strong>Password</strong>: adminCod3r123</p>
-            <hr>
-            <h3 class="hero__content">Test regular</h3>
-            <p><strong>Email</strong>: fonsi@s</p>
-            <p><strong>Password</strong>: 123456</p>
-            <a href="/login" class="link link--branded">Login</a>
-        </div>
+            <h1 class="hero__title">Wellcome
+                {{usser}}
+                to e-comerse signed as
+                {{role}}
+            </h1>
+            <p class="hero__lead">
+                This is a demo template For E-free API.
+            </p>
+            <p class="hero__lead">
+                All contributions or support to the main repository are more
+                than wellcome!
+            </p>
 
-
+        </div>
     </div>
-</section>
-<section class="section">
-    <div class="container">
+    <div class="hero__content hero--center">
+        <hr />
+        <p class="hero__lead">
+            To make use of the views please start by initiate a session, don't
+            worry about create an account (if you don't want to do so) there is
+            as guest session.
+        </p>
+        <a href="/login" class="button">
+            Login
+        </a>
+        <br />
+        <p class="hero__lead">
+            Any case catalog view is not secured by default so you could go
+            there first!
+        </p>
+
+        <a class="button" href="/products">
+            Catalog
+        </a>
+        <hr />
+        <a class="button" href="/api/logout">Logout</a>
     </div>
 </section>

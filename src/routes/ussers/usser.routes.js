@@ -10,7 +10,6 @@ const usserRouter = Router()
 usserRouter.post(
     "/",
     passport.authenticate("register", {
-        failureRedirect: "/api/usser/error",
         failureMessage: true,
     }),
     (req, res) => {
@@ -37,7 +36,6 @@ usserRouter.post(
 usserRouter.post(
     "/login",
     passport.authenticate("login", {
-        failureRedirect: "/api/usser/error",
         failureMessage: true,
     }),
     (req, res) => {

@@ -12,8 +12,8 @@ const custom ={
     },
     colors:{
         fatal:"red",
-        error:"orange",
-        waring:"yellow",
+        error:"red",
+        warning:"yellow",
         info:"green",
         debug:"white",
         http:"blue"

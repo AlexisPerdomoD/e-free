@@ -9,7 +9,6 @@ export async function renderProductsC(req, res){
     const response = await pm.getProductsPaginate({...req.query})
     if(response.error) res.status(response.status).send(response)
     else{
-        console.log(dotenvConfig.host)
         response.querys = req.query
         // req.url para despues 
         response.url = `${dotenvConfig.host}/products/`

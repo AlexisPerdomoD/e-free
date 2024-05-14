@@ -6,7 +6,7 @@ const cartRouter = Router()
 //get cart by id
 cartRouter.get("/",isUsser, async (req, res, next) => getCartController(req, res, next))
 //update one product in the cart {quantity: Number} if quantity < 1 the product i'll be delete form cart
-cartRouter.put("/product/:pid",
+cartRouter.patch("/product/:pid",
     isUsser,
     async (req, res, next) => updateCartController(req, res, next)
 )
