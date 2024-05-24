@@ -587,6 +587,8 @@ response:
   "user": "user@mail.com"
 }
 ```
+documentation in progress... 
+
 ## 🔗 Links
 
 <div align="center">
