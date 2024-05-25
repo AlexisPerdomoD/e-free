@@ -25,5 +25,9 @@ export default {
     host: process.env.HOST,
     persistence: process.env.PERSISTENCE,
     mode: process.env.MODE,
-    admin: process.env.ADMIN
+    admin: process.env.ADMIN,
+    mailer_user: process.env.MAILER_USER,
+    mailer_pass: process.env.MAILER_PASS,
+    mailer_service: process.env.MAILER_SERVICE,
+    mailer_port:process.env.MAILER_PORT
 }

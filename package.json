@@ -1,34 +1,52 @@
 {
-  "name": "e_free",
-  "version": "1.0.0",
-  "description": "open source solution for API REST e-comerse",
-  "main": "src/app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js --mode pro",
-    "dev": "nodemon src/app.js --mode dev"
-  },
-  "author": "Dropdibemol@gmail.com",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "commander": "^12.0.0",
-    "connect-mongo": "^5.1.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-handlebars": "^7.1.2",
-    "express-session": "^1.18.0",
-    "mongoose": "^8.1.1",
-    "mongoose-paginate-v2": "^1.8.0",
-    "passport": "^0.7.0",
-    "passport-github2": "^0.1.12",
-    "passport-local": "^1.0.0",
-    "socket.io": "^4.7.4",
-    "winston": "^3.13.0"
-  },
-  "type": "module",
-  "devDependencies": {
-    "nodemon": "^3.1.0"
-  }
+    "name": "e_free",
+    "version": "1.0.0",
+    "description": "open source solution for API REST e-comerse",
+    "main": "src/app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node src/app.js --mode pro",
+        "dev": "nodemon src/app.js --mode dev"
+    },
+    "author": "Dropdibemol@gmail.com",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "commander": "^12.0.0",
+        "connect-mongo": "^5.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-handlebars": "^7.1.2",
+        "express-session": "^1.18.0",
+        "mongoose": "^8.1.1",
+        "mongoose-paginate-v2": "^1.8.0",
+        "nodemailer": "^6.9.13",
+        "passport": "^0.7.0",
+        "passport-github2": "^0.1.12",
+        "passport-local": "^1.0.0",
+        "socket.io": "^4.7.4",
+        "winston": "^3.13.0"
+    },
+    "type": "module",
+    "devDependencies": {
+        "nodemon": "^3.1.0"
+    },
+    "eslintConfig": {
+        "env": {
+            "browser": true,
+            "es2021": true
+        },
+        "extends": "eslint:recommended",
+        "parserOptions": {
+            "ecmaVersion": 12,
+            "sourceType": "module"
+        },
+        "rules": {
+            "linebreak-style": [
+                "error",
+                "unix"
+            ]
+        }
+    }
 }
