@@ -30,7 +30,7 @@ export default class UsserMannagerM {
   }
   async getUsser(ussername) {
     const response = await usserModel.findOne({ email: ussername });
-    if (usser === null)
+    if (response === null)
       em.createError({
         status: 404,
         message: "user not found",

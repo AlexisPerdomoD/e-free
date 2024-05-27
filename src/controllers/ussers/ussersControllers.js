@@ -6,7 +6,7 @@ export function loginController(req, _res) {
     req.session.name = req.user.first_name
     req.session.rol = req.user.rol
     req.session.cart = req.user.cart
-    req.session.id = req.user._id
+    req.session._id = req.user._id
 }
 
 export function logoutController(req, res) {

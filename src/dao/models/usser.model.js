@@ -28,7 +28,7 @@ const usserSchema = new Schema({
     },
     rol:{
         type:String,
-        enum:["admin", "usser"],
+        enum:["admin", "usser", "premium"],
         default:"usser"
     },
     cart:{

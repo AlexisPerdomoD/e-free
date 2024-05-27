@@ -107,7 +107,7 @@ export async function updateProductByOwnerCtr(req, res, next) {
             code: ErrorCode.GENERAL_USER_ERROR,
             message: 'product not found with the given id'
         })
-        if (product.owner !== req.session.id) throw em.createError({
+        if (product.owner !== req.session._id) throw em.createError({
             error: 'Authoritazion Error',
             message: 'product does not belong to your account',
             status: 403,
@@ -129,7 +129,7 @@ export async function deleteProductByOwnerCtr(req, res, next) {
             code: ErrorCode.GENERAL_USER_ERROR,
             message: 'product not found with the given id'
         })
-        if (product.owner !== req.session.id) throw em.createError({
+        if (product.owner !== req.session._id) throw em.createError({
             error: 'Authoritazion Error',
             message: 'product does not belong to your account',
             status: 403,

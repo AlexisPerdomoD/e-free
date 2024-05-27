@@ -1,4 +1,4 @@
-import * as express from "express";
+import  express from "express";
 import productsRouter from "./routes/products/products.routes.js";
 import cartRouter from "./routes/carts/carts.routes.js";
 import { Server } from "socket.io";
@@ -18,7 +18,7 @@ import { errorMidleware } from "./utils/error.manager.js";
 import logger, { loggerMidleware } from "./config/winston.config.js";
 import dotenvConfig from "./config/dotenv.config.js";
 //App alias server
-const app = express();
+const app = express()
 logger.info(
     `starting Api mode ${dotenvConfig.mode} port ${dotenvConfig.port} db ${dotenvConfig.persistence}`,
 );
@@ -74,6 +74,5 @@ const httpServer = app.listen(PORT, () => {
 });
 // server from HTTP server by socket.io for dual way comunication
 //comments sections use it
-const io = new Server(httpServer);
-chatSocketHandler(io);
-export default app;
+const io = new Server(httpServer)
+chatSocketHandler(io)

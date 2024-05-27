@@ -109,7 +109,7 @@ usserRouter.get("/error_template", (req, res) => {
 })
 export default usserRouter;
 
-usserRouter.patch("/premium", isLogged, (req, res, next) =>
+usserRouter.get("/premium", isLogged, (req, res, next) =>
     levelUpUserCtr(req, res, next),
 )
 
