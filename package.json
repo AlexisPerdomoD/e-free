@@ -46,6 +46,13 @@
             "linebreak-style": [
                 "error",
                 "unix"
+            ],
+            "no-unused-vars": [
+                "error",
+                {
+                    "argsIgnorePattern": "^_",
+                    "varsIgnorePattern": "^_"
+                }
             ]
         }
     }

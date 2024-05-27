@@ -1,28 +1,29 @@
 
 import { Router } from "express"
-import { addProductController, deleteProductController, getProductController, getProductsController, updateProductController } from "../../controllers/products/productsController.js"
-import { isAdm, isLogged } from "../../utils/users.midleware.js"
+import { addProductController, deleteProductByOwnerCtr, deleteProductController, getProductController, getProductsController, updateProductByOwnerCtr, updateProductController } from "../../controllers/products/productsController.js"
+import { isAdm, isLogged, isPremium } from "../../utils/users.midleware.js"
 const productsRouter = Router()
 
 
 // get paginate object from products 
-productsRouter.get("/",
-    async(req, res, next)=> getProductsController(req,res,next))
+productsRouter.get("/", async (req, res, next) => getProductsController(req, res, next))
 
 // SEND PRODUCT BY ID
-productsRouter.get("/:pid",
-    isLogged, async (req, res, next) => getProductController(req, res, next))
+productsRouter.get("/:pid", isLogged, (req, res, next) => getProductController(req, res, next))
 // Delete product by id 
-productsRouter.delete("/:pid",isAdm, 
-    async(req, res, next) => deleteProductController(req, res, next))
+productsRouter.delete("/:pid", isAdm, (req, res, next) => deleteProductController(req, res, next))
 // add new product 
- productsRouter.post("/",
-     isAdm, 
-     async(req, res, next) => addProductController(req, res, next))
+productsRouter.post("/", isAdm, (req, res, next) => addProductController(req, res, next))
 // update product by id 
-productsRouter.patch("/:pid",
-    isAdm, 
-    async (req, res, next) => updateProductController(req, res, next))
+productsRouter.patch("/:pid",isAdm, (req, res, next) => updateProductController(req, res, next))
+
+// premium users endpoints 
+
+productsRouter.post("/premium", isPremium, (req, res, next) => addProductController(req, res, next))
+
+productsRouter.patch("/:pid/premium", isPremium, (req, res, next) => updateProductByOwnerCtr(req, res, next))
+
+productsRouter.delete("/:pid/premium", isPremium, (req, res, next) => deleteProductByOwnerCtr(req, res, next))
 
 export default productsRouter
 
