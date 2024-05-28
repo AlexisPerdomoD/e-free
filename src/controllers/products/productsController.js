@@ -59,7 +59,7 @@ export async function addProductController(req, res, next) {
         if (typeof thumbnail === "string") productInfo.thumbnail = thumbnail;
         if (typeof status === "boolean") productInfo.status = status;
         if (typeof stock === "number" && stock >= 0) productInfo.stock = stock;
-        productInfo.owner = req.session.rol === 'admin' ? 'admin' : req.session.id
+        productInfo.owner = req.session.rol === 'admin' ? 'admin' : req.session._id
         const response = await pm.addProduct(productInfo);
         return res.send(response);
     } catch (err) {

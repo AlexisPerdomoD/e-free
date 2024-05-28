@@ -33,13 +33,14 @@ const productScheme =  new Schema({
     },
     status:{
         type: Boolean,
-        default: true
+        default: false
     },
     stock:{
         type:Number,
         default:0,
         min:[0, "stock invalid"]
-    }
+    },
+    owner:String
 })
 productScheme.plugin(mongoosePaginate)
 const productModel = model("products", productScheme)
