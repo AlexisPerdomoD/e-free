@@ -1,0 +1,653 @@
+tags:
+  - name: products
+    description: Operations about products
+paths:
+  /api/products:
+    get:
+      tags:
+        - products
+      sumary: Get all products, woth pagination
+      content:
+      parameters:
+        - name: page
+          description: Page number
+          in: query
+          schema:
+            type: number
+            example: 1
+        - name: limit
+          description: Items per page
+          in: query
+          schema:
+            type: number
+            example: 5
+        - name: sort
+          description: Sort products by price, default is ascendent
+          in: query
+          schema:
+            type: enum - asc - desc
+            example: asc
+          required: false
+      responses:
+        200:
+          description: List of products with pagination info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                    example: 1
+                  nextPage:
+                    type: number, null
+                    example: 2
+                  prevPage:
+                    type: number, null
+                    example: null
+                  totalPages:
+                    type: number
+                    example: 2
+                  totalItems:
+                    type: number
+                    example: 10
+                  hasPrevPage:
+                    type: boolean
+                    example: false
+                  hasNextPage:
+                    type: boolean
+                    example: true
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - products
+      sumary: Create a new product, admin users only
+      requestBody:
+        description: Product info required to create a new product
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfo'
+      responses:
+        201:
+          description: Product created properly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product created'
+                  content:
+                    $ref: '#/components/schemas/Product'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not created due to validation error'
+                  code:
+                    type: string
+                    example: GeneralUserError
+                  status:
+                    type: number
+                    example: 400
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not created due to validation error'
+                  code:
+                    type: string
+                    example: UnauthorizedError
+                  status:
+                    type: number
+                    example: 401
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not created due to validation error'
+                  code:
+                    type: string
+                    example: ForbiddenError
+                  status:
+                    type: number
+                    example: 403
+  /api/products/{id}:
+    get:
+      tags:
+        - products
+      sumary: Get a product by id
+      parameters:
+        - name: id
+          in: path
+          description: Product id
+          schema:
+            type: string
+            example: '60d0b6f0d0b6f0d0b6f0d0b6'
+          required: true
+      responses:
+        200:
+          description: Product found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product found'
+                  content:
+                    $ref: '#/components/schemas/Product'
+        404:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: product not found
+                  code:
+                    type: string
+                    example: GeneralUserError
+                  status:
+                    type: number
+                    example: 404
+    patch:
+      tags:
+        - products
+      sumary: Update a product by id, in order to use this endpoint, you must be an admin
+      parameters:
+        - name: id
+          in: path
+          description: Product id
+          schema:
+            type: string
+            example: '60d0b6f0d0b6f0d0b6f0d0b6'
+          required: true
+      requestBody:
+        description: Product info required to update a product, this can contain only the fields that you want to update
+        required: true
+        content:
+          application/json:
+            example: {"status": false, "stock": 0}
+      responses:
+        200:
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product updated'
+                  content:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: 'Product updated properly'
+                      acknowledged:
+                        type: boolean
+                        example: true
+                      matchedCount:
+                        type: number
+                        example: 1
+                      modifiedCount:
+                        type: number
+                        example: 1
+                      upsertedCount:
+                        type: number
+                        example: 0
+                      upsertedId:
+                        type: string
+                        example: '60d0b6f0d0b6f0d0b6f0d0b6'
+        404:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: product not found
+                  code:
+                    type: string
+                    example: GeneralUserError
+                  status:
+                    type: number
+                    example: 404
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not updated due to validation error'
+                  code:
+                    type: string
+                    example: UnauthorizedError
+                  status:
+                    type: number
+                    example: 401
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not updated due to validation error'
+                  code:
+                    type: string
+                    example: ForbiddenError
+                  status:
+                    type: number
+                    example: 403
+  /api/products/{pid}:
+    delete:
+      tags:
+        - products
+      sumary: Delete a product by id, in order to use this endpoint, you must be an admin or a premium user
+      parameters:
+        - name: pid
+          in: path
+          description: Product id
+          schema:
+            type: string
+            example: '60d0b6f0d0b6f0d0b6f0d0b6'
+          required: true
+      responses:
+        200:
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product deleted'
+                  content:
+                    $ref: '#/components/schemas/Product'
+        404:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: product not found
+                  code:
+                    type: string
+                    example: GeneralUserError
+                    status:
+                      type: number
+                      example: 404
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Unauthorized'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden'
+  /api/products/premium:
+    post:
+      tags:
+        - products
+      sumary: Create a new product, premium users only
+      requestBody:
+        description: Product info required to create a new product
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfo'
+      responses:
+        201:
+          description: Product created properly, owner product's field will be premium user id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product created'
+                  content:
+                    $ref: '#/components/schemas/Product'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not created due to validation error'
+                  code:
+                    type: string
+                    example: GeneralUserError
+                  status:
+                    type: number
+                    example: 400
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not created due to validation error'
+                  code:
+                    type: string
+                    example: UnauthorizedError
+                  status:
+                    type: number
+                    example: 401
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not created due to validation error'
+                  code:
+                    type: string
+                    example: ForbiddenError
+                  status:
+                    type: number
+                    example: 403
+  /api/products/{id}/premium:
+    patch:
+      tags:
+        - products
+      sumary: Update a product by id, premium users only
+      parameters:
+        - name: id
+          in: path
+          description: Product id
+          schema:
+            type: string
+            example: '60d0b6f0d0b6f0d0b6f0d0b6'
+          required: true
+      requestBody:
+        description: Product info required to update a product
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfo'
+            example: {"status": false, "stock": 0}
+      responses:
+        200:
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product updated'
+                  content:
+                    $ref: '#/components/schemas/Product'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not updated due to validation error'
+                  code:
+                    type: string
+                    example: GeneralUserError
+                  status:
+                    type: number
+                    example: 400
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not updated due to validation error'
+                  code:
+                    type: string
+                    example: UnauthorizedError
+                  status:
+                    type: number
+                    example: 401
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not updated due to validation error'
+                  code:
+                    type: string
+                    example: ForbiddenError
+                  status:
+                    type: number
+                    example: 403
+        404:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: product not found
+                  code:
+                    type: string
+                    example: GeneralUserError
+                  status:
+                    type: number
+                    example: 404
+    delete:
+      tags:
+        - products
+      sumary: Delete a product by id, premium users only
+      parameters:
+        - name: id
+          in: path
+          description: Product id
+          schema:
+            type: string
+            example: '60d0b6f0d0b6f0d0b6f0d0b6'
+          required: true
+      responses:
+        200:
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product deleted'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not deleted due to validation error'
+                  code:
+                    type: string
+                    example: UnauthorizedError
+                  status:
+                    type: number
+                    example: 401
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Product not deleted due to validation error'
+                  code:
+                    type: string
+                    example: ForbiddenError
+                  status:
+                    type: number
+                    example: 403
+        404:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: product not found
+                  code:
+                    type: string
+                    example: GeneralUserError
+                  status:
+                    type: number
+                    example: 404
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        __id:
+          type: string
+          example: '60d0b6f0d0b6f0d0b6f0d0b6'
+        name:
+          type: string
+          example: 'Coca Cola'
+        price:
+          type: number
+          example: 10
+        category:
+          type: string
+          example: 'drink'
+        description:
+          type: string
+          example: 'Coca Cola is a carbonated soft drink manufactured by The Coca-Cola Company.'
+        owner:
+          type: string
+          example: '60d0b6f0d0b6f0d0asfasdegae'
+        code:
+          type: string
+          example: 'COCACOLA'
+        thumbnail:
+          type: string
+          example: 'https://www.coca-cola.es/content/dam/journey/nl/nl_NL/products/coca-cola-zero/product-page/coca-cola-zero.png'
+        stock:
+          type: number
+          example: 10
+        status:
+          type: boolean
+          example: true
+      required:
+        - name
+        - price
+        - category
+        - description
+        - code
+    ProductInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Coca Cola'
+        price:
+          type: number
+          example: 10
+        category:
+          type: string
+          example: 'drink'
+        description:
+          type: string
+          example: 'Coca Cola is a carbonated soft drink manufactured by The Coca-Cola Company.'
+        thumbnail:
+          type: string
+          example: 'https://www.coca-cola.es/content/dam/journey/nl/nl_NL/products/coca-cola-zero/product-page/coca-cola-zero.png'
+        stock:
+          type: number
+          example: 10
+        status:
+          type: boolean
+          example: true
+        code:
+          type: string
+          example: 'COCACOLA'
+        required:
+          - name
+          - price
+          - category
+          - description
+          - code

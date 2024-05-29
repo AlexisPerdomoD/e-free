@@ -1,6 +1,7 @@
 import swaggerJSDoc from "swagger-jsdoc"
 import __dirname from "../dirname.js"
 const swaggerOptions = {
+    failonError: true,
     definition:{
         openapi: '3.0.1',
         info:{
