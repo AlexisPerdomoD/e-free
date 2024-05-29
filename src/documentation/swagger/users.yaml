@@ -1,0 +1,86 @@
+paths:
+  /api/users:
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+      responses:
+        201:
+          description: User created properly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: 'User created properly'
+                  content:
+                    $ref: '#/components/schemas/User'
+        400:
+          description: 'Bad request'
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {
+                  error: 'Bad request',
+                  message: 'email already exists'
+                }
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: 'testino'
+        last_name:
+          type: string
+          example: 'Gutierrez'
+        email:
+          type: string
+          example: 'testino@example.com'
+        password:
+          type: string
+          example: 'Secreto132$'
+        rol:
+          enum:
+            - 'usser'
+            - 'admin'
+            - 'premium'
+          example: 'usser'
+        age:
+          type: number
+          example: 22
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: '5f6f5f5f5f5f5f5f5f5f5f5f324wdver63'
+        first_name:
+          type: string
+          example: 'testino'
+        last_name:
+          type: string
+          example: 'Gutierrez'
+        email:
+          type: string
+          example: 'testino@example.com'
+        age:
+          type: number
+          example: 22
+        cart:
+          type: string
+          example: '5f6f5f5f5f5f5f5f5f5f5f5f324wdver63'
+        rol:
+          enum:
+            - 'usser'
+            - 'admin'
+            - 'premium'
+          example: 'usser'
