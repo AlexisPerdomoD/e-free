@@ -3,19 +3,19 @@ swagger: '2.0'
 info:
   version: '1.0.0'
   title: Users API
-  description: API for users management
+  description: API for users' management.
   termsOfService: 'http://swagger.io/terms/'
   contact:
     name: 'API Support'
 tags:
   - name: users
-    description: API for users management
+    description: API for users' management.
 paths:
   /api/users:
     post:
       tags:
         - users
-      summary: Create a new user
+      summary: Create a new user.
       requestBody:
         required: true
         content:
@@ -24,7 +24,7 @@ paths:
               $ref: '#/components/schemas/UserInfo'
       responses:
         201:
-          description: User created properly
+          description: User created properly. This process also log the user in.
           content:
             application/json:
               schema:
@@ -47,7 +47,7 @@ paths:
       description: Login a user with email and password.
       tags:
         - users
-      summary: Login a user
+      summary: Login a user with email and password.
       requestBody:
         required: true
         content:
@@ -63,7 +63,7 @@ paths:
                   example: 'Secreto132$'
       responses:
         200:
-          description: User logged in properly
+          description: User logged in properly. Session will last for 1 hour by default.
           content:
             application/json:
               schema:
@@ -90,14 +90,14 @@ paths:
                 type: object
                 example: {error: 'Bad request', message: 'the credentials were not provided correctly'}
   /api/users/logout:
-    post:
-      description: Logout a user
+    get:
+      description: Logout a user. Destroy the session and log the user out.
       tags:
         - users
-      summary: Logout a user
+      summary: Logout a user.
       responses:
         200:
-          description: User logged out properly
+          description: User logged out properly.
           content:
             application/json:
               schema:
@@ -127,6 +127,7 @@ components:
           type: string
           example: 'Secreto132$'
         rol:
+          type: string
           enum:
             - 'usser'
             - 'admin'
@@ -157,6 +158,7 @@ components:
           type: string
           example: '5f6f5f5f5f5f5f5f5f5f5f5f324wdver63'
         rol:
+          type: string
           enum:
             - 'usser'
             - 'admin'
