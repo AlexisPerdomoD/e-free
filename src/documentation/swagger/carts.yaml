@@ -1,0 +1,173 @@
+# src/documentation/swagger/carts.yaml
+tags:
+  - name: carts
+    description: Operations about carts, in order to use this endpoint, you must be an authenticated user
+paths:
+  /api/cart:
+    get:
+      tags:
+        - carts
+      sumary: Get user's cart
+      responses:
+        200:
+          description: Carts found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: Carts not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Carts not found
+                  code:
+                    type: number
+                    example: 3
+                  status:
+                    type: number
+                    example: 404
+  /api/cart/product/{id}:
+    patch:
+      tags:
+        - carts
+      sumary: Update product's quantity in cart, if the product is not in the cart, it will be added
+      parameters:
+        - name: id
+          in: path
+          description: Product id
+          schema:
+            type: string
+            example: '60d0b6f0d0b6f0d0b6f0d0b6'
+          required: true
+      requestBody:
+        description: Product quantity required to update in cart
+        required: true
+        content:
+          application/json:
+            example: {"quantity": 2}
+      responses:
+        200:
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: Product not found in the list of available products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Product not found
+                  code:
+                    type: number
+                    example: 3
+                  status:
+                    type: number
+                    example: 404
+    delete:
+      tags:
+        - carts
+      sumary: Delete product from cart directly
+      parameters:
+        - name: id
+          in: path
+          description: Product id
+          schema:
+            type: string
+            example: '60d0b6f0d0b6f0d0b6f0d0b6'
+          required: true
+      responses:
+        200:
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: Product not found inside the cart
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Product not found in the cart
+                  code:
+                    type: number
+                    example: 3
+                  status:
+                    type: number
+                    example: 404
+  /api/cart/purchase:
+    get:
+      tags:
+        - carts
+      sumary: generate ticket for user's cart
+      responses:
+        200:
+          description: Ticket generated properly from the user's cart, this ticket contains all products in the cart with enought stock, any other keeps in the cart.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        __id:
+          type: string
+          example: '60d0b6f0d0b6f0d0b6f0d0b6'
+        products:
+          type: array
+          items:
+            type: object
+            properties: 
+              product:
+                $ref: '#/components/schemas/Product'
+              quantity:
+                type: number
+                example: 2  
+    Ticket:
+      type: object
+      properties:
+        code: 
+          type: string
+          example: 'dsufghweuirfhgw3iuy1238043hdejf23890'
+        amount:
+          type: number
+          example: 20
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product_name:
+                type: string
+                example: 'Coca Cola'
+              quantity:
+                type: number
+                example: 2
+              price:
+                type: number
+                example: 10
+              product_amount:
+                type: number
+                example: 20
+          user:
+            type: string
+            example: 'testino@mail.com'
+          message:
+            type: string
+            example: 'there were some products with insufficient stock'
+
