@@ -1,5 +1,4 @@
 # src/documentation/swagger/users.yaml
-# src/documentation/swagger/users.yaml
 swagger: '2.0'
 info:
   version: '1.0.0'
@@ -14,7 +13,7 @@ tags:
 paths:
   /api/users:
     post:
-      tags: 
+      tags:
         - users
       summary: Create a new user
       requestBody:
@@ -31,7 +30,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  message: 
+                  message:
                     type: string
                     example: 'User created properly'
                   content:
@@ -42,10 +41,74 @@ paths:
             application/json:
               schema:
                 type: object
-                example: {
-                  error: 'Bad request',
-                  message: 'email already exists'
-                }
+                example: {error: 'Bad request', message: 'email already exists'}
+  /api/users/login:
+    post:
+      description: Login a user with email and password.
+      tags:
+        - users
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'testino@example.com'
+                password:
+                  type: string
+                  example: 'Secreto132$'
+      responses:
+        200:
+          description: User logged in properly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'User logged in properly'
+        401:
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {error: 'Unauthorized', message: 'Invalid credentials'}
+        400:
+          description: 'Bad request'
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {error: 'Bad request', message: 'the credentials were not provided correctly'}
+  /api/users/logout:
+    post:
+      description: Logout a user
+      tags:
+        - users
+      summary: Logout a user
+      responses:
+        200:
+          description: User logged out properly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'User logged out properly'
 components:
   schemas:
     UserInfo:
