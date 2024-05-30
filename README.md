@@ -125,6 +125,14 @@ to run the project using src/.env.production.
 
 ## Endpoints
 
+### Swagger documentation
+Before hands on, you will have access for an specifict documentation enpoint built with [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc).
+there you'll find more details about the endpoint and how it works.
+
+```http
+  GET /api/apidocs
+```
+
 ### Users
 
 ### Signup
