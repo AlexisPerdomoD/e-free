@@ -132,7 +132,7 @@ export default class CartMannagerM {
     async cartCheckOut(cId) {
         let cart = (await cartModel.find({ _id: cId }))[0]
         if (cart.products.length <= 0)
-            throw em.createError({
+            throw em.createError( {
                 status: 400,
                 code: ErrorCode.GENERAL_USER_ERROR,
                 message: "the cart does not have any product yet",
