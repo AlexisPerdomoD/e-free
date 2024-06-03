@@ -4,7 +4,7 @@
     "description": "open source solution for API REST e-comerse",
     "main": "src/app.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "mocha --mode pro",
         "start": "node src/app.js --mode pro",
         "dev": "nodemon src/app.js --mode dev"
     },
@@ -32,6 +32,7 @@
     },
     "type": "module",
     "devDependencies": {
+        "mocha": "^10.4.0",
         "nodemon": "^3.1.1"
     }
 }
