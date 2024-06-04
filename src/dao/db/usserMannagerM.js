@@ -47,4 +47,9 @@ export default class UsserMannagerM {
     );
     return response;
   }
+async deleteUsser(ussername) {
+    const usser = await this.getUsser(ussername)
+    const response = await usserModel.deleteOne({ _id: usser._id })
+    return response
+  }
 }
