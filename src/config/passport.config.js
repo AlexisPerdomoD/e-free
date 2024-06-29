@@ -21,7 +21,7 @@ const initializatePassport = () => {
             },
             async (_req, username, password, done) => {
                 try {
-                    const usser = await um.getUsser(username)
+                    const usser = await um.getUsser(username.toLowerCase())
                     if (!usser)
                        throw em.createError({
                             status: 404,
@@ -56,6 +56,7 @@ const initializatePassport = () => {
             },
             async (req, username, password, done) => {
                 try {
+                    username = username.toLowerCase()
                     const regex =
                         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
                     if (!regex.test(password))
@@ -113,14 +114,14 @@ const initializatePassport = () => {
                         })
                     const { name, email, login } = profile._json
                     const usser = await um.getUsser(
-                        email || login + "@github.usser"
+                        email || login + ".github.usser"
                     )
                     if (!usser) {
                         const usserCart = await cm.addCart()
                         const newUsser = {
                             first_name: name,
                             last_name: "",
-                            email: email || login + "@github.usser",
+                            email: email.toLowerCase() || login + ".github.usser",
                             age: 18,
                             password: "",
                             cart: usserCart.content._id,
