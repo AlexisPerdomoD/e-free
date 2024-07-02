@@ -24,7 +24,7 @@ const app = express()
 logger.info(`starting Api mode ${dotenvConfig.mode} port ${dotenvConfig.port} db ${dotenvConfig.persistence}`)
 app.use(
     cors({
-        origin: dotenvConfig.host,
+        origin: '*',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         allowedHeaders: ['Content-Type'] // Permitir solo el encabezado Content-Type
     })
