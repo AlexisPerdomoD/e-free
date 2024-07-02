@@ -1,10 +1,9 @@
-import CartMannagerM from '../../dao/db/CartMannagerM.js'
+import { cm } from '../../dao/index.js'
 import em, { ErrorCode } from '../../utils/error.manager.js'
-const cM = new CartMannagerM()
 
 export async function getCartController(req, res, next) {
     try {
-        const response = await cM.getCartById(req.session.cart)
+        const response = await cm.getCartById(req.session.cart)
         if (response === null)
             throw em.createError({
                 name: 'CastError',
@@ -27,7 +26,7 @@ export async function updateCartController(req, res, next) {
                 'quantity',
                 'expected type number higher or equal to 0, got: ' + req.body.quantity
             )
-        const response = await cM.updateCartProduct(req.session.cart, req.params.pid, req.body.quantity)
+        const response = await cm.updateCartProduct(req.session.cart, req.params.pid, req.body.quantity)
         return res.send(response)
     } catch (err) {
         next(err)
@@ -36,7 +35,7 @@ export async function updateCartController(req, res, next) {
 
 export async function deleteProductFromCartController(req, res, next) {
     try {
-        const response = await cM.deleteProductfromCart(req.session.cart, req.params.pid)
+        const response = await cm.deleteProductfromCart(req.session.cart, req.params.pid)
         return res.send(response)
     } catch (err) {
         next(err)
@@ -45,7 +44,7 @@ export async function deleteProductFromCartController(req, res, next) {
 
 export async function checkOutCart(req, res, next) {
     try {
-        const response = await cM.cartCheckOut(req.session.cart)
+        const response = await cm.cartCheckOut(req.session.cart)
         return res.send({ ...response, user: req.session.ussername })
     } catch (err) {
         next(err)

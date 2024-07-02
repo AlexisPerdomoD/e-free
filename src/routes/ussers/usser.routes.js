@@ -1,6 +1,12 @@
 import { Router } from 'express'
 import passport from 'passport'
-import { deleteInnactiveUssersCtr, getUssersCtr, levelUpUserCtr, loginController, logoutController } from '../../controllers/ussers/ussersControllers.js'
+import {
+    deleteInnactiveUssersCtr,
+    getUssersCtr,
+    levelUpUserCtr,
+    loginController,
+    logoutController
+} from '../../controllers/ussers/ussersControllers.js'
 import em, { ErrorCode } from '../../utils/error.manager.js'
 import { isLogged } from '../../utils/users.midleware.js'
 const usserRouter = Router()
@@ -14,8 +20,8 @@ usserRouter.post(
     passport.authenticate('register', {
         failureMessage: true
     }),
-    (req, res) => {
-        loginController(req, res)
+    async (req, res, next) => {
+        await loginController(req, res, next)
         res.send({
             ok: true,
             message: 'session properly started and user created'
@@ -29,8 +35,8 @@ usserRouter.post(
         failureRedirect: '/api/usser/error_template',
         failureMessage: true
     }),
-    (req, res) => {
-        loginController(req, res)
+    async (req, res, next) => {
+        await loginController(req, res, next)
         res.redirect('/products')
     }
 )
@@ -40,8 +46,8 @@ usserRouter.post(
     passport.authenticate('login', {
         failureMessage: true
     }),
-    (req, res) => {
-        loginController(req, res)
+    async (req, res, next) => {
+        await loginController(req, res, next)
         res.send({
             ok: true,
             message: 'session properly started'
@@ -55,8 +61,8 @@ usserRouter.post(
         failureRedirect: '/api/usser/error_template',
         failureMessage: true
     }),
-    (req, res) => {
-        loginController(req, res)
+    async (req, res, next) => {
+        await loginController(req, res, next)
         res.redirect('/products')
     }
 )

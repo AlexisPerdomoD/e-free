@@ -1,6 +1,5 @@
-import UsserMannagerM from '../../dao/db/usserMannagerM.js'
+import { um } from '../../dao/index.js'
 import em, { ErrorCode } from '../../utils/error.manager.js'
-const um = new UsserMannagerM()
 export async function loginController(req, _res, next) {
     try {
         await um.updateUsser(req.user.email, { last_session: new Date() })
@@ -13,7 +12,6 @@ export async function loginController(req, _res, next) {
         next(err)
     }
 }
-
 export function logoutController(req, res) {
     if (!req.session.ussername) return res.redirect('/login')
     req.session.destroy((err) => {
@@ -26,7 +24,6 @@ export function logoutController(req, res) {
             })
     })
 }
-
 export async function levelUpUserCtr(req, res, next) {
     try {
         await um.updateUsser(req.session.ussername, { rol: 'premium' })
@@ -38,7 +35,6 @@ export async function levelUpUserCtr(req, res, next) {
         next(err)
     }
 }
-
 export async function getUssersCtr(req, res, next) {
     try {
         let { page, limit } = req.query
@@ -51,7 +47,6 @@ export async function getUssersCtr(req, res, next) {
         next(err)
     }
 }
-
 export async function deleteInnactiveUssersCtr(_req, res, next) {
     try {
         return res.send(await um.deleteInactiveUssers())

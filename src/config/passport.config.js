@@ -1,45 +1,42 @@
-import passport from "passport"
-import GitHubStrategy from "passport-github2"
-import local from "passport-local"
-import UsserMannagerM from "../dao/db/usserMannagerM.js"
-import { checkPass, signPass } from "../utils/utils.js"
-import CartMannagerM from "../dao/db/CartMannagerM.js"
-import dotenvConfig from "./dotenv.config.js"
-import em, { ErrorCode } from "../utils/error.manager.js"
-
-const um = new UsserMannagerM()
-const cm = new CartMannagerM()
+import passport from 'passport'
+import GitHubStrategy from 'passport-github2'
+import local from 'passport-local'
+import { checkPass, signPass } from '../utils/utils.js'
+import dotenvConfig from './dotenv.config.js'
+import em, { ErrorCode } from '../utils/error.manager.js'
+import logger from './winston.config.js'
+import { cm, um } from '../dao/index.js'
 
 const initializatePassport = () => {
     // here i'll be settle every end point and strategy to authenticate ussers
     passport.use(
-        "login",
+        'login',
         new local.Strategy(
             {
-                usernameField: "email",
-                passReqToCallback: true,
+                usernameField: 'email',
+                passReqToCallback: true
             },
             async (_req, username, password, done) => {
                 try {
                     const usser = await um.getUsser(username.toLowerCase())
                     if (!usser)
-                       throw em.createError({
+                        throw em.createError({
                             status: 404,
-                            message: "the user does not exist",
-                            name: "CastError",
+                            message: 'the user does not exist',
+                            name: 'CastError',
                             code: ErrorCode.GENERAL_USER_ERROR,
-                            cause:"not found",
+                            cause: 'not found'
                         })
                     if (!checkPass(password, usser))
-                         throw em.createError({
+                        throw em.createError({
                             status: 401,
-                            message: "wether the email or password is not correct",
-                            name: "Authentication Error",
+                            message: 'wether the email or password is not correct',
+                            name: 'Authentication Error',
                             code: ErrorCode.NOT_AUTHORIZATION,
-                            cause:"invalid credentials",
+                            cause: 'invalid credentials'
                         })
 
-                   delete usser.password
+                    delete usser.password
                     return done(null, usser)
                 } catch (error) {
                     return done(error)
@@ -48,29 +45,29 @@ const initializatePassport = () => {
         )
     )
     passport.use(
-        "register",
+        'register',
         new local.Strategy(
             {
-                usernameField: "email",
-                passReqToCallback: true,
+                usernameField: 'email',
+                passReqToCallback: true
             },
             async (req, username, password, done) => {
                 try {
                     username = username.toLowerCase()
-                    const regex =
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+                    logger.debug(username)
+                    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/
                     if (!regex.test(password))
                         return done(null, false, {
-                            message: "password do not follows de RegExp",
+                            message: 'password do not follows de RegExp'
                         })
                     const usser = await um.getUsser(username)
                     if (usser)
                         throw em.createError({
                             status: 400,
-                            message: "email is already been used",
-                            name: "CastError",
+                            message: 'email is already been used',
+                            name: 'CastError',
                             code: ErrorCode.GENERAL_USER_ERROR,
-                            cause: "email need to be change",
+                            cause: 'email need to be change'
                         })
                     //return done(null, false, {message:"the email is already being used"})
                     //create cart for usser
@@ -84,47 +81,44 @@ const initializatePassport = () => {
                         password: signedPass,
                         email: username,
                         cart: usserCart.content._id,
-                        rol:
-                            dotenvConfig.admin === username ? "admin" : "usser",
+                        rol: dotenvConfig.admin === username ? 'admin' : 'usser'
                     })
 
                     delete newUsser.content.password
 
                     return done(null, newUsser.content)
                 } catch (error) {
+                    logger.http(error)
                     return done(error)
                 }
             }
         )
     )
     passport.use(
-        "github",
+        'github',
         new GitHubStrategy(
             {
-                clientID: "Iv1.d9511b7d10d472f9",
-                clientSecret: "4a34d3ea527c9ee7f6864f8bee2067fa5fc29d5d",
-                callbackURl: "http://localhost:8080/api/usser/githubcb",
+                clientID: 'Iv1.d9511b7d10d472f9',
+                clientSecret: '4a34d3ea527c9ee7f6864f8bee2067fa5fc29d5d',
+                callbackURl: 'http://localhost:8080/api/usser/githubcb'
             },
-            async (accessToken, refreshToken, profile, done) => {
+            async (_accessToken, _refreshToken, profile, done) => {
                 try {
                     if (!profile._json?.email)
                         return done(null, false, {
-                            message:
-                                "these usser does not provite any email from github",
+                            message: 'these usser does not provite any email from github'
                         })
                     const { name, email, login } = profile._json
-                    const usser = await um.getUsser(
-                        email || login + ".github.usser"
-                    )
+                    const usser = await um.getUsser(email || login + '.github.usser')
                     if (!usser) {
                         const usserCart = await cm.addCart()
                         const newUsser = {
                             first_name: name,
-                            last_name: "",
-                            email: email.toLowerCase() || login + ".github.usser",
+                            last_name: '',
+                            email: email.toLowerCase() || login + '.github.usser',
                             age: 18,
-                            password: "",
-                            cart: usserCart.content._id,
+                            password: '',
+                            cart: usserCart.content._id
                         }
                         let response = await um.setUsser(newUsser)
                         delete response.content.password
@@ -139,9 +133,7 @@ const initializatePassport = () => {
         )
     )
     passport.serializeUser((usser, done) => done(null, usser._id))
-    passport.deserializeUser(async (id, done) =>
-        done(null, await um.getUsserById(id))
-    )
+    passport.deserializeUser(async (id, done) => done(null, await um.getUsserById(id)))
 }
 
 export default initializatePassport
