@@ -1,8 +1,7 @@
 import { sendDeleteProductEmail } from '../../config/mailer.config.js'
-import UsserMannagerM from '../../dao/db/usserMannagerM.js'
-import { pm } from '../../dao/index.js'
+import { pm, um } from '../../dao/index.js'
 import em, { ErrorCode } from '../../utils/error.manager.js'
-const um = new UsserMannagerM()
+
 export async function getProductsController(req, res, next) {
     try {
         const response = await pm.getProductsPaginate(req.query)
@@ -11,7 +10,6 @@ export async function getProductsController(req, res, next) {
         next(err)
     }
 }
-
 export async function getProductController(req, res, next) {
     try {
         const response = await pm.getProductById(req.params.pid)
@@ -66,7 +64,6 @@ export async function addProductController(req, res, next) {
         next(err)
     }
 }
-
 export async function updateProductController(req, res, next) {
     try {
         const updateblesFields = ['title', 'description', 'price', 'stock', 'thumbnail', 'status', 'category', 'code']
@@ -112,7 +109,6 @@ export async function updateProductByOwnerCtr(req, res, next) {
         next(err)
     }
 }
-
 export async function deleteProductByOwnerCtr(req, res, next) {
     try {
         const product = (await pm.getProductById(req.params['pid'])).content
@@ -136,7 +132,8 @@ export async function deleteProductByOwnerCtr(req, res, next) {
             const usser = await um.getUsserById(deletedProduct.owner)
             // CHECKS IF PREMIUM USSER HAS A VALID EMAIL  and SEND EMAIL
             const EMAIL_REGEX = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
-            EMAIL_REGEX.test(usser.email) && await sendDeleteProductEmail(deletedProduct, usser, 'Product deleted by owner')
+            EMAIL_REGEX.test(usser.email) &&
+                (await sendDeleteProductEmail(deletedProduct, usser, 'Product deleted by owner'))
         }
         return res.send(response)
     } catch (err) {

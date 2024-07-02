@@ -10,9 +10,9 @@ viewsRouter.get('/', (req, res) => {
         role: req.session ? req.session.rol : '?'
     })
 })
-viewsRouter.get('/products', renderProductsCtr)
-viewsRouter.get('/cart/', isUsser, renderCartCtr)
-viewsRouter.get('/comments/', isUsser, renderCommentsCtr)
+viewsRouter.get('/products', async (req, res, next) => renderProductsCtr(req, res, next))
+viewsRouter.get('/cart/', isUsser, async (req, res, next) => renderCartCtr(req, res, next))
+viewsRouter.get('/comments/', isUsser, async (req, res, next) => renderCommentsCtr(req, res, next))
 viewsRouter.get('/createAccount', (_req, res) => res.render('createAccount'))
 viewsRouter.get('/login', (_req, res) => res.render('login'))
 
