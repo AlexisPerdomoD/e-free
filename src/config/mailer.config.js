@@ -88,4 +88,72 @@ export const sendDeleteProductEmail = async (product, usser, reason = 'Product d
 
     return mailer.sendMail(message)
 }
+export const sendDeleteInnactiveUsserEmail = async (usser) => {
+    const message = {
+        from: mailer_user,
+        to: usser.email,
+        subject: 'Account Deletion Notification',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Deletion Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Account Deletion Notification</h1>
+        </div>
+        <div class="content">
+            <p>Dear User,</p>
+            <p>We regret to inform you that your account has been deleted from our platform. If you have any questions or need further assistance, please contact our support team.</p>
+            <p>Thank you for understanding.</p>
+            <p>Best regards,</p>
+            <p>The Support Team</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+`
+    }
+
+    return mailer.sendMail(message)
+}
 export default mailer

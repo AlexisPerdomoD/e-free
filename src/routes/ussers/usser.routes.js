@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import passport from 'passport'
-import { getUssersCtr, levelUpUserCtr, loginController, logoutController } from '../../controllers/ussers/ussersControllers.js'
+import { deleteInnactiveUssersCtr, getUssersCtr, levelUpUserCtr, loginController, logoutController } from '../../controllers/ussers/ussersControllers.js'
 import em, { ErrorCode } from '../../utils/error.manager.js'
 import { isLogged } from '../../utils/users.midleware.js'
 const usserRouter = Router()
 // GET USSERS INFO #public for now but will be only for admins
 usserRouter.get('/', getUssersCtr)
 // DELETE INACTIVE USSERS #public for now but will be only for admins
-// TODO usserRouter.delete('/', deleteInactiveUssers)
+usserRouter.delete('/', deleteInnactiveUssersCtr)
 // SIGN UP  POST api/usser
 usserRouter.post(
     '/',

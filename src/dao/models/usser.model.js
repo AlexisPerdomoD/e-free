@@ -34,7 +34,11 @@ const usserSchema = new Schema({
     cart: {
         type: Schema.Types.ObjectId,
         ref: 'carts',
-        default: null
+        require: true
+    },
+    last_session: {
+        type: Date,
+        require: true
     }
 })
 //maybe not needed here

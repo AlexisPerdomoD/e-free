@@ -31,8 +31,7 @@ export async function deleteProductController(req, res, next) {
             const usser = await um.getUsserById(deletedProduct.owner)
             // CHECKS IF PREMIUM USSER HAS A VALID EMAIL  and SEND EMAIL
             const EMAIL_REGEX = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
-            console.log(usser)
-            EMAIL_REGEX.test(usser.email) && console.log(await sendDeleteProductEmail(deletedProduct, usser))
+            EMAIL_REGEX.test(usser.email) && (await sendDeleteProductEmail(deletedProduct, usser))
         }
         return res.send(response)
     } catch (err) {

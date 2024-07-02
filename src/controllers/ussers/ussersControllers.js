@@ -1,12 +1,17 @@
 import UsserMannagerM from '../../dao/db/usserMannagerM.js'
 import em, { ErrorCode } from '../../utils/error.manager.js'
 const um = new UsserMannagerM()
-export function loginController(req, _res) {
-    req.session.ussername = req.user.email
-    req.session.name = req.user.first_name
-    req.session.rol = req.user.rol
-    req.session.cart = req.user.cart
-    req.session._id = req.user._id
+export async function loginController(req, _res, next) {
+    try {
+        await um.updateUsser(req.user.email, { last_session: new Date() })
+        req.session.ussername = req.user.email
+        req.session.name = req.user.first_name
+        req.session.rol = req.user.rol
+        req.session.cart = req.user.cart
+        req.session._id = req.user._id
+    } catch (err) {
+        next(err)
+    }
 }
 
 export function logoutController(req, res) {
@@ -37,11 +42,19 @@ export async function levelUpUserCtr(req, res, next) {
 export async function getUssersCtr(req, res, next) {
     try {
         let { page, limit } = req.query
-        page = Math.abs(parseInt(page)) 
+        page = Math.abs(parseInt(page))
         limit = Math.abs(parseInt(limit))
         if (isNaN(page)) page = 1
         if (isNaN(limit)) limit = 10
         return res.send(await um.getUssers({ page, limit }))
+    } catch (err) {
+        next(err)
+    }
+}
+
+export async function deleteInnactiveUssersCtr(_req, res, next) {
+    try {
+        return res.send(await um.deleteInactiveUssers())
     } catch (err) {
         next(err)
     }

@@ -1,5 +1,6 @@
 import usserModel from '../models/usser.model.js'
 import em, { ErrorCode } from '../../utils/error.manager.js'
+import { sendDeleteInnactiveUsserEmail } from '../../config/mailer.config.js'
 export default class UsserMannagerM {
     async getUsserById(id) {
         const response = await usserModel.findById(id)
@@ -52,5 +53,29 @@ export default class UsserMannagerM {
     async getUssers(options = {}) {
         options.select = '-password -__v -cart'
         return await usserModel.paginate({}, options)
+    }
+    async deleteInactiveUssers() {
+        const oneMonthInMilliseconds = 1000  * 60 * 60 * 24 * 30
+        const inactivityThreshold = new Date(Date.now() - oneMonthInMilliseconds)
+
+        const inactiveUsers = await usserModel.find({ last_session: { $lt: inactivityThreshold } })
+        if (inactiveUsers.length === 0)
+            return {
+                message: 'No inactive users found in the last month'
+            }
+        const promises = []
+        for (const usser of inactiveUsers) {
+            promises.push(
+                // WRAPING THIS INTO AN ANONYMOUS FUNCTION AND PUSH IT INTO promises TO DO MULTITHREADING
+                (async function () {
+                    await usserModel.deleteOne({ _id: usser._id })
+                    // CHECKS IF THE USSER HAS A VALID EMAIL  and SEND EMAIL
+                    const EMAIL_REGEX = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
+                    EMAIL_REGEX.test(usser.email) && (await sendDeleteInnactiveUsserEmail(usser))
+                    return 'inactive user deleted: ' + usser.email
+                })()
+            )
+        }
+        return await Promise.allSettled(promises)
     }
 }
