@@ -12,6 +12,62 @@ tags:
     description: API for users' management.
 paths:
   /api/users:
+    get:
+      tags:
+        - users
+      summary: Get all users.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: number
+            example: 1
+          description: The page number
+        - in: query
+          name: limit
+          schema:
+            type: number
+            example: 10
+          description: The number of items per page
+      responses:
+        200:
+          description: Get all users.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Get all users'
+                  content:
+                  type: object
+                  properties:
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      totalDocs:
+                        type: number
+                        example: 10
+                      limit:
+                        type: number
+                        example: 10
+                      page:
+                        type: number
+                        example: 1
+                      totalPages:
+                        type: number
+                        example: 1
+                      hasPrevPage:
+                        type: boolean
+                      hasNextPage:
+                        type: boolean
     post:
       tags:
         - users

@@ -94,6 +94,11 @@ To run this project, you will need to add the following environment variables to
 *  `MODE` there is 'DEV'(development) with more debug information, persistence mode in file system for products(JSon file) and 'PRO'(production) with persistence mode in mongodb for everything. This is for debug information purposes. 
 
 * `ADMIN` in order to create an user with admin purpuses, the email must be placed in the .env and then, with the app running create the user with the same email. After that, this user's session will be able to get to admin endpoints.
+* `MAILER`
+- `MAILER_USER` the email of the user that will be used to send mails
+- `MAILER_PASS` the password of the user that will be used to send mails
+- `MAILER_SERVICE` the service that will be used to send mails, in this case 'gmail'
+- `MAILER_PORT` the port that will be used to send mails, in this case '587'
 
 #### example .dev.develoment
 ```
@@ -102,9 +107,15 @@ PORT = 8080
 DB = mongodb+srv://username:***********@clutster0.*******.mongodb.net/e-comerse-server
 SECRET = secret
 HOST = http://localhost:8080
-PERSISTENCE = FS
-MODE = DEV
+PERSISTENCE = MONGO
+MODE = PRO
 ADMIN = 'admin@example.com'
+# MAILER
+ADMIN = 'admin@mail.com'
+MAILER_USER=mailer4project@gmail.com
+MAILER_PASS=Secr3d123*
+MAILER_SERVICE=gmail
+MAILER_PORT=587
 ```
 ## Setup 
 
@@ -134,6 +145,14 @@ there you'll find more details about the endpoint and how it works.
 ```
 
 ### Users
+
+### Get all users
+
+``` http
+  GET  /api/users
+```
+
+By default this endpoint is not protected but is meant for admin purposes.
 
 ### Signup
 
