@@ -1,117 +1,112 @@
-import { Router } from "express"
-import passport from "passport"
-import {
-    levelUpUserCtr,
-    loginController,
-    logoutController,
-} from "../../controllers/ussers/ussersControllers.js";
-import em, { ErrorCode } from "../../utils/error.manager.js"
-import { isLogged } from "../../utils/users.midleware.js"
+import { Router } from 'express'
+import passport from 'passport'
+import { getUssersCtr, levelUpUserCtr, loginController, logoutController } from '../../controllers/ussers/ussersControllers.js'
+import em, { ErrorCode } from '../../utils/error.manager.js'
+import { isLogged } from '../../utils/users.midleware.js'
 const usserRouter = Router()
-// SIGN UP
+// GET USSERS INFO #public for now but will be only for admins
+usserRouter.get('/', getUssersCtr)
+// DELETE INACTIVE USSERS #public for now but will be only for admins
+// TODO usserRouter.delete('/', deleteInactiveUssers)
+// SIGN UP  POST api/usser
 usserRouter.post(
-    "/",
-    passport.authenticate("register", {
-        failureMessage: true,
+    '/',
+    passport.authenticate('register', {
+        failureMessage: true
     }),
     (req, res) => {
         loginController(req, res)
         res.send({
             ok: true,
-            message: "session properly started and user created",
+            message: 'session properly started and user created'
         })
-    },
-);
-//sign up template view
+    }
+)
+//SIGN UP VIEW  POST api/usser/template
 usserRouter.post(
-    "/template",
-    passport.authenticate("register", {
-        failureRedirect: "/api/usser/error_template",
-        failureMessage: true,
+    '/template',
+    passport.authenticate('register', {
+        failureRedirect: '/api/usser/error_template',
+        failureMessage: true
     }),
     (req, res) => {
         loginController(req, res)
-        res.redirect("/products")
-    },
-);
-//login
+        res.redirect('/products')
+    }
+)
+// LOG IN POST api/usser/login
 usserRouter.post(
-    "/login",
-    passport.authenticate("login", {
-        failureMessage: true,
+    '/login',
+    passport.authenticate('login', {
+        failureMessage: true
     }),
     (req, res) => {
         loginController(req, res)
         res.send({
             ok: true,
-            message: "session properly started",
+            message: 'session properly started'
         })
-    },
+    }
 )
-// LOG IN template
+// LOG IN template POST api/usser/login_template
 usserRouter.post(
-    "/login_template",
-    passport.authenticate("login", {
-        failureRedirect: "/api/usser/error_template",
-        failureMessage: true,
+    '/login_template',
+    passport.authenticate('login', {
+        failureRedirect: '/api/usser/error_template',
+        failureMessage: true
     }),
     (req, res) => {
         loginController(req, res)
-        res.redirect("/products")
-    },
+        res.redirect('/products')
+    }
 )
-//CALL GITHUB STRATEGY, needs to use browser
+//CALL GITHUB STRATEGY, needs to use browser GET api/usser/github
+usserRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }))
+//GITHUB STRATEGY CALLBACK GET api/usser/githubcb
 usserRouter.get(
-    "/github",
-    passport.authenticate("github", { scope: ["user:email"] }),
-);
-//GITHUB STRATEGY CALLBACK
-usserRouter.get(
-    "/githubcb",
-    passport.authenticate("github", {
-        failureRedirect: "/api/usser/error",
-        failureMessage: true,
+    '/githubcb',
+    passport.authenticate('github', {
+        failureRedirect: '/api/usser/error',
+        failureMessage: true
     }),
-    (req, res) => loginController(req, res),
-);
-//LOG OUT
-usserRouter.get("/logout", (req, res) => {
+    (req, res) => loginController(req, res)
+)
+//LOG OUT GET api/usser/logout
+usserRouter.get('/logout', (req, res) => {
     logoutController(req, res)
-    res.send({ ok: true, message: "logged out" })
+    res.send({ ok: true, message: 'logged out' })
 })
-//LOG OUT TEMPLATE
-usserRouter.get("/logout_template", (req, res) => {
-    logoutController(req, res);
-    res.redirect("/");
+//LOG OUT TEMPLATE GET api/usser/logout_template
+usserRouter.get('/logout_template', (req, res) => {
+    logoutController(req, res)
+    res.redirect('/')
 })
 
-// AUTH ERROR CALLBACK RENDER
-usserRouter.get("/error", (req, _res) => {
+// AUTH ERROR CALLBACK GET api/usser/error
+usserRouter.get('/error', (req, _res) => {
     throw em.createError({
         status: 400,
         message: req.session.messages
             ? req.session.messages
-            : "problem detected to get credentials properly, pls try again",
-        name: "CastError",
-        code: ErrorCode.GENERAL_USER_ERROR,
+            : 'problem detected to get credentials properly, pls try again',
+        name: 'CastError',
+        code: ErrorCode.GENERAL_USER_ERROR
     })
 })
-// auth error for template
-usserRouter.get("/error_template", (req, res) => {
-    res.render("error", {
+// AUTH ERROR CALLBACK RENDER TEMPLATE GET api/usser/error_template
+usserRouter.get('/error_template', (req, res) => {
+    res.render('error', {
         status: 401,
         message: req.session.messages
             ? req.session.messages[0]
-            : "problem detected to get credentials properly, pls try again",
-        redirect: "/login",
-        destiny: "login",
+            : 'problem detected to get credentials properly, pls try again',
+        redirect: '/login',
+        destiny: 'login'
     })
 })
-export default usserRouter;
-
-usserRouter.get("/premium", isLogged, (req, res, next) =>
-    levelUpUserCtr(req, res, next),
-)
+export default usserRouter
+// UPGRADE TO PREMIUM GET api/usser/premium
+usserRouter.get('/premium', isLogged, (req, res, next) => levelUpUserCtr(req, res, next))
 
 // AUTHENTICATE MIDDLEWARE reference, now using users.midleware.js on utils directory
 // export const auth = async (req, res, next) =>{

@@ -33,3 +33,16 @@ export async function levelUpUserCtr(req, res, next) {
         next(err)
     }
 }
+
+export async function getUssersCtr(req, res, next) {
+    try {
+        let { page, limit } = req.query
+        page = Math.abs(parseInt(page)) 
+        limit = Math.abs(parseInt(limit))
+        if (isNaN(page)) page = 1
+        if (isNaN(limit)) limit = 10
+        return res.send(await um.getUssers({ page, limit }))
+    } catch (err) {
+        next(err)
+    }
+}
