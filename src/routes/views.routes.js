@@ -1,22 +1,19 @@
-import { Router } from "express";
-import { renderCartC, renderCommentsC, renderProductsC } from "../controllers/views/viewsController.js";
-import { isLogged, isUsser } from "../utils/users.midleware.js";
+import { Router } from 'express'
+import { renderCartCtr, renderCommentsCtr, renderProductsCtr } from '../controllers/views/viewsController.js'
+import { isUsser } from '../utils/users.midleware.js'
 
 const viewsRouter = Router()
-viewsRouter.get("/", (req, res) => {
-    res.render("home", {
-        usser: req.session ? req.session.name : "user",
-        role: req.session ? req.session.rol : "?",
+
+viewsRouter.get('/', (req, res) => {
+    res.render('home', {
+        usser: req.session ? req.session.name : 'user',
+        role: req.session ? req.session.rol : '?'
     })
 })
-viewsRouter.get("/products", isLogged, (req, res) => renderProductsC(req, res))
-
-viewsRouter.get("/cart/", isUsser, async (req, res) => renderCartC(req, res))
-
-viewsRouter.get("/comments/", isUsser, async(req, res) => renderCommentsC(req, res))
-
-viewsRouter.get("/createAccount", (_req, res) => res.render("createAccount"))
-viewsRouter.get("/login", (_req, res) => res.render("login"))
-
+viewsRouter.get('/products', renderProductsCtr)
+viewsRouter.get('/cart/', isUsser, renderCartCtr)
+viewsRouter.get('/comments/', isUsser, renderCommentsCtr)
+viewsRouter.get('/createAccount', (_req, res) => res.render('createAccount'))
+viewsRouter.get('/login', (_req, res) => res.render('login'))
 
 export default viewsRouter

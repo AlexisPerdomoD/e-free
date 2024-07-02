@@ -1,14 +1,10 @@
 import dotenvConfig from '../../config/dotenv.config.js'
-import CartMannagerM from '../../dao/db/CartMannagerM.js'
-import MongoMannager from '../../dao/db/MongoMannager.js'
-import ProductMannagerM from '../../dao/db/ProductMannagerM.js'
-import chatModel from '../../dao/models/chat.model.js'
+import { cm, commentsM, pm } from '../../dao/index.js'
 
-export async function renderProductsC(req, res) {
-    const pm = new ProductMannagerM()
-    const response = await pm.getProductsPaginate({ ...req.query })
-    if (response.error) res.status(response.status).send(response)
-    else {
+export async function renderProductsCtr(req, res, next) {
+    try {
+        const response = await pm.getProductsPaginate({ ...req.query })
+
         response.querys = req.query
         // req.url para despues
         response.url = `${dotenvConfig.host}/products/`
@@ -18,42 +14,42 @@ export async function renderProductsC(req, res) {
             usser: req.session.name ? req.session.name : 'user',
             host2: dotenvConfig.host
         })
+    } catch (err) {
+        next(err)
     }
 }
 
-export async function renderCartC(req, res) {
-    const cM = new CartMannagerM()
-    const response = await cM.getCartById(req.session.cart)
+export async function renderCartCtr(req, res, next) {
+    try {
+        const response = await cm.getCartById(req.session.cart)
 
-    if (!response)
-        return res.status(404).render('error', {
-            status: 404,
-            message: 'not cart found, fatal',
-            redirect: '/api/usser/logout',
-            destiny: 'pls try to logout and sign in again'
+        if (!response)
+            return res.status(404).render('error', {
+                status: 404,
+                message: 'not cart found, fatal',
+                redirect: '/api/usser/logout',
+                destiny: 'pls try to logout and sign in again'
+            })
+        // HANDLEBARS NEEDS
+        response.products = response.products.map((product) => {
+            return { ...product._doc }
         })
-    else if (response.error)
-        return res.status(response.status).render('error', {
-            status: response.status,
-            message: 'something went wrong',
-            redirect: '/api/usser/logout',
-            destiny: 'pls try to logout and sign in again'
+        response.products = response.products.map((product) => {
+            return { _id: product._id, quantity: product.quantity, product: { ...product.product._doc } }
         })
-    // HANDLEBARS NEEDS
-    response.products = response.products.map((product) => {
-        return { ...product._doc }
-    })
-    response.products = response.products.map((product) => {
-        return { _id: product._id, quantity: product.quantity, product: { ...product.product._doc } }
-    })
-    res.render('cart', response)
+        res.render('cart', response)
+    } catch (err) {
+        next(err)
+    }
 }
 
-export async function renderCommentsC(req, res) {
-    const chatM = new MongoMannager(chatModel, 'chats')
-    let response = await chatM.getColletion()
-
-    response.error
-        ? res.status(500).send(response)
-        : res.render('chat', { usser: req.session ? req.session.name : 'user', messages: response })
+export async function renderCommentsCtr(req, res, next) {
+    try {
+        res.render('chat', {
+            usser: req.session ? req.session.name : 'user',
+            messages: await commentsM.getColletion()
+        })
+    } catch (err) {
+        next(err)
+    }
 }
