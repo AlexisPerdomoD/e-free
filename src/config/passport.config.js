@@ -100,7 +100,7 @@ const initializatePassport = () => {
             {
                 clientID: 'Iv1.d9511b7d10d472f9',
                 clientSecret: '4a34d3ea527c9ee7f6864f8bee2067fa5fc29d5d',
-                callbackURl: 'http://localhost:8080/api/usser/githubcb'
+                callbackURl: dotenvConfig.host + '/api/usser/githubcb'
             },
             async (_accessToken, _refreshToken, profile, done) => {
                 try {
