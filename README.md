@@ -225,7 +225,7 @@ Response example
 ### Catalog
 
 ```http
-  GET /api/products
+GET /api/products
 ```
 > this route is not protected by default.
 
@@ -481,7 +481,7 @@ Cart endpoints provides information about the current status of the shopping car
 ### Add a product to a user cart
 
 ```http
-  PATCH /api/cart/product/:pid
+PATCH /api/cart/product/:pid
 ```
 This endpoint requires besides the product id as param, the quantity of products you're adding.
 
@@ -515,7 +515,7 @@ response:
 ### Get cart information
 
 ```http
-  GET /api/cart/
+GET /api/cart/
 ```
 
 Since each user has an unique cart id there is not need for params to get this. 
@@ -558,7 +558,7 @@ example response
 ### Delete one product directly
 
 ```http
-  DELETE /api/cart/product/:pid
+DELETE /api/cart/product/:pid
 ```
 this endpoints removes a product from a cart directly,  just need the product id as params.
 
@@ -584,7 +584,7 @@ response:
 ### Go to checkout
 
 ```http
-  GET /api/cart/purchase
+GET /api/cart/purchase
 ```
 This endpoints allows user to generate a ticket, checking every product in the cart and also updating products' stock after the order is being made. 
 > if at the moment of generate the order there is not enough stock for some product in the user's cart, those products are going to stay in the cart while the other are including in the order. In this case E-free also return a message about that. 
