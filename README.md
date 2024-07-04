@@ -49,7 +49,7 @@ the idea of this project is to connect or create your mongodb with your products
 
 - Diferent level of session, regular session for users or costumers and protected endpoints only meant to be consume by admin accounts (mostly about some delicate CRUD operation about the products and the catalogo itself)
 
-
+> This app is already deployed so you can test views or documentation endpoints at [Deploy](https://e-free.onrender.com)
 
 
 ## Tecnologies
@@ -141,7 +141,7 @@ Before hands on, you will have access for an specifict documentation enpoint bui
 there you'll find more details about the endpoint and how it works.
 
 ```http
-  GET /api/apidocs
+GET /api/apidocs
 ```
 
 ### Users
@@ -149,7 +149,7 @@ there you'll find more details about the endpoint and how it works.
 ### Get all users
 
 ``` http
-  GET  /api/users
+GET  /api/users
 ```
 
 By default this endpoint is not protected but is meant for admin purposes.
@@ -157,7 +157,7 @@ By default this endpoint is not protected but is meant for admin purposes.
 ### Signup
 
 ``` http
-  POST  /api/user/
+POST  /api/user/
 ```
 requires a body with the information in json that follows the user model: 
 ```
@@ -186,7 +186,7 @@ Response example
 ### login
 
 ```http
-  POST /api/usser/login
+POST /api/usser/login
 ```
 
 requires a body with the information in json that follows the user model: 
@@ -208,7 +208,7 @@ Response example
 ### logout
 
 ```http
-  GET /api/usser/logout
+GET /api/usser/logout
 ```
 Response example
 ```json 
@@ -269,7 +269,7 @@ example
 example 
 
 ```http
-GET api/products/?category=sides&limit=2&sort=-1&page=2
+GET /api/products/?category=sides&limit=2&sort=-1&page=2
 ```
 
 ```json 
@@ -312,7 +312,7 @@ GET api/products/?category=sides&limit=2&sort=-1&page=2
 ### Get by id
 
 ```http
-  GET /api/products/:id
+GET /api/products/:id
 ```
 
 example 
@@ -340,7 +340,7 @@ E-free allows you to add new products, update the  already existing products cat
 
 ### Add new product
 ``` http
-POST api/products/
+POST /api/products/
 ```
 In order to add a new product to the existing catalog you must provide in the body of your request a json as the following model:
 ```json 
@@ -391,14 +391,14 @@ example
 
 ### Update an existing product.
 ``` http
-PATCH api/products/:id
+PATCH /api/products/:id
 ```
 
 E-free allows you to update a product from a single field or some at the same time. The fields you want to update must be place in an json object and only the fields we already define above are taken, otherwise fields will be ignored. 
 
 example
 ```http
-PATCH api/products/66425edbb648be21a94dd1de
+PATCH /api/products/66425edbb648be21a94dd1de
 
 {
     "stock":30,
@@ -442,12 +442,12 @@ if we get the product by id we can se the product was indeep updated.
 
 ### Delete an existing product.
 ``` http
-DELETE api/products/:id
+DELETE /api/products/:id
 ```
 
 example
 ```http 
-DELETE api/products/66425edbb648be21a94dd1de
+DELETE /api/products/66425edbb648be21a94dd1de
 ```
 
 ```json
